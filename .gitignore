@@ -1,0 +1,21 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node (only used by the optional headless verifier)
+node_modules/
+package-lock.json
+
+# Local scratch / logs
+scratch/
+*.log

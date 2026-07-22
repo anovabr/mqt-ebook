@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quarta capa · Conceitos e análises estatísticas com R e JASP</title>
+<meta name="description" content="Estatística é uma disciplina que, quase sempre, desperta uma preocupação em estudantes de ciências humanas, certamente não apenas aqueles matriculados em Psicologia. No entanto, em sentido oposto à an">
+<meta name="author" content="Luis Anunciação">
+<link rel="canonical" href="https://luisfca.github.io/mqt-ebook/quarta-capa.html">
+<meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14110e" media="(prefers-color-scheme: dark)">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Conceitos e análises estatísticas com R e JASP">
+<meta property="og:title" content="Quarta capa">
+<meta property="og:description" content="Estatística é uma disciplina que, quase sempre, desperta uma preocupação em estudantes de ciências humanas, certamente não apenas aqueles matriculados em Psicologia. No entanto, em sentido oposto à an">
+<meta property="og:url" content="https://luisfca.github.io/mqt-ebook/quarta-capa.html">
+<meta property="og:image" content="https://luisfca.github.io/mqt-ebook/assets/img/capa_r_jasp.PNG">
+<meta property="og:locale" content="pt_BR">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quarta capa">
+<meta name="twitter:description" content="Estatística é uma disciplina que, quase sempre, desperta uma preocupação em estudantes de ciências humanas, certamente não apenas aqueles matriculados em Psicologia. No entanto, em sentido oposto à an">
+<meta name="twitter:image" content="https://luisfca.github.io/mqt-ebook/assets/img/capa_r_jasp.PNG">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<!-- highlight.js theme (light/dark handled via CSS below) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>
+  // Set theme before paint to avoid a flash of the wrong theme.
+  (function () {
+    try {
+      var t = localStorage.getItem('mqt-theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      var fs = localStorage.getItem('mqt-fontsize');
+      if (fs) document.documentElement.style.setProperty('--reading-size', fs + 'px');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-chapter="quarta-capa" data-chapter-num="19">
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<header class="topbar">
+  <button class="hamburger" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topbar-title" href="index.html">Conceitos e análises estatísticas com R e JASP</a>
+  <button class="icon-btn theme-btn js-theme" id="themeTop" aria-label="Alternar tema claro/escuro">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+</header>
+
+<div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar" aria-label="Sumário do livro">
+    <div class="sidebar-head">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Conceitos e análises estatísticas com R e JASP</span>
+        <span class="brand-author">Luis Anunciação · PUC-Rio</span>
+      </a>
+      <div class="side-controls" role="group" aria-label="Preferências de leitura">
+        <button class="side-ctl js-theme" aria-label="Alternar tema claro/escuro" title="Tema">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="side-ctl js-font-dec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+        <button class="side-ctl js-font-inc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+        <button class="side-ctl js-share" aria-label="Compartilhar" title="Compartilhar" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 8a3 3 0 1 0-2.8-4M6 15a3 3 0 1 0 0-.1M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="toc" aria-label="Sumário">
+      <ul class="toc-root">
+<li class="toc-chapter" data-file="index.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="index.html"><span class="toc-num">1</span><span class="toc-txt">Prefácio</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#atenção" data-anchor="atenção">Atenção</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#a-proposta" data-anchor="a-proposta">A proposta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#objetivo" data-anchor="objetivo">Objetivo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#público-alvo" data-anchor="público-alvo">Público-alvo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#formato-do-livro" data-anchor="formato-do-livro">Formato do livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#como-usar-este-livro" data-anchor="como-usar-este-livro">Como usar este livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#pesquisas-e-dados" data-anchor="pesquisas-e-dados">Pesquisas e dados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#o-r-e-os-pacotes" data-anchor="o-r-e-os-pacotes">O R e os pacotes</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#jasp" data-anchor="jasp">JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#outros-recursos" data-anchor="outros-recursos">Outros recursos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#capa" data-anchor="capa">Capa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#versão-do-livro" data-anchor="versão-do-livro">Versão do livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#autor" data-anchor="autor">Autor</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#revisão-técnica" data-anchor="revisão-técnica">Revisão técnica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#agradecimentos" data-anchor="agradecimentos">Agradecimentos</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="programas-estatísticos.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="programas-estatísticos.html"><span class="toc-num">2</span><span class="toc-txt">Programas estatísticos</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#o-r" data-anchor="o-r">O R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#tidyverse" data-anchor="tidyverse">Tidyverse</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#dificuldades-esperadas" data-anchor="dificuldades-esperadas">Dificuldades esperadas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#verbos-do-dplyr" data-anchor="verbos-do-dplyr">Verbos do dplyr</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#o-jasp" data-anchor="o-jasp">O JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#resumo" data-anchor="resumo">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="aspectos-gerais.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="aspectos-gerais.html"><span class="toc-num">3</span><span class="toc-txt">Aspectos gerais</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#os-objetivos-de-uma-pesquisa" data-anchor="os-objetivos-de-uma-pesquisa">Os objetivos de uma pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#a-dimensão-temporal-de-uma-pesquisa" data-anchor="a-dimensão-temporal-de-uma-pesquisa">A dimensão temporal de uma pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#conceitos-fundamentais" data-anchor="conceitos-fundamentais">conceitos fundamentais</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#modelos-científicos" data-anchor="modelos-científicos">Modelos científicos</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#variáveis" data-anchor="variáveis">Variáveis</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-de-pesquisa" data-anchor="delineamentos-de-pesquisa">Delineamentos de pesquisa</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-observacionais-e-correlacionais" data-anchor="delineamentos-observacionais-e-correlacionais">Delineamentos observacionais (e correlacionais)</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-experimentais" data-anchor="delineamentos-experimentais">Delineamentos experimentais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia" data-anchor="considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia">Considerações sobre escalas de medida e o processo de mensuração em Psicologia</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-nominal" data-anchor="escala-nominal">Escala nominal</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-ordinal" data-anchor="escala-ordinal">Escala ordinal</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-intervalar" data-anchor="escala-intervalar">Escala intervalar</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-de-razão" data-anchor="escala-de-razão">Escala de razão</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#síntese-das-características-de-cada-escala" data-anchor="síntese-das-características-de-cada-escala">Síntese das características de cada escala</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#as-escalas-de-stevens-e-uma-tentativa-de-agrupamento" data-anchor="as-escalas-de-stevens-e-uma-tentativa-de-agrupamento">As escalas de Stevens e uma tentativa de agrupamento</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#variáveis-discretas-ou-contínuas" data-anchor="variáveis-discretas-ou-contínuas">Variáveis discretas ou contínuas</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia" data-anchor="hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia">Hierarquia da classificação e a importância desses conceitos hoje em dia</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#em-qual-escala-devemos-classificar-os-testes-psicológicos" data-anchor="em-qual-escala-devemos-classificar-os-testes-psicológicos">Em qual escala devemos classificar os testes psicológicos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#principais-áreas-da-estatística" data-anchor="principais-áreas-da-estatística">Principais áreas da estatística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#resumo-1" data-anchor="resumo-1">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#questões" data-anchor="questões">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="estatística-descritiva.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="estatística-descritiva.html"><span class="toc-num">4</span><span class="toc-txt">Estatística Descritiva</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#tabelas" data-anchor="tabelas">Tabelas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos" data-anchor="gráficos">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#medidas-de-posição-e-dispersão" data-anchor="medidas-de-posição-e-dispersão">Medidas de posição e dispersão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#média" data-anchor="média">Média</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#mediana" data-anchor="mediana">Mediana</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#moda" data-anchor="moda">Moda</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#amplitude" data-anchor="amplitude">Amplitude</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#amplitude-interquartil" data-anchor="amplitude-interquartil">Amplitude interquartil</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variância-e-desvio-padrão" data-anchor="variância-e-desvio-padrão">Variância e Desvio-padrão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#momentos-estatísticos" data-anchor="momentos-estatísticos">Momentos estatísticos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#pesquisa" data-anchor="pesquisa">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#execução-no-r" data-anchor="execução-no-r">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos-1" data-anchor="gráficos-1">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-discreta" data-anchor="variável-discreta">1 variável discreta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-contínua" data-anchor="variável-contínua">1 variável contínua</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-discreta-e-vd-contínua" data-anchor="variáveis-com-vi-discreta-e-vd-contínua">2 variáveis com VI discreta (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-contínua-e-vd-contínua" data-anchor="variáveis-com-vi-contínua-e-vd-contínua">2 variáveis com VI contínua (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#outros-gráficos-e-configurações" data-anchor="outros-gráficos-e-configurações">Outros gráficos e configurações</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#execução-no-jasp" data-anchor="execução-no-jasp">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#tabelas-1" data-anchor="tabelas-1">Tabelas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos-2" data-anchor="gráficos-2">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-discreta-1" data-anchor="variável-discreta-1">1 variável discreta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-contínua-1" data-anchor="variável-contínua-1">1 variável contínua</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-discreta-e-vd-contínua-1" data-anchor="variáveis-com-vi-discreta-e-vd-contínua-1">2 variáveis com VI discreta (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-contínua-e-vd-contínua-1" data-anchor="variáveis-com-vi-contínua-e-vd-contínua-1">2 variáveis com VI contínua (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#outros-gráficos-e-configurações-1" data-anchor="outros-gráficos-e-configurações-1">Outros gráficos e configurações</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#resumo-2" data-anchor="resumo-2">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#questões-1" data-anchor="questões-1">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="família-de-distribuições.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="família-de-distribuições.html"><span class="toc-num">5</span><span class="toc-txt">Família de distribuições</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#distribuição-simétrica" data-anchor="distribuição-simétrica">Distribuição simétrica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#assimetria-à-direita" data-anchor="assimetria-à-direita">Assimetria à direita</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#assimetria-à-esquerda-ou-negativa" data-anchor="assimetria-à-esquerda-ou-negativa">Assimetria à esquerda (ou negativa)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#a-distribuição-normal" data-anchor="a-distribuição-normal">A distribuição normal</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#a-regra-empírica" data-anchor="a-regra-empírica">A regra empírica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#um-resumo-visual" data-anchor="um-resumo-visual">Um resumo visual</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#importância-inferencial" data-anchor="importância-inferencial">Importância inferencial</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#resumo-3" data-anchor="resumo-3">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="tipos-de-amostragem.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="tipos-de-amostragem.html"><span class="toc-num">6</span><span class="toc-txt">Tipos de amostragem</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-aleatória-simples" data-anchor="amostragem-aleatória-simples">Amostragem aleatória simples</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-aleatória-sistemática" data-anchor="amostragem-aleatória-sistemática">Amostragem aleatória sistemática</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-estratificada" data-anchor="amostragem-estratificada">Amostragem estratificada</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-conglomerados" data-anchor="amostragem-por-conglomerados">Amostragem por conglomerados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-conveniência" data-anchor="amostragem-por-conveniência">Amostragem por conveniência</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-auto-seleção" data-anchor="amostragem-por-auto-seleção">Amostragem por auto-seleção</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-intencional" data-anchor="amostragem-intencional">Amostragem intencional</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-bola-de-neve" data-anchor="amostragem-por-bola-de-neve">Amostragem por bola de neve</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-quotas" data-anchor="amostragem-por-quotas">Amostragem por quotas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#o-cálculo-do-tamanho-amostral" data-anchor="o-cálculo-do-tamanho-amostral">O cálculo do tamanho amostral</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-e-sua-relação-com-os-resultados" data-anchor="amostragem-e-sua-relação-com-os-resultados">Amostragem e sua relação com os resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-delineamento-e-generalização" data-anchor="amostragem-delineamento-e-generalização">Amostragem, delineamento e generalização</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#resumo-4" data-anchor="resumo-4">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="estatística-inferencial.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="estatística-inferencial.html"><span class="toc-num">7</span><span class="toc-txt">Estatística Inferencial</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#nhst-teste-de-significância-de-hipótese-nula" data-anchor="nhst-teste-de-significância-de-hipótese-nula">NHST (Teste de Significância de Hipótese Nula)</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="estatística-inferencial.html#a-primeira-etapa-a-hipótese" data-anchor="a-primeira-etapa-a-hipótese">A primeira etapa: a hipótese</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#nível-de-significância" data-anchor="nível-de-significância">Nível de significância</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-teste-estatístico" data-anchor="o-teste-estatístico">O teste estatístico</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-valor-de-p" data-anchor="o-valor-de-p">O valor de P</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-tamanho-do-efeito" data-anchor="o-tamanho-do-efeito">O tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#um-exemplo-intuitivo" data-anchor="um-exemplo-intuitivo">Um exemplo intuitivo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-que-não-te-contaram-sobre-inferência-estatística" data-anchor="o-que-não-te-contaram-sobre-inferência-estatística">O que não te contaram sobre inferência estatística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#pesquisas-adicionais" data-anchor="pesquisas-adicionais">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#questões-2" data-anchor="questões-2">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="um-exemplo-real-de-pesquisa.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="um-exemplo-real-de-pesquisa.html"><span class="toc-num">8</span><span class="toc-txt">Um exemplo real de pesquisa</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#o-que-será-pesquisado" data-anchor="o-que-será-pesquisado">O que será pesquisado</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#como-os-dados-serão-coletados" data-anchor="como-os-dados-serão-coletados">Como os dados serão coletados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#de-onde-os-dados-vêm" data-anchor="de-onde-os-dados-vêm">De onde os dados vêm</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#as-análises" data-anchor="as-análises">As análises</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#os-achados" data-anchor="os-achados">Os achados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#divulgação-do-estudo" data-anchor="divulgação-do-estudo">Divulgação do estudo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#fluxograma" data-anchor="fluxograma">Fluxograma</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#resumo-5" data-anchor="resumo-5">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="qui-quadrado.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="qui-quadrado.html"><span class="toc-num">9</span><span class="toc-txt">Qui quadrado</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#pesquisa-1" data-anchor="pesquisa-1">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#execução-no-r-1" data-anchor="execução-no-r-1">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#tamanho-do-efeito" data-anchor="tamanho-do-efeito">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#execução-no-jasp-1" data-anchor="execução-no-jasp-1">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#escrita-dos-resultados" data-anchor="escrita-dos-resultados">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#resumo-6" data-anchor="resumo-6">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#pesquisas-adicionais-1" data-anchor="pesquisas-adicionais-1">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#questões-3" data-anchor="questões-3">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="fatores-de-risco.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="fatores-de-risco.html"><span class="toc-num">10</span><span class="toc-txt">Fatores de Risco</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#pesquisa-2" data-anchor="pesquisa-2">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#execução-no-r-2" data-anchor="execução-no-r-2">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#execução-no-jasp-2" data-anchor="execução-no-jasp-2">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#escrita-dos-resultados-1" data-anchor="escrita-dos-resultados-1">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#odds-ratio-e-regressão-logística" data-anchor="odds-ratio-e-regressão-logística">Odds Ratio e Regressão logística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#resumo-7" data-anchor="resumo-7">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#pesquisas-adicionais-2" data-anchor="pesquisas-adicionais-2">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#questões-4" data-anchor="questões-4">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="teste-t.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="teste-t.html"><span class="toc-num">11</span><span class="toc-txt">Teste T</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#pesquisa-3" data-anchor="pesquisa-3">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#execução-no-r-3" data-anchor="execução-no-r-3">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#tamanho-do-efeito-1" data-anchor="tamanho-do-efeito-1">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#execução-no-jasp-3" data-anchor="execução-no-jasp-3">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#escrita-dos-resultados-2" data-anchor="escrita-dos-resultados-2">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#versão-robusta-do-teste-t" data-anchor="versão-robusta-do-teste-t">Versão robusta do Teste T</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-r-4" data-anchor="execução-no-r-4">Execução no R</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-jasp-4" data-anchor="execução-no-jasp-4">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#mann-whitney" data-anchor="mann-whitney">Mann-whitney</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-r-5" data-anchor="execução-no-r-5">Execução No R</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#tamanho-do-efeito-2" data-anchor="tamanho-do-efeito-2">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-jasp-5" data-anchor="execução-no-jasp-5">Execução no JASP</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#escrita-dos-resultados-3" data-anchor="escrita-dos-resultados-3">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#teste-t-e-regressão" data-anchor="teste-t-e-regressão">Teste T e regressão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#resumo-8" data-anchor="resumo-8">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#pesquisas-adicionais-3" data-anchor="pesquisas-adicionais-3">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#questões-5" data-anchor="questões-5">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="anova.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="anova.html"><span class="toc-num">12</span><span class="toc-txt">ANOVA</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisa-4" data-anchor="pesquisa-4">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-de-1-via" data-anchor="anova-de-1-via">ANOVA de 1 via</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-6" data-anchor="execução-no-r-6">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#tamanho-do-efeito-3" data-anchor="tamanho-do-efeito-3">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-6" data-anchor="execução-no-jasp-6">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-4" data-anchor="escrita-dos-resultados-4">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc" data-anchor="post-hoc">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-7" data-anchor="execução-no-r-7">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-7" data-anchor="execução-no-jasp-7">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-5" data-anchor="escrita-dos-resultados-5">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-9" data-anchor="resumo-9">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisas-adicionais-4" data-anchor="pesquisas-adicionais-4">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisa-5" data-anchor="pesquisa-5">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-de-2-vias" data-anchor="anova-de-2-vias">ANOVA de 2 vias</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-8" data-anchor="execução-no-r-8">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-8" data-anchor="execução-no-jasp-8">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-6" data-anchor="escrita-dos-resultados-6">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc-1" data-anchor="post-hoc-1">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-9" data-anchor="execução-no-r-9">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-9" data-anchor="execução-no-jasp-9">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-7" data-anchor="escrita-dos-resultados-7">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-10" data-anchor="resumo-10">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-fatorial" data-anchor="anova-fatorial">ANOVA Fatorial</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-10" data-anchor="execução-no-r-10">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-10" data-anchor="execução-no-jasp-10">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-8" data-anchor="escrita-dos-resultados-8">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-11" data-anchor="resumo-11">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc-2" data-anchor="post-hoc-2">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-11" data-anchor="execução-no-jasp-11">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-9" data-anchor="escrita-dos-resultados-9">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#questões-6" data-anchor="questões-6">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="anova-de-medidas-repetidas.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="anova-de-medidas-repetidas.html"><span class="toc-num">13</span><span class="toc-txt">ANOVA de medidas repetidas</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#pesquisa-6" data-anchor="pesquisa-6">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#execução-no-r-11" data-anchor="execução-no-r-11">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#tamanho-do-efeito-4" data-anchor="tamanho-do-efeito-4">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#execução-no-jasp-12" data-anchor="execução-no-jasp-12">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#escrita-dos-resultados-10" data-anchor="escrita-dos-resultados-10">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#resumo-12" data-anchor="resumo-12">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#pesquisas-adicionais-5" data-anchor="pesquisas-adicionais-5">Pesquisas adicionais</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="modelo-linear-misto.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="modelo-linear-misto.html"><span class="toc-num">14</span><span class="toc-txt">Modelo linear misto</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#pesquisa-7" data-anchor="pesquisa-7">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#execução-no-r-12" data-anchor="execução-no-r-12">execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#execução-no-jasp-13" data-anchor="execução-no-jasp-13">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#escrita-dos-resultados-11" data-anchor="escrita-dos-resultados-11">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#resumo-13" data-anchor="resumo-13">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#pesquisas-adicionais-6" data-anchor="pesquisas-adicionais-6">Pesquisas adicionais</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="correlação.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="correlação.html"><span class="toc-num">15</span><span class="toc-txt">Correlação</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#pesquisa-8" data-anchor="pesquisa-8">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#execução-no-r-13" data-anchor="execução-no-r-13">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#execução-no-jasp-14" data-anchor="execução-no-jasp-14">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#escrita-dos-resultados-12" data-anchor="escrita-dos-resultados-12">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#resumo-14" data-anchor="resumo-14">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#pesquisas-adicionais-7" data-anchor="pesquisas-adicionais-7">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#questões-7" data-anchor="questões-7">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-linear-simples.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-linear-simples.html"><span class="toc-num">16</span><span class="toc-txt">Regressão linear simples</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#breve-explicação-conceitual" data-anchor="breve-explicação-conceitual">Breve explicação conceitual</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#pesquisa-9" data-anchor="pesquisa-9">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#execução-no-r-14" data-anchor="execução-no-r-14">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#execução-no-jasp-15" data-anchor="execução-no-jasp-15">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#escrita-dos-resultados-13" data-anchor="escrita-dos-resultados-13">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#resumo-15" data-anchor="resumo-15">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#pesquisas-adicionais-8" data-anchor="pesquisas-adicionais-8">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#questões-8" data-anchor="questões-8">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-linear-múltipla.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-linear-múltipla.html"><span class="toc-num">17</span><span class="toc-txt">Regressão linear múltipla</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#pesquisa-10" data-anchor="pesquisa-10">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#execução-no-r-15" data-anchor="execução-no-r-15">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#execução-no-jasp-16" data-anchor="execução-no-jasp-16">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#escrita-dos-resultados-14" data-anchor="escrita-dos-resultados-14">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#técnicas-automáticas-de-seleção-de-variáveis" data-anchor="técnicas-automáticas-de-seleção-de-variáveis">Técnicas automáticas de seleção de variáveis</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#resumo-16" data-anchor="resumo-16">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#pesquisas-adicionais-9" data-anchor="pesquisas-adicionais-9">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#questões-9" data-anchor="questões-9">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-logística-binária.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-logística-binária.html"><span class="toc-num">18</span><span class="toc-txt">Regressão logística binária</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#pesquisa-11" data-anchor="pesquisa-11">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#execução-no-r-16" data-anchor="execução-no-r-16">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#execução-no-jasp-17" data-anchor="execução-no-jasp-17">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#escrita-dos-resultados-15" data-anchor="escrita-dos-resultados-15">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#regressão-logística-or-e-qui-quadrado" data-anchor="regressão-logística-or-e-qui-quadrado">Regressão logística, OR e Qui-quadrado</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#resumo-17" data-anchor="resumo-17">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#pesquisas-adicionais-10" data-anchor="pesquisas-adicionais-10">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#questões-10" data-anchor="questões-10">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter is-current open" data-file="quarta-capa.html">
+<a class="toc-link toc-l1" href="quarta-capa.html"><span class="toc-num">19</span><span class="toc-txt">Quarta capa</span></a>
+</li>
+<li class="toc-chapter" data-file="referencias.html">
+<a class="toc-link toc-l1" href="referencias.html"><span class="toc-num">20</span><span class="toc-txt">Referencias</span></a>
+</li>
+</ul>
+    </nav>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main class="reading" id="main">
+    <article class="chapter" id="chapter">
+      <div class="section level1" id="quarta-capa" number="19">
+<h1><span class="header-section-number">Cap. 19</span> Quarta capa</h1>
+<p>Estatística é uma disciplina que, quase sempre, desperta uma preocupação em estudantes de ciências humanas, certamente não apenas aqueles matriculados em Psicologia. No entanto, em sentido oposto à ansiedade que essa disciplina pode provocar, há cada vez mais um reconhecimento sobre a importância de métodos e análises estatísticas no campo das ciências, especialmente nas áreas empíricas.</p>
+<p>Neste livro, o Professor Luis Anunciação (PUC-Rio) se propõe a uma tarefa arriscada, mas muito pioneira: ensinar estatística e análise de dados através de pesquisas previamente publicadas na área da Psicologia e Epidemiologia, com dados abertos e acessíveis tanto para utilização no programa estatístico R e no JASP.</p>
+<p>O livro consegue tocar em três aspectos essenciais em uma pesquisa, que são (1) como elaborar e estruturar uma pesquisa, (2) como analisar os dados decorrentes da pesquisa e tomar decisões probabilísticas e (3) como interpretar os resultados, integrando a modelagem estatística e as questões teóricas que, originalmente, motivaram à execução da pesquisa.</p>
+<p>A leitura deste livro é bastante prazerosa. O conteúdo é passado de forma leve, sem sobrecarregar em aspectos matemáticos, mas também sem ignorá-los ou escondê-los. Na minha opinião, a forma utilizada para apresentar o conteúdo proposto é adequada e tende a agradar leitores de diferentes formações e interesses.</p>
+<p>Anna Carolina de Almeida Portugal</p>
+<p>Doutora em Fisiologia,</p>
+<p>Professora da Universidade Federal do Rio de Janeiro (UFRJ)</p>
+</div>
+    </article>
+
+    <nav class="chapter-nav" aria-label="Navegação entre capítulos">
+      <a class="pnav pnav-prev" href="regressão-logística-binária.html" rel="prev"><span class="pnav-dir">← Anterior</span><span class="pnav-title">Regressão logística binária</span></a>
+      <a class="pnav pnav-next" href="referencias.html" rel="next"><span class="pnav-dir">Próximo →</span><span class="pnav-title">Referencias</span></a>
+    </nav>
+
+    <footer class="site-footer">
+      <p>Conceitos e análises estatísticas com R e JASP — camada de anotações por Luis Anunciação (PUC-Rio).</p>
+      <p class="muted">Site estático gerado a partir do livro original em bookdown.</p>
+    </footer>
+  </main>
+</div>
+
+<!-- Scroll-aware floating action bar -->
+<div class="fab" id="fab" aria-hidden="false">
+  <button class="fab-btn" id="toTop" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button class="fab-btn js-font-dec" id="fontDec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+  <button class="fab-btn js-font-inc" id="fontInc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+  <button class="fab-btn js-theme" id="themeFab" aria-label="Alternar tema" title="Tema claro/escuro">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+  <button class="fab-btn js-share" id="shareBtn" aria-label="Compartilhar" title="Compartilhar" aria-haspopup="true" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 8a3 3 0 1 0-2.8-4M6 15a3 3 0 1 0 0-.1M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+  </button>
+</div>
+
+<!-- Desktop share fallback menu -->
+<div class="share-menu" id="shareMenu" role="menu" hidden>
+  <div class="share-menu-head">Compartilhar</div>
+  <div class="share-scope" role="group" aria-label="Nível de compartilhamento">
+    <button class="scope-btn is-active" data-scope="chapter">Este capítulo</button>
+    <button class="scope-btn" data-scope="book">O livro</button>
+  </div>
+  <button class="share-item" data-net="copy" role="menuitem"><span class="share-ico">🔗</span> Copiar link</button>
+  <a class="share-item" data-net="whatsapp" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">🟢</span> WhatsApp</a>
+  <a class="share-item" data-net="twitter" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">✖</span> X / Twitter</a>
+  <a class="share-item" data-net="linkedin" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">in</span> LinkedIn</a>
+  <a class="share-item" data-net="email" role="menuitem"><span class="share-ico">✉</span> E-mail</a>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>window.MQT_SITE_BASE = 'https://luisfca.github.io/mqt-ebook';</script>
+<!-- highlight.js -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/r.min.js"></script>
+<!-- KaTeX auto-render -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

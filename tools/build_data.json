@@ -1,0 +1,166 @@
+{
+  "chapters": [
+    {
+      "num": 1,
+      "file": "index.html",
+      "title": "Prefácio",
+      "sections": 15,
+      "images": 4,
+      "code_blocks": 0
+    },
+    {
+      "num": 2,
+      "file": "programas-estatísticos.html",
+      "title": "Programas estatísticos",
+      "sections": 6,
+      "images": 13,
+      "code_blocks": 0
+    },
+    {
+      "num": 3,
+      "file": "aspectos-gerais.html",
+      "title": "Aspectos gerais",
+      "sections": 21,
+      "images": 20,
+      "code_blocks": 0
+    },
+    {
+      "num": 4,
+      "file": "estatística-descritiva.html",
+      "title": "Estatística Descritiva",
+      "sections": 28,
+      "images": 45,
+      "code_blocks": 21
+    },
+    {
+      "num": 5,
+      "file": "família-de-distribuições.html",
+      "title": "Família de distribuições",
+      "sections": 8,
+      "images": 10,
+      "code_blocks": 3
+    },
+    {
+      "num": 6,
+      "file": "tipos-de-amostragem.html",
+      "title": "Tipos de amostragem",
+      "sections": 13,
+      "images": 8,
+      "code_blocks": 0
+    },
+    {
+      "num": 7,
+      "file": "estatística-inferencial.html",
+      "title": "Estatística Inferencial",
+      "sections": 10,
+      "images": 5,
+      "code_blocks": 0
+    },
+    {
+      "num": 8,
+      "file": "um-exemplo-real-de-pesquisa.html",
+      "title": "Um exemplo real de pesquisa",
+      "sections": 8,
+      "images": 5,
+      "code_blocks": 0
+    },
+    {
+      "num": 9,
+      "file": "qui-quadrado.html",
+      "title": "Qui quadrado",
+      "sections": 8,
+      "images": 14,
+      "code_blocks": 4
+    },
+    {
+      "num": 10,
+      "file": "fatores-de-risco.html",
+      "title": "Fatores de Risco",
+      "sections": 8,
+      "images": 17,
+      "code_blocks": 6
+    },
+    {
+      "num": 11,
+      "file": "teste-t.html",
+      "title": "Teste T",
+      "sections": 17,
+      "images": 18,
+      "code_blocks": 20
+    },
+    {
+      "num": 12,
+      "file": "anova.html",
+      "title": "ANOVA",
+      "sections": 31,
+      "images": 67,
+      "code_blocks": 44
+    },
+    {
+      "num": 13,
+      "file": "anova-de-medidas-repetidas.html",
+      "title": "ANOVA de medidas repetidas",
+      "sections": 7,
+      "images": 22,
+      "code_blocks": 12
+    },
+    {
+      "num": 14,
+      "file": "modelo-linear-misto.html",
+      "title": "Modelo linear misto",
+      "sections": 6,
+      "images": 17,
+      "code_blocks": 8
+    },
+    {
+      "num": 15,
+      "file": "correlação.html",
+      "title": "Correlação",
+      "sections": 7,
+      "images": 11,
+      "code_blocks": 3
+    },
+    {
+      "num": 16,
+      "file": "regressão-linear-simples.html",
+      "title": "Regressão linear simples",
+      "sections": 8,
+      "images": 33,
+      "code_blocks": 11
+    },
+    {
+      "num": 17,
+      "file": "regressão-linear-múltipla.html",
+      "title": "Regressão linear múltipla",
+      "sections": 8,
+      "images": 20,
+      "code_blocks": 12
+    },
+    {
+      "num": 18,
+      "file": "regressão-logística-binária.html",
+      "title": "Regressão logística binária",
+      "sections": 8,
+      "images": 18,
+      "code_blocks": 8
+    },
+    {
+      "num": 19,
+      "file": "quarta-capa.html",
+      "title": "Quarta capa",
+      "sections": 0,
+      "images": 0,
+      "code_blocks": 0
+    },
+    {
+      "num": 20,
+      "file": "referencias.html",
+      "title": "Referencias",
+      "sections": 0,
+      "images": 0,
+      "code_blocks": 0
+    }
+  ],
+  "warnings": [],
+  "images_missing": []
+}

@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teste T · Conceitos e análises estatísticas com R e JASP</title>
+<meta name="description" content="Objetivos do capítulo 1. Apresentar o Teste T 2. Discutir os pressupostos de execução do Teste T 3. Realizar gráficos relacionados à comparação de médias 4. Apresentar e interpretar métricas de tamanh">
+<meta name="author" content="Luis Anunciação">
+<link rel="canonical" href="https://luisfca.github.io/mqt-ebook/teste-t.html">
+<meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14110e" media="(prefers-color-scheme: dark)">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Conceitos e análises estatísticas com R e JASP">
+<meta property="og:title" content="Teste T">
+<meta property="og:description" content="Objetivos do capítulo 1. Apresentar o Teste T 2. Discutir os pressupostos de execução do Teste T 3. Realizar gráficos relacionados à comparação de médias 4. Apresentar e interpretar métricas de tamanh">
+<meta property="og:url" content="https://luisfca.github.io/mqt-ebook/teste-t.html">
+<meta property="og:image" content="https://luisfca.github.io/mqt-ebook/assets/figure-html/unnamed-chunk-57-1.png">
+<meta property="og:locale" content="pt_BR">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Teste T">
+<meta name="twitter:description" content="Objetivos do capítulo 1. Apresentar o Teste T 2. Discutir os pressupostos de execução do Teste T 3. Realizar gráficos relacionados à comparação de médias 4. Apresentar e interpretar métricas de tamanh">
+<meta name="twitter:image" content="https://luisfca.github.io/mqt-ebook/assets/figure-html/unnamed-chunk-57-1.png">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<!-- highlight.js theme (light/dark handled via CSS below) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>
+  // Set theme before paint to avoid a flash of the wrong theme.
+  (function () {
+    try {
+      var t = localStorage.getItem('mqt-theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      var fs = localStorage.getItem('mqt-fontsize');
+      if (fs) document.documentElement.style.setProperty('--reading-size', fs + 'px');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-chapter="teste-t" data-chapter-num="11">
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<header class="topbar">
+  <button class="hamburger" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topbar-title" href="index.html">Conceitos e análises estatísticas com R e JASP</a>
+  <button class="icon-btn theme-btn js-theme" id="themeTop" aria-label="Alternar tema claro/escuro">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+</header>
+
+<div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar" aria-label="Sumário do livro">
+    <div class="sidebar-head">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Conceitos e análises estatísticas com R e JASP</span>
+        <span class="brand-author">Luis Anunciação · PUC-Rio</span>
+      </a>
+      <div class="side-controls" role="group" aria-label="Preferências de leitura">
+        <button class="side-ctl js-theme" aria-label="Alternar tema claro/escuro" title="Tema">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="side-ctl js-font-dec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+        <button class="side-ctl js-font-inc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+        <button class="side-ctl js-share" aria-label="Compartilhar" title="Compartilhar" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 8a3 3 0 1 0-2.8-4M6 15a3 3 0 1 0 0-.1M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="toc" aria-label="Sumário">
+      <ul class="toc-root">
+<li class="toc-chapter" data-file="index.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="index.html"><span class="toc-num">1</span><span class="toc-txt">Prefácio</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#atenção" data-anchor="atenção">Atenção</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#a-proposta" data-anchor="a-proposta">A proposta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#objetivo" data-anchor="objetivo">Objetivo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#público-alvo" data-anchor="público-alvo">Público-alvo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#formato-do-livro" data-anchor="formato-do-livro">Formato do livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#como-usar-este-livro" data-anchor="como-usar-este-livro">Como usar este livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#pesquisas-e-dados" data-anchor="pesquisas-e-dados">Pesquisas e dados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#o-r-e-os-pacotes" data-anchor="o-r-e-os-pacotes">O R e os pacotes</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#jasp" data-anchor="jasp">JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#outros-recursos" data-anchor="outros-recursos">Outros recursos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#capa" data-anchor="capa">Capa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#versão-do-livro" data-anchor="versão-do-livro">Versão do livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#autor" data-anchor="autor">Autor</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#revisão-técnica" data-anchor="revisão-técnica">Revisão técnica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#agradecimentos" data-anchor="agradecimentos">Agradecimentos</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="programas-estatísticos.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="programas-estatísticos.html"><span class="toc-num">2</span><span class="toc-txt">Programas estatísticos</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#o-r" data-anchor="o-r">O R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#tidyverse" data-anchor="tidyverse">Tidyverse</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#dificuldades-esperadas" data-anchor="dificuldades-esperadas">Dificuldades esperadas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#verbos-do-dplyr" data-anchor="verbos-do-dplyr">Verbos do dplyr</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#o-jasp" data-anchor="o-jasp">O JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#resumo" data-anchor="resumo">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="aspectos-gerais.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="aspectos-gerais.html"><span class="toc-num">3</span><span class="toc-txt">Aspectos gerais</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#os-objetivos-de-uma-pesquisa" data-anchor="os-objetivos-de-uma-pesquisa">Os objetivos de uma pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#a-dimensão-temporal-de-uma-pesquisa" data-anchor="a-dimensão-temporal-de-uma-pesquisa">A dimensão temporal de uma pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#conceitos-fundamentais" data-anchor="conceitos-fundamentais">conceitos fundamentais</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#modelos-científicos" data-anchor="modelos-científicos">Modelos científicos</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#variáveis" data-anchor="variáveis">Variáveis</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-de-pesquisa" data-anchor="delineamentos-de-pesquisa">Delineamentos de pesquisa</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-observacionais-e-correlacionais" data-anchor="delineamentos-observacionais-e-correlacionais">Delineamentos observacionais (e correlacionais)</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-experimentais" data-anchor="delineamentos-experimentais">Delineamentos experimentais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia" data-anchor="considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia">Considerações sobre escalas de medida e o processo de mensuração em Psicologia</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-nominal" data-anchor="escala-nominal">Escala nominal</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-ordinal" data-anchor="escala-ordinal">Escala ordinal</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-intervalar" data-anchor="escala-intervalar">Escala intervalar</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-de-razão" data-anchor="escala-de-razão">Escala de razão</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#síntese-das-características-de-cada-escala" data-anchor="síntese-das-características-de-cada-escala">Síntese das características de cada escala</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#as-escalas-de-stevens-e-uma-tentativa-de-agrupamento" data-anchor="as-escalas-de-stevens-e-uma-tentativa-de-agrupamento">As escalas de Stevens e uma tentativa de agrupamento</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#variáveis-discretas-ou-contínuas" data-anchor="variáveis-discretas-ou-contínuas">Variáveis discretas ou contínuas</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia" data-anchor="hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia">Hierarquia da classificação e a importância desses conceitos hoje em dia</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#em-qual-escala-devemos-classificar-os-testes-psicológicos" data-anchor="em-qual-escala-devemos-classificar-os-testes-psicológicos">Em qual escala devemos classificar os testes psicológicos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#principais-áreas-da-estatística" data-anchor="principais-áreas-da-estatística">Principais áreas da estatística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#resumo-1" data-anchor="resumo-1">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#questões" data-anchor="questões">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="estatística-descritiva.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="estatística-descritiva.html"><span class="toc-num">4</span><span class="toc-txt">Estatística Descritiva</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#tabelas" data-anchor="tabelas">Tabelas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos" data-anchor="gráficos">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#medidas-de-posição-e-dispersão" data-anchor="medidas-de-posição-e-dispersão">Medidas de posição e dispersão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#média" data-anchor="média">Média</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#mediana" data-anchor="mediana">Mediana</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#moda" data-anchor="moda">Moda</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#amplitude" data-anchor="amplitude">Amplitude</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#amplitude-interquartil" data-anchor="amplitude-interquartil">Amplitude interquartil</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variância-e-desvio-padrão" data-anchor="variância-e-desvio-padrão">Variância e Desvio-padrão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#momentos-estatísticos" data-anchor="momentos-estatísticos">Momentos estatísticos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#pesquisa" data-anchor="pesquisa">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#execução-no-r" data-anchor="execução-no-r">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos-1" data-anchor="gráficos-1">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-discreta" data-anchor="variável-discreta">1 variável discreta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-contínua" data-anchor="variável-contínua">1 variável contínua</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-discreta-e-vd-contínua" data-anchor="variáveis-com-vi-discreta-e-vd-contínua">2 variáveis com VI discreta (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-contínua-e-vd-contínua" data-anchor="variáveis-com-vi-contínua-e-vd-contínua">2 variáveis com VI contínua (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#outros-gráficos-e-configurações" data-anchor="outros-gráficos-e-configurações">Outros gráficos e configurações</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#execução-no-jasp" data-anchor="execução-no-jasp">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#tabelas-1" data-anchor="tabelas-1">Tabelas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos-2" data-anchor="gráficos-2">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-discreta-1" data-anchor="variável-discreta-1">1 variável discreta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-contínua-1" data-anchor="variável-contínua-1">1 variável contínua</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-discreta-e-vd-contínua-1" data-anchor="variáveis-com-vi-discreta-e-vd-contínua-1">2 variáveis com VI discreta (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-contínua-e-vd-contínua-1" data-anchor="variáveis-com-vi-contínua-e-vd-contínua-1">2 variáveis com VI contínua (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#outros-gráficos-e-configurações-1" data-anchor="outros-gráficos-e-configurações-1">Outros gráficos e configurações</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#resumo-2" data-anchor="resumo-2">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#questões-1" data-anchor="questões-1">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="família-de-distribuições.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="família-de-distribuições.html"><span class="toc-num">5</span><span class="toc-txt">Família de distribuições</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#distribuição-simétrica" data-anchor="distribuição-simétrica">Distribuição simétrica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#assimetria-à-direita" data-anchor="assimetria-à-direita">Assimetria à direita</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#assimetria-à-esquerda-ou-negativa" data-anchor="assimetria-à-esquerda-ou-negativa">Assimetria à esquerda (ou negativa)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#a-distribuição-normal" data-anchor="a-distribuição-normal">A distribuição normal</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#a-regra-empírica" data-anchor="a-regra-empírica">A regra empírica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#um-resumo-visual" data-anchor="um-resumo-visual">Um resumo visual</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#importância-inferencial" data-anchor="importância-inferencial">Importância inferencial</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#resumo-3" data-anchor="resumo-3">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="tipos-de-amostragem.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="tipos-de-amostragem.html"><span class="toc-num">6</span><span class="toc-txt">Tipos de amostragem</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-aleatória-simples" data-anchor="amostragem-aleatória-simples">Amostragem aleatória simples</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-aleatória-sistemática" data-anchor="amostragem-aleatória-sistemática">Amostragem aleatória sistemática</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-estratificada" data-anchor="amostragem-estratificada">Amostragem estratificada</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-conglomerados" data-anchor="amostragem-por-conglomerados">Amostragem por conglomerados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-conveniência" data-anchor="amostragem-por-conveniência">Amostragem por conveniência</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-auto-seleção" data-anchor="amostragem-por-auto-seleção">Amostragem por auto-seleção</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-intencional" data-anchor="amostragem-intencional">Amostragem intencional</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-bola-de-neve" data-anchor="amostragem-por-bola-de-neve">Amostragem por bola de neve</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-quotas" data-anchor="amostragem-por-quotas">Amostragem por quotas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#o-cálculo-do-tamanho-amostral" data-anchor="o-cálculo-do-tamanho-amostral">O cálculo do tamanho amostral</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-e-sua-relação-com-os-resultados" data-anchor="amostragem-e-sua-relação-com-os-resultados">Amostragem e sua relação com os resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-delineamento-e-generalização" data-anchor="amostragem-delineamento-e-generalização">Amostragem, delineamento e generalização</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#resumo-4" data-anchor="resumo-4">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="estatística-inferencial.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="estatística-inferencial.html"><span class="toc-num">7</span><span class="toc-txt">Estatística Inferencial</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#nhst-teste-de-significância-de-hipótese-nula" data-anchor="nhst-teste-de-significância-de-hipótese-nula">NHST (Teste de Significância de Hipótese Nula)</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="estatística-inferencial.html#a-primeira-etapa-a-hipótese" data-anchor="a-primeira-etapa-a-hipótese">A primeira etapa: a hipótese</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#nível-de-significância" data-anchor="nível-de-significância">Nível de significância</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-teste-estatístico" data-anchor="o-teste-estatístico">O teste estatístico</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-valor-de-p" data-anchor="o-valor-de-p">O valor de P</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-tamanho-do-efeito" data-anchor="o-tamanho-do-efeito">O tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#um-exemplo-intuitivo" data-anchor="um-exemplo-intuitivo">Um exemplo intuitivo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-que-não-te-contaram-sobre-inferência-estatística" data-anchor="o-que-não-te-contaram-sobre-inferência-estatística">O que não te contaram sobre inferência estatística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#pesquisas-adicionais" data-anchor="pesquisas-adicionais">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#questões-2" data-anchor="questões-2">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="um-exemplo-real-de-pesquisa.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="um-exemplo-real-de-pesquisa.html"><span class="toc-num">8</span><span class="toc-txt">Um exemplo real de pesquisa</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#o-que-será-pesquisado" data-anchor="o-que-será-pesquisado">O que será pesquisado</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#como-os-dados-serão-coletados" data-anchor="como-os-dados-serão-coletados">Como os dados serão coletados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#de-onde-os-dados-vêm" data-anchor="de-onde-os-dados-vêm">De onde os dados vêm</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#as-análises" data-anchor="as-análises">As análises</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#os-achados" data-anchor="os-achados">Os achados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#divulgação-do-estudo" data-anchor="divulgação-do-estudo">Divulgação do estudo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#fluxograma" data-anchor="fluxograma">Fluxograma</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#resumo-5" data-anchor="resumo-5">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="qui-quadrado.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="qui-quadrado.html"><span class="toc-num">9</span><span class="toc-txt">Qui quadrado</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#pesquisa-1" data-anchor="pesquisa-1">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#execução-no-r-1" data-anchor="execução-no-r-1">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#tamanho-do-efeito" data-anchor="tamanho-do-efeito">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#execução-no-jasp-1" data-anchor="execução-no-jasp-1">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#escrita-dos-resultados" data-anchor="escrita-dos-resultados">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#resumo-6" data-anchor="resumo-6">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#pesquisas-adicionais-1" data-anchor="pesquisas-adicionais-1">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#questões-3" data-anchor="questões-3">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="fatores-de-risco.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="fatores-de-risco.html"><span class="toc-num">10</span><span class="toc-txt">Fatores de Risco</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#pesquisa-2" data-anchor="pesquisa-2">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#execução-no-r-2" data-anchor="execução-no-r-2">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#execução-no-jasp-2" data-anchor="execução-no-jasp-2">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#escrita-dos-resultados-1" data-anchor="escrita-dos-resultados-1">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#odds-ratio-e-regressão-logística" data-anchor="odds-ratio-e-regressão-logística">Odds Ratio e Regressão logística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#resumo-7" data-anchor="resumo-7">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#pesquisas-adicionais-2" data-anchor="pesquisas-adicionais-2">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#questões-4" data-anchor="questões-4">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter is-current open" data-file="teste-t.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="true"></button><a class="toc-link toc-l1" href="teste-t.html"><span class="toc-num">11</span><span class="toc-txt">Teste T</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#pesquisa-3" data-anchor="pesquisa-3">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#execução-no-r-3" data-anchor="execução-no-r-3">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#tamanho-do-efeito-1" data-anchor="tamanho-do-efeito-1">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#execução-no-jasp-3" data-anchor="execução-no-jasp-3">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#escrita-dos-resultados-2" data-anchor="escrita-dos-resultados-2">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#versão-robusta-do-teste-t" data-anchor="versão-robusta-do-teste-t">Versão robusta do Teste T</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-r-4" data-anchor="execução-no-r-4">Execução no R</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-jasp-4" data-anchor="execução-no-jasp-4">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#mann-whitney" data-anchor="mann-whitney">Mann-whitney</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-r-5" data-anchor="execução-no-r-5">Execução No R</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#tamanho-do-efeito-2" data-anchor="tamanho-do-efeito-2">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-jasp-5" data-anchor="execução-no-jasp-5">Execução no JASP</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#escrita-dos-resultados-3" data-anchor="escrita-dos-resultados-3">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#teste-t-e-regressão" data-anchor="teste-t-e-regressão">Teste T e regressão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#resumo-8" data-anchor="resumo-8">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#pesquisas-adicionais-3" data-anchor="pesquisas-adicionais-3">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#questões-5" data-anchor="questões-5">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="anova.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="anova.html"><span class="toc-num">12</span><span class="toc-txt">ANOVA</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisa-4" data-anchor="pesquisa-4">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-de-1-via" data-anchor="anova-de-1-via">ANOVA de 1 via</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-6" data-anchor="execução-no-r-6">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#tamanho-do-efeito-3" data-anchor="tamanho-do-efeito-3">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-6" data-anchor="execução-no-jasp-6">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-4" data-anchor="escrita-dos-resultados-4">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc" data-anchor="post-hoc">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-7" data-anchor="execução-no-r-7">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-7" data-anchor="execução-no-jasp-7">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-5" data-anchor="escrita-dos-resultados-5">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-9" data-anchor="resumo-9">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisas-adicionais-4" data-anchor="pesquisas-adicionais-4">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisa-5" data-anchor="pesquisa-5">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-de-2-vias" data-anchor="anova-de-2-vias">ANOVA de 2 vias</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-8" data-anchor="execução-no-r-8">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-8" data-anchor="execução-no-jasp-8">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-6" data-anchor="escrita-dos-resultados-6">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc-1" data-anchor="post-hoc-1">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-9" data-anchor="execução-no-r-9">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-9" data-anchor="execução-no-jasp-9">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-7" data-anchor="escrita-dos-resultados-7">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-10" data-anchor="resumo-10">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-fatorial" data-anchor="anova-fatorial">ANOVA Fatorial</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-10" data-anchor="execução-no-r-10">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-10" data-anchor="execução-no-jasp-10">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-8" data-anchor="escrita-dos-resultados-8">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-11" data-anchor="resumo-11">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc-2" data-anchor="post-hoc-2">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-11" data-anchor="execução-no-jasp-11">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-9" data-anchor="escrita-dos-resultados-9">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#questões-6" data-anchor="questões-6">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="anova-de-medidas-repetidas.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="anova-de-medidas-repetidas.html"><span class="toc-num">13</span><span class="toc-txt">ANOVA de medidas repetidas</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#pesquisa-6" data-anchor="pesquisa-6">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#execução-no-r-11" data-anchor="execução-no-r-11">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#tamanho-do-efeito-4" data-anchor="tamanho-do-efeito-4">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#execução-no-jasp-12" data-anchor="execução-no-jasp-12">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#escrita-dos-resultados-10" data-anchor="escrita-dos-resultados-10">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#resumo-12" data-anchor="resumo-12">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#pesquisas-adicionais-5" data-anchor="pesquisas-adicionais-5">Pesquisas adicionais</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="modelo-linear-misto.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="modelo-linear-misto.html"><span class="toc-num">14</span><span class="toc-txt">Modelo linear misto</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#pesquisa-7" data-anchor="pesquisa-7">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#execução-no-r-12" data-anchor="execução-no-r-12">execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#execução-no-jasp-13" data-anchor="execução-no-jasp-13">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#escrita-dos-resultados-11" data-anchor="escrita-dos-resultados-11">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#resumo-13" data-anchor="resumo-13">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#pesquisas-adicionais-6" data-anchor="pesquisas-adicionais-6">Pesquisas adicionais</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="correlação.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="correlação.html"><span class="toc-num">15</span><span class="toc-txt">Correlação</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#pesquisa-8" data-anchor="pesquisa-8">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#execução-no-r-13" data-anchor="execução-no-r-13">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#execução-no-jasp-14" data-anchor="execução-no-jasp-14">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#escrita-dos-resultados-12" data-anchor="escrita-dos-resultados-12">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#resumo-14" data-anchor="resumo-14">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#pesquisas-adicionais-7" data-anchor="pesquisas-adicionais-7">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#questões-7" data-anchor="questões-7">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-linear-simples.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-linear-simples.html"><span class="toc-num">16</span><span class="toc-txt">Regressão linear simples</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#breve-explicação-conceitual" data-anchor="breve-explicação-conceitual">Breve explicação conceitual</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#pesquisa-9" data-anchor="pesquisa-9">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#execução-no-r-14" data-anchor="execução-no-r-14">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#execução-no-jasp-15" data-anchor="execução-no-jasp-15">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#escrita-dos-resultados-13" data-anchor="escrita-dos-resultados-13">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#resumo-15" data-anchor="resumo-15">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#pesquisas-adicionais-8" data-anchor="pesquisas-adicionais-8">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#questões-8" data-anchor="questões-8">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-linear-múltipla.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-linear-múltipla.html"><span class="toc-num">17</span><span class="toc-txt">Regressão linear múltipla</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#pesquisa-10" data-anchor="pesquisa-10">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#execução-no-r-15" data-anchor="execução-no-r-15">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#execução-no-jasp-16" data-anchor="execução-no-jasp-16">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#escrita-dos-resultados-14" data-anchor="escrita-dos-resultados-14">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#técnicas-automáticas-de-seleção-de-variáveis" data-anchor="técnicas-automáticas-de-seleção-de-variáveis">Técnicas automáticas de seleção de variáveis</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#resumo-16" data-anchor="resumo-16">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#pesquisas-adicionais-9" data-anchor="pesquisas-adicionais-9">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#questões-9" data-anchor="questões-9">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-logística-binária.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-logística-binária.html"><span class="toc-num">18</span><span class="toc-txt">Regressão logística binária</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#pesquisa-11" data-anchor="pesquisa-11">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#execução-no-r-16" data-anchor="execução-no-r-16">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#execução-no-jasp-17" data-anchor="execução-no-jasp-17">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#escrita-dos-resultados-15" data-anchor="escrita-dos-resultados-15">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#regressão-logística-or-e-qui-quadrado" data-anchor="regressão-logística-or-e-qui-quadrado">Regressão logística, OR e Qui-quadrado</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#resumo-17" data-anchor="resumo-17">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#pesquisas-adicionais-10" data-anchor="pesquisas-adicionais-10">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#questões-10" data-anchor="questões-10">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="quarta-capa.html">
+<a class="toc-link toc-l1" href="quarta-capa.html"><span class="toc-num">19</span><span class="toc-txt">Quarta capa</span></a>
+</li>
+<li class="toc-chapter" data-file="referencias.html">
+<a class="toc-link toc-l1" href="referencias.html"><span class="toc-num">20</span><span class="toc-txt">Referencias</span></a>
+</li>
+</ul>
+    </nav>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main class="reading" id="main">
+    <article class="chapter" id="chapter">
+      <div class="section level1" id="teste-t" number="11">
+<h1><span class="header-section-number">Cap. 11</span> Teste T</h1>
+<div class="objectives">
+<p><strong>Objetivos do capítulo</strong><br/>
+1. Apresentar o Teste T<br/>
+2. Discutir os pressupostos de execução do Teste T<br/>
+3. Realizar gráficos relacionados à comparação de médias<br/>
+4. Apresentar e interpretar métricas de tamanho do efeito<br/>
+5. Dar exemplos relacionados à escrita dos resultados<br/>
+6. Apresentar testes robustos e não paramétricos</p>
+</div>
+<p>O Teste T é um teste estatístico frequentemente utilizado para testar hipóteses sobre <u>diferenças entre até duas médias</u>. É possível usar o Teste T para (1) comparar a média de uma amostra com a média populacional (<em>one sample t test</em>), (2) para comparar duas médias amostrais (<em>two sample t test</em>) ou (3) para comparar duas médias de uma mesma amostra que foi investigada em dois momentos do tempo (<em>paired ou matched t test</em>). Por utilizar dados amostrais da média para estimar a média populacional (parâmetro <span class="math inline">\(\mu\)</span>), ele é considerado um teste paramétrico.</p>
+<p>Como todo teste inferencial, o Teste T é um modelo estatístico, com os seguintes pressupostos:</p>
+<p><em>(i)</em> Os dados são aleatórios e representativos da população<br/>
+<em>(ii)</em> A variável dependente é contínua<br/>
+<em>(iii)</em> Os resíduos do modelo são normalmente distribuídos</p>
+<p>Quando há o interesse de utilizar o Teste T para comparar os resultados de dois grupos, é também necessário que:</p>
+<p><em>(iv)</em> Ambos os grupos sejam independentes (ou seja, grupos exaustivos e excludentes)<br/>
+<em>(v)</em> A variância residual seja homogênea (princípio da homocedasticidade)</p>
+<p>Quando se utiliza o Teste T pareado, o princípio da independência não é mais solicitado, mas é necessário que:</p>
+<p><em>(vi)</em> O tamanho amostral seja o mesmo nos grupos</p>
+<p>Uma vez que o Teste T é adequado para diferentes objetivos de pesquisa, a tabela a seguir reúne alguns exemplos.</p>
+<div class="table-wrap"><table>
+<colgroup>
+<col width="50%"/>
+<col width="50%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Teste T para</th>
+<th align="left">Exemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Uma amostra</td>
+<td align="left">-Verificar se o peso médio dos bebês de uma maternidade é similar ao esperado na população <br/> -Testar se a frequência respiratória de atletas de corrida difere da de outros atletas</td>
+</tr>
+<tr class="even">
+<td align="left">Dois grupos independentes</td>
+<td align="left">-Verificar se o nível de anticorpos é diferente entre pessoas vacinadas e não vacinadas <br/> -Verificar se os resultados da prova do ENEM são diferentes em estudantes da rede pública ou privada de ensino</td>
+</tr>
+<tr class="odd">
+<td align="left">Pareado</td>
+<td align="left">-Verificar se um programa de reforço escolar melhorou as notas de conjunto de alunos<br/>-Testar se uma mudança arquitetônica em uma loja impactou em suas vendas</td>
+</tr>
+</tbody>
+</table></div>
+<p>Eventualmente, quando os pressupostos do modelo são violados, a literatura mais tradicional recomenda que ajustes ou testes não-paramétricos com propostas parecidas possam ser implementados. A tabela abaixo concatena os testes estatísticos relacionados para fins de comparação com outros trabalhos. Há também autores que sugerem que se use sempre as versões não-paramétricas em resultados obtidos por processos de avaliação psicológica, argumentando que os dados têm nível de medida “ordinal.”</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th align="left">Versão do teste</th>
+<th align="left">Um grupo</th>
+<th align="left">Dois grupos independentes</th>
+<th align="left">Grupos pareados</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Paramétrica</td>
+<td align="left">One-sample t test</td>
+<td align="left">Two-samples t test</td>
+<td align="left">Paired t test</td>
+</tr>
+<tr class="even">
+<td align="left">Não-paramétrica</td>
+<td align="left">Signed rank test</td>
+<td align="left">Wilcoxon-Mann-whitney</td>
+<td align="left">Wilcoxon Signed-Rank</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Nota: Existe um intenso debate sobre a utilização de testes paramétricos e não-paramétricos em Psicologia. Algo pouco comentado, apesar de ser o aspecto mais importante em minha opinião, é que a hipótese testada em um teste paramétrico é diferente da teste da testada em um não-paramétrico. Ou seja, a substituição de um teste estatístico por outro, necessariamente, muda a hipótese de pesquisa investigada. O Teste T não assume normalidade da variável dependente, mas sim normalidade dos resíduos do modelo probabilístico, que será explicado em seguida</em></p>
+<p>Apenas por um preâmbulo histórico, a origem do Teste T remonta o artigo publicado em 1908 por William Gosset. Na época, em função de seu trabalho na cervejaria Guiness, ele não assinou o artigo. Na publicação, ele utilizou o pseudônimo <em>Student</em>, motivo pelo qual o Teste T também é chamado de Teste T de Student. Há muitas versões sobre o que levou Gosset a se apresentar como <em>Student</em>, mas parece que isso se deu em função de um caderno em que ele tomava notas, cuja capa tinha escrito <em>The Student’s Notebook</em>.</p>
+<p>É importante notar que estudantes de Psicologia e profissionais que trabalham com avaliação psicológica costumam ser deparados com uma métrica chamada “T score” (Escore T, as vezes), desenvolvido em 1939 por um professor de Psicologia (William Anderson McCall). Tenha em mente que essa métrica não tem relação com os procedimentos inferenciais relacionados ao Teste T a não ser uma similaridade de nome <span class="citation">(<a href="#ref-Krus1977" role="doc-biblioref">Krus &amp; Krus, 1977</a>)</span>.</p>
+<div class="section level2" id="pesquisa-3" number="11.1">
+<h2><span class="header-section-number">11.1</span> Pesquisa</h2>
+<div class="base">
+<p>A base desta pesquisa está disponível em formato <strong>R (Rdata)</strong> e em <strong>CSV</strong>, que é lido pelo JASP. Clique na opção desejada.</p>
+<p><strong>Base R: </strong> <a href="https://github.com/anovabr/mqt/raw/master/bases/Livro%20-%20R%20-%20ASQ%20SE%2012%20e%2018.RData">Livro - R - ASQ SE 12 e 18</a></p>
+<p><strong>Base JASP: </strong> <a href="https://github.com/anovabr/mqt/raw/master/bases/bases_csv_jasp.zip">Base CSV - ds_18</a></p>
+</div>
+<p>Neste capítulo, vamos utilizar a pesquisa intitulada <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/cch.12649">“Confirmatory analysis and normative tables for the Brazilian Ages and Stages Questionnaires: Social–Emotional”</a>, publicada em 2019 na Child Care Health Development. Esse trabalho teve dois objetivos. O primeiro visou confirmar a estrutura fatorial de um instrumento utilizado para avaliar possíveis atrasos no desenvolvimento de competências sociais e emocionais (ASQ:SE) e o segundo visou desenvolver tabelas normativas para comparar meninos e meninas. Essa é uma pesquisa muito importante, visto que conta com uma base de dados robusta (mais de 50 mil participantes) e faz interface entre psicometria, avaliação psicológica e políticas públicas.</p>
+<p>Abaixo, há a escrita de hipóteses utilizada para comparar os resultados de meninos e meninas, bem como o nível de significância adotado na análise.</p>
+<p><span class="math display">\[H_0: \mu_{meninos} - \mu_{meninas} = 0\]</span><br/>
+<span class="math display">\[H_a: \mu_{meninos} - \mu_{meninas} \neq 0\]</span><br/>
+<span class="math display">\[\alpha = 0.05\]</span></p>
+</div>
+<div class="section level2" id="execução-no-r-3" number="11.2">
+<h2><span class="header-section-number">11.2</span> Execução no R</h2>
+<p>No ambiente R, a primeira etapa importante é assegurar que a base de dados tenha o resultado relacionado às competências sociais e emocionais das crianças. Esse valor será computado pela soma de todos os itens da escala. No dplyr, isso é feito pela integração da função <code>mutate</code> com a <code>select</code> e será executado às crianças com 12 (<code>asq_12months</code>) e 18 meses (<code>asq_18months</code>).</p>
+<div class="sourceCode" id="cb37"><pre><code class="language-r">asq_12months &lt;- asq_12months %&gt;% 
+  mutate(total_12 = rowSums(select(., starts_with("q_")), 
+                            na.rm = TRUE))
+
+asq_18months &lt;- asq_18months %&gt;% 
+  mutate(total_18 = rowSums(select(., starts_with("q_")), 
+                            na.rm = TRUE))</code></pre></div>
+<p>Em seguida, <mark>iremos começar pelos 12 meses</mark>. O processo de testagem da hipótese é feito preliminarmente de maneira tabular e gráfica e, em seguida, pela implementação do teste específico e verificação de seus pressupostos. A tabela a seguir apresenta as principais características estatísticas dos resultados:</p>
+<div class="sourceCode" id="cb38"><pre><code class="language-r">asq_12months %&gt;%
+  group_by(sex) %&gt;% 
+  summarise_at(vars(total_12), lst(n=~n(),media=mean, DP=sd)) %&gt;% 
+  pander()</code></pre></div>
+<div class="table-wrap"><table style="width:39%;">
+<colgroup>
+<col width="8%"/>
+<col width="8%"/>
+<col width="11%"/>
+<col width="11%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">sex</th>
+<th align="center">n</th>
+<th align="center">media</th>
+<th align="center">DP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">M</td>
+<td align="center">543</td>
+<td align="center">24.92</td>
+<td align="center">21.47</td>
+</tr>
+<tr class="even">
+<td align="center">F</td>
+<td align="center">498</td>
+<td align="center">24.44</td>
+<td align="center">20.48</td>
+</tr>
+</tbody>
+</table></div>
+<p>Em seguida, a realização de um gráfico é bastante informativa para apresentação dos resultados. Apesar desse recurso não ser decisivo na tomada de decisão, ele auxilia a visualização da distribuição da variável que temos interesse, bem como oferece um entendimento inicial dos resultados.</p>
+<p>Uma vez que a VI é tratada como discreta e a VD é continua, tanto o gráfico de colunas/barras como o histograma/densidade são úteis. O gráfico de barras tem uma vantagem de ser possível adicionar barras de erros, que já apresentam uma primeira evidência inferencial. Por sua vez, histogramas e gráficos de densidade descrevem bem o formato da distribuição de dados.</p>
+<div class="sourceCode" id="cb39"><pre><code class="language-r">gridExtra::grid.arrange(
+  #plot 1 
+  ggplot(asq_12months, aes(x = sex, y = total_12, fill = sex)) +
+    geom_bar(stat = "summary", fun = mean) +
+    stat_summary(fun.data = mean_se, geom = "errorbar", 
+                 width = .2),
+  #plot 2
+    ggplot(asq_12months, aes(x = total_12, fill = sex)) + 
+    geom_density(color = NA, alpha=.6)
+)</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-57-1.png" width="672"/></p>
+<p>Os achados preliminares indicam que os resultados de meninos e meninas são ligeiramente diferentes. No entanto, é necessário a execução da testagem formal desta hipótese.</p>
+<p>A função <code>t.test</code> é nativa do R o vetor <code>t_test_12_m</code> será criado.</p>
+<div class="sourceCode" id="cb40"><pre><code class="language-r">t_test_12m &lt;- t.test(total_12 ~ sex, var.equal = T, 
+                     data = asq_12months)</code></pre></div>
+<p>A tabela a seguir apresenta os resultados.</p>
+<div class="sourceCode" id="cb41"><pre><code class="language-r">t_test_12m %&gt;% pander::pander(., split.table = Inf)</code></pre></div>
+<div class="table-wrap"><table>
+<caption>Two Sample t-test: <code>total_12</code> by <code>sex</code></caption>
+<colgroup>
+<col width="17%"/>
+<col width="7%"/>
+<col width="10%"/>
+<col width="26%"/>
+<col width="18%"/>
+<col width="18%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">mean in group M</th>
+<th align="center">mean in group F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.3679</td>
+<td align="center">1039</td>
+<td align="center">0.713</td>
+<td align="center">two.sided</td>
+<td align="center">24.92</td>
+<td align="center">24.44</td>
+</tr>
+</tbody>
+</table></div>
+<p>Os achados trazem a média de ambos os grupos (24.92 e 24.44), a estatística do teste (0.37), chamada de T calculado, os graus de liberdade (1039) e o valor de p (0.71).</p>
+<p>Repare que como <mark>o valor de p é superior ao valor estipulado do nível de significância (0.05), falha-se em rejeitar a hipótese nula</mark>. Nesse sentido, apesar dos resultados serem numericamente distintos, eles não são estatisticamente significativos (na população).</p>
+<div class="warning">
+<p><strong>Atenção</strong>: A validade das inferências dos resultados depende da adequação ou não dos pressupostos dos testes estatísticos. A avaliação destas condições é parte de um procedimento diagnóstico que deve ser sempre feito.</p>
+</div>
+<p>Um aspecto importante é que a validade da interpretação dos resultados depende dos pressupostos do modelo estatístico. A violação destes pressupostos distorce, limita ou invalida as interpretações teóricas propostas, uma vez que tanto o aumento do erro do tipo 1 (falso positivo), como do tipo 2 (falso negativo) podem ocorrer <span class="citation">(<a href="#ref-Barker2015" role="doc-biblioref">Barker &amp; Shaw, 2015</a>; <a href="#ref-Ernst2017" role="doc-biblioref">Ernst &amp; Albers, 2017</a>; <a href="#ref-Lix1996" role="doc-biblioref">Lix et al., 1996</a>)</span>. Corriqueiramente, testar os pressupostos é uma etapa <u>anterior</u> à própria realização do teste inferencial. Entretanto, <u>pedagogicamente</u> a apresentação deles após a execução do teste parece mais adequada. Assim, eles serão testados a seguir.</p>
+<p><mark> Normalidade</mark>: O Teste T é um caso especial de um modelo de regressão, o que será detalhado em outro capítulo. Dessa maneira, a normalidade que deve ser testada é a dos <u>resíduos</u> deste modelo. Isso pode ser aproximado testando a distribuição <u>condicional</u> dos resultados, ou seja, testando cada grupo independentemente. Tenha atenção que não é necessário testar a variável dependente como um todo. Caso os resultados sejam significativos, os dados serão aproximadamente bimodais e, consequentemente, não serão normalmente distribuídos.</p>
+<p>A normalidade pode ser avaliada graficamente por QQ plots e por testes específicos, como o Shapiro-wilk, Anderson-Darling e Jarque Bera.</p>
+<p>O QQ plot é um gráfico que reúne a distribuição empírica ordenada dos quantis contra os quantis da distribuição teórica (aqui, normal). Se os dados e a linha diagonal se sobrepuserem, isso é uma evidencia de que a distribuição empírica é a mesma da distribuição teórica. Caso haja discrepância, isso aponta para desvio da normalidade.</p>
+<div class="sourceCode" id="cb42"><pre><code class="language-r">ggplot(asq_12months, aes(sample = total_12)) + 
+  stat_qq() + 
+  stat_qq_line() +
+  facet_wrap(~sex)</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-60-1.png" width="672"/></p>
+<p>Apesar do gráfico já ter sido bastante claro e sugerir fortemente desvio da normalidade em ambos os grupos, o teste formal é importante. O Shapiro-wilk costuma ser utilizado neste caso, uma vez que ele reúne diferentes características positivas no balanço entre erro do tipo 1 e 2 <span class="citation">(<a href="#ref-Yap2011" role="doc-biblioref">Yap &amp; Sim, 2011</a>)</span>. A hipótese nula desse teste assume que a variável de interesse tem distribuição (aproximadamente) normal. Assim, rejeitar a hipótese nula sugere que esse princípio foi violado e, com isso, o Teste T pode gerar resultados distorcidos.</p>
+<div class="sourceCode" id="cb43"><pre><code class="language-r">asq_12months %&gt;% 
+  group_by(sex) %&gt;% 
+  summarise(shapiro = shapiro.test(total_12)$p.value) %&gt;% 
+  pander::pander()</code></pre></div>
+<div class="table-wrap"><table style="width:25%;">
+<colgroup>
+<col width="8%"/>
+<col width="16%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">sex</th>
+<th align="center">shapiro</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">M</td>
+<td align="center">1.976e-19</td>
+</tr>
+<tr class="even">
+<td align="center">F</td>
+<td align="center">4.798e-17</td>
+</tr>
+</tbody>
+</table></div>
+<p>De maneira convergente ao gráfico, o Shapiro-wilk também apontou que o princípio da normalidade foi violado.</p>
+<p><mark>Homocedasticidade</mark>: A homogeneidade ou igualdade das variâncias pode ser testada visualmente, pelo teste Breusch-pagan, Levene ou Bartlett. De maneira análoga ao Shapiro-wilk, estes últimos assumem como hipótese nula a homogeneidade das variâncias. Consequentemente, a rejeição desse pressuposto pode também trazer resultados distorcidos ao resultado do Teste T. Diferentemente do pressuposto da normalidade, o pressuposto da homocedasticidade foi preservado, tal como apresentado abaixo:</p>
+<div class="sourceCode" id="cb44"><pre><code class="language-r">car::leveneTest(total_12 ~ sex, data = asq_12months) %&gt;% 
+  pander::pander()</code></pre></div>
+<p>Registered S3 methods overwritten by ‘car’:
+method from
+influence.merMod lme4
+cooks.distance.influence.merMod lme4
+dfbeta.influence.merMod lme4
+dfbetas.influence.merMod lme4</p>
+<div class="table-wrap"><table style="width:54%;">
+<caption>Levene’s Test for Homogeneity of Variance (center = median)</caption>
+<colgroup>
+<col width="16%"/>
+<col width="9%"/>
+<col width="13%"/>
+<col width="13%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Df</th>
+<th align="center">F value</th>
+<th align="center">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>group</strong></td>
+<td align="center">1</td>
+<td align="center">0.02315</td>
+<td align="center">0.8791</td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="center">1039</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+</tbody>
+</table></div>
+<p>Após testar estes pressupostos, é importante avaliar o quanto a interpretação originalmente deve ser mantida. Existem diferentes recomendações sobre o que fazer quando os pressupostos são violados. Entre elas, assumir essa condição e justificar a utilização do Teste T, transformar a distribuição da variável de interesse, usar versões robustas do Teste T, usar testes não-paramétricos com objetivos próximos ao Teste T ou eleger algum modelo estatístico mais adequado à distribuição empírica obtida pelos dados.</p>
+<p>Parte dessas recomendações será demonstrada a seguir.</p>
+<hr/>
+<p>Com este teste inicial concluído, é também possível verificar se existem diferenças em idades mais avançadas, <u>tal como 18 meses</u>. A sintaxe é customizável e torna-se fácil testar a hipótese da diferença apenas modificando a hipótese e a sintaxe. A tabela a seguir apresenta as principais medidas estatísticas:</p>
+<div class="sourceCode" id="cb45"><pre><code class="language-r">asq_18months %&gt;%
+  group_by(sex) %&gt;% 
+  summarise_at(vars(total_18), lst(n=~n(),media=mean, DP=sd)) %&gt;% 
+  pander()</code></pre></div>
+<div class="table-wrap"><table style="width:40%;">
+<colgroup>
+<col width="8%"/>
+<col width="9%"/>
+<col width="11%"/>
+<col width="11%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">sex</th>
+<th align="center">n</th>
+<th align="center">media</th>
+<th align="center">DP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">M</td>
+<td align="center">2980</td>
+<td align="center">27.53</td>
+<td align="center">21.81</td>
+</tr>
+<tr class="even">
+<td align="center">F</td>
+<td align="center">2747</td>
+<td align="center">24.95</td>
+<td align="center">20.34</td>
+</tr>
+</tbody>
+</table></div>
+<p>Por sua vez, o gráfico a seguir traz o padrão dos resultados aos 18 meses.</p>
+<div class="sourceCode" id="cb46"><pre><code class="language-r">gridExtra::grid.arrange(
+  ggplot(asq_18months, aes(x = sex, y = total_18, fill = sex)) +
+  geom_bar(stat = "summary", fun=mean) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = .2),
+
+  ggplot(asq_18months, aes(x = total_18, fill = sex)) + 
+  geom_density(color = NA, alpha=.6))</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-64-1.png" width="672"/></p>
+<p>Tal como feito anteriormente, a realização do Teste T e a verificação de seus pressupostos devem ser realizadas.</p>
+<p>Em relação aos resultados do Teste T, eles indicaram que ambos os grupos tem resultados médios significativamente diferentes. Meninos apresentam resultados mais elevados (M = 27.53, DP = 21.81) do que meninas (M = 24.95, DP = 21.81).</p>
+<div class="sourceCode" id="cb47"><pre><code class="language-r">t_test_18m &lt;- t.test(total_18 ~ sex, var.equal = T,
+                     data = asq_18months)
+t_test_18m %&gt;% pander::pander(., split.table = Inf)</code></pre></div>
+<div class="table-wrap"><table>
+<caption>Two Sample t-test: <code>total_18</code> by <code>sex</code></caption>
+<colgroup>
+<col width="16%"/>
+<col width="6%"/>
+<col width="17%"/>
+<col width="24%"/>
+<col width="17%"/>
+<col width="17%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">mean in group M</th>
+<th align="center">mean in group F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4.619</td>
+<td align="center">5725</td>
+<td align="center">3.949e-06 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">27.53</td>
+<td align="center">24.95</td>
+</tr>
+</tbody>
+</table></div>
+<p>Diferentemente do anterior, agora o resultado foi significativo (p &lt; 0.01), trazendo evidências que permitem concluir pela rejeição da hipótese nula. Da mesma forma que feito anteriormente, a verificação dos pressupostos é um elemento fundamental para validade da interpretação dos resultados. Uma vez que tais testes foram demonstrados na seção anterior, eles não serão reproduzidos agora. No entanto, dessa vez, a normalidade e a homocedasticidade foram violadas, fazendo que com as interpretações tornem-se frágeis, apesar de possíveis.</p>
+<p>Isso posto, é importante ter uma atenção especial ao conceito subjacente à significância estatística. Um resultado que rejeita a hipótese nula, <u>de forma alguma</u>, deve ser entendido como “aceitação da hipótese alternativa” ou como evidência de causalidade, especialmente em delineamentos transversais.</p>
+<div class="warning">
+<p><strong>Atenção</strong>: Nunca se aceita a hipótese nula ou a hipótese alternativa. Como Fisher (1931, p. 16) comenta, a hipótese nula nunca é provada ou estabelecida, mas é possivelmente refutada. Da mesma forma, rejeitar a hipótese nula não se refere a aceitar a alternativa, mas tão somente que os dados são incompatíveis à hipótese nula.</p>
+</div>
+<p>É fundamental lembrar que o valor de P se refere à probabilidade de encontrar a estatística de teste calculada, ou uma ainda mais extrema, assumindo que a hipótese nula é verdadeira <span class="citation">(<a href="#ref-Wasserstein2016" role="doc-biblioref">Wasserstein &amp; Lazar, 2016</a>)</span>. Apesar de algo contraintuitivo, é assim que a estatística frequentista funciona.</p>
+</div>
+<div class="section level2" id="tamanho-do-efeito-1" number="11.3">
+<h2><span class="header-section-number">11.3</span> Tamanho do efeito</h2>
+<p>Resultados significativos não são informativos em relação ao tamanho do efeito. Esta última métrica tem mais contato com as perguntas originalmente realizadas em uma pesquisa e é entendida como uma medida objetiva e padronizada da magnitude de um efeito observado independente da significância estatística. Dessa maneira, o tamanho do efeito pode ser considerado um indicador da <u>relevância clínica</u> dos grupos, cujo uso é sempre importante em pesquisas em Psicologia e áreas da saúde.</p>
+<p>Existem duas famílias principais no ambiente do tamanho do efeito, que são a família “d” e a família “r.” Quando comparamos médias, usamos o d de Cohen para calcular a distância entre as médias das distribuições sobrepostas.</p>
+<p>A interpretação é a seguinte:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th align="left">Cohen’s d</th>
+<th align="left">Interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">d &lt; 0.2</td>
+<td align="left">Irrelevante</td>
+</tr>
+<tr class="even">
+<td align="left">d <span class="math inline">\(\geq\)</span> 0.2</td>
+<td align="left">Pequeno</td>
+</tr>
+<tr class="odd">
+<td align="left">d <span class="math inline">\(\geq\)</span> 0.5</td>
+<td align="left">Moderado</td>
+</tr>
+<tr class="even">
+<td align="left">d <span class="math inline">\(\geq\)</span> 0.8</td>
+<td align="left">Grande</td>
+</tr>
+</tbody>
+</table></div>
+<p>Para executar este teste no R, é possível contar com o pacote <code>effsize</code>, tal como demonstrado abaixo:</p>
+<div class="sourceCode" id="cb48"><pre><code class="language-r">effsize::cohen.d(total_18 ~ sex, data = asq_18months)</code></pre></div>
+<pre><code class="nohighlight">## 
+## Cohen's d
+## 
+## d estimate: 0.12216 (negligible)
+## 95 percent confidence interval:
+##      lower      upper 
+## 0.07025972 0.17406037</code></pre>
+<p>Com esse conjunto de dados, o tamanho do efeito foi irrelevante, indicando que a diferença dos resultados não apresenta uma relevância clínica importante.</p>
+</div>
+<div class="section level2" id="execução-no-jasp-3" number="11.4">
+<h2><span class="header-section-number">11.4</span> Execução no JASP</h2>
+<p>Nesta parte, apenas a base de crianças com 18 meses será utilizada. Ela está disponível com o nome de ds_18.csv. Da mesma maneira que foi feito no R, a apresentação de tabelas e gráficos auxiliam o pesquisador a verificar padrões nos dados. Para fazer tais procedimentos, é necessário ir até a seção <code>Descriptives</code>, como ilustrado a seguir.</p>
+<p><img loading="lazy" src="assets/img/jasp_descriptives.PNG"/></p>
+<p>Ao clicar nesta opção, será possível eleger as variáveis que irão ser analisadas e as variáveis que irão funcionar como agrupadoras. Na prática, a lista <code>Variables</code> irá reunir as variáveis dependentes, enquanto a variável independente será colocada na seção <code>Split</code>. É importante atentar à opção <code>Frequency tables (nominal and ordinal)</code>, que deve ser marcada quando o nível de medida da variável de interesse for nominal ou ordinal.</p>
+<p><img loading="lazy" src="assets/img/jasp_descriptives2.PNG"/></p>
+<p>Isto posto, será necessário arrastar as variáveis de interesse aos seus respectivos locais. Neste caso, o <u>total_18</u> para parte das VDs, enquanto <u>sex</u> para a VI. Ao fazer isso, o JASP automaticamente irá preencher a tabela previamente exposta com os valores estatísticos obtidos. A média e o desvio-padrão indicam a posição típica dos dados e o afastamento esperado desta localização.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_tabela_descritiva.PNG"/></p>
+<p>Em seguida, ao clicar na opção <code>Plots</code>, será possível selecionar o <code>Boxplot</code>. O gráfico aparecerá abaixo da tabela e irá apresentar diferentes informações estatísticas da <u>distribuição dos resultados</u> das crianças de 18 meses em função do <u>sexo</u> delas.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_tabela.PNG"/></p>
+<p>Para execução do Teste T, deve-se clicar em <code>T-Test</code> e, em seguida, <code>Independent samples T-test</code>.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_interface1.PNG"/></p>
+<p>Ao realizar tais ações, a tela a ser exibida será próxima à imagem a seguir:</p>
+<p><img loading="lazy" src="assets/img/cap_testet_interface.PNG"/></p>
+<p>Repare que a <code>Grouping variable</code> é o local onde a VI deverá ser colocada, enquanto a <code>Variables</code> é o local onde a VD irá ser inserida. É possível ter apenas uma VI, enquanto diferentes VDs podem ser inseridas na seção <code>Variables</code> para serem analisadas <mark>independentemente </mark>.</p>
+<p>Neste caso de agora, a VI é <u>sex</u> e a VD é <u>total_18</u>. Ao inseri-las em seus locais específicos, o JASP automaticamente irá fazer o Teste T e apresentar os resultados. Pragmaticamente, o valor de P costuma ser utilizado para decisões estatísticas e ele está destacado pelo quadrado roxo na imagem a seguir.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_resultados_iniciais.PNG"/></p>
+<div class="warning">
+<p><strong>Atenção</strong>: A validade das inferências dos resultados depende da adequação ou não dos pressupostos dos testes estatísticos. A avaliação destas condições é parte de um procedimento diagnóstico que deve ser sempre feito.</p>
+</div>
+<p>Entretanto, da mesma forma como apresentado no ambiente R, a interpretação deste resultado <u>não pode ser feita de uma forma automática</u>. É necessário saber se os pressupostos foram ou não atendidos, além de calcular o tamanho do efeito. Para verificar os pressupostos, será necessário utilizar as opções dispostas na parte inferior à esquerda do programa. Na imagem abaixo, elas foram destacadas pelo retângulo roxo.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_pressupostos.PNG"/></p>
+<p>É necessário marcar as duas opções para que os testes sejam realizados. Os resultados são os mesmos já obtidos pelo R e indicam que ambos os pressupostos foram violados, sugerindo uma interpretação bastante cautelosa dos achados.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_pressupostos2.PNG"/></p>
+<p>Para inserir o tamanho do efeito ao lado do Teste T, é necessário clicar em <code>Effect size</code> e <code>Cohen's d</code>, ambos localizados na parte superior do JASP.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_tamanho_do_efeito.PNG"/></p>
+<p>Com estas informações marcadas, agora os resultados podem ser analisados em conjunto. O valor de P irá indicar se a hipótese nula foi rejeitada ou não. O tamanho do efeito indicará a relevância ou importância prática dos resultados.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_resultados.PNG"/></p>
+<div class="warning">
+<p><strong>Atenção</strong>: Nunca se aceita a hipótese nula ou a hipótese alternativa. Como Fisher (1931, p. 16) comenta, a hipótese nula nunca é provada ou estabelecida, mas é possivelmente refutada. Da mesma forma, rejeitar a hipótese nula não se refere a aceitar a alternativa, mas tão somente que os dados são incompatíveis à hipótese nula.</p>
+</div>
+<p>Os resultados obtidos pelo JASP são idênticos aos do R. Eventualmente, a diferença em relação ao sinal (+ ou -) é devida a codificação feita pelos programas e nada interfere na interpretação dos resultados.</p>
+</div>
+<div class="section level2" id="escrita-dos-resultados-2" number="11.5">
+<h2><span class="header-section-number">11.5</span> Escrita dos resultados</h2>
+<p>O primeiro achado foi que meninos e meninas não apresentaram diferenças em seus resultados médios quando tinham 12 meses. Abaixo uma sugestão de escrita baseada nas recomendações da American Psychological Association (APA).</p>
+<div class="writing">
+<p><strong>Como escrever os resultados</strong></p>
+<p>Os dados dos participantes foram analisados por um Teste T de amostras independentes para investigar as diferenças médias nos resultados do desenvolvimento entre meninos e meninas com 12 meses de idade. Os resultados mostraram que os valores médios de meninos e meninas não são significativamente diferentes (t(1039) = 0.37, p = 0.71). Dessa maneira, as diferenças encontradas podem ser mais bem explicadas por outras fontes de variações.</p>
+</div>
+<p>Em seguida, verificamos que essa diferença é significativa aos 18 meses e abaixo uma outra sugestão de escrita.</p>
+<div class="writing">
+<p><strong>Como escrever os resultados</strong></p>
+<p>Os dados dos participantes foram analisados por um Teste T de amostras independentes para investigar as diferenças médias nos resultados do desenvolvimento entre meninos e meninas com 18 meses de idade. Os resultados mostraram que os valores médios de meninos (M = 27.5, DP = 21.8) e meninas (M = 24.9, DP = 20.3) são significativamente diferentes (t(5725) = 4.62, p &lt; 0.01), apesar do tamanho do efeito ser irrelevante (d = 0.12).</p>
+</div>
+</div>
+<div class="section level2" id="versão-robusta-do-teste-t" number="11.6">
+<h2><span class="header-section-number">11.6</span> Versão robusta do Teste T</h2>
+<div class="warning">
+<p><strong>Atenção</strong>: Um aspecto importante e que não costuma ser discutido com tanta frequência é que a modificação do teste estatístico utilizado pode modificar a hipótese da pesquisa. A decisão de alterar ou não o teste inferencial deve ser feita com justificativa teórica por parte do pesquisador.</p>
+</div>
+<p>Em muitas situações, os pressupostos do Teste T são violados. Parte da literatura argumenta que o Teste T é robusto o suficiente para lidar com isso <span class="citation">(<a href="#ref-Lumley2002" role="doc-biblioref">Lumley et al., 2002</a>)</span>, enquanto outra parte sugere que é melhor optar por versões com médias aparadas, técnicas não-paramétricas <span class="citation">(<a href="#ref-Field2017" role="doc-biblioref">Field &amp; Wilcox, 2017</a>)</span> ou outros modelos estatísticos.</p>
+<p>Quando a homocedasticidade é violada, o <u>Welch test</u> pode ser utilizado. Este teste é considerado uma versão robusta do Teste T, já que lida bem com variâncias distintas nos grupos.</p>
+<p>O tamanho do efeito do Welch test é também o d de Cohen e, por isso, não será novamente calculado nesta seção.</p>
+<div class="section level3" id="execução-no-r-4" number="11.6.1">
+<h3><span class="header-section-number">11.6.1</span> Execução no R</h3>
+<p>Para executar o O Welch-test no R, deve-se alterar a sintaxe, estipulando <code>var.equal = F</code> na sintaxe previamente exposta. Na verdade, o R executa o Welch test de maneira automática quando faz o Teste T. Dessa maneira, ao se remover este argumento por completo, o Teste T robusto será calculado. Existem outras soluções disponíveis no pacote <code>WRS</code>, que não serão implementadas neste livro.</p>
+<p>O Welch-test será calculado considerando as crianças com <u>18 meses</u>.</p>
+<div class="sourceCode" id="cb50"><pre><code class="language-r">t.test(total_18 ~ sex,data = asq_18months) %&gt;% pander::pander(., split.table = Inf)</code></pre></div>
+<div class="table-wrap"><table>
+<caption>Welch Two Sample t-test: <code>total_18</code> by <code>sex</code></caption>
+<colgroup>
+<col width="16%"/>
+<col width="6%"/>
+<col width="17%"/>
+<col width="24%"/>
+<col width="17%"/>
+<col width="17%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">df</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+<th align="center">mean in group M</th>
+<th align="center">mean in group F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4.632</td>
+<td align="center">5724</td>
+<td align="center">3.707e-06 * * *</td>
+<td align="center">two.sided</td>
+<td align="center">27.53</td>
+<td align="center">24.95</td>
+</tr>
+</tbody>
+</table></div>
+<p>Repare que a estatística de teste e os graus de liberdade são diferentes. No entanto, os resultados são virtualmente os mesmos obtidos anteriormente, indicando que os grupos apresentam valores significativamente distintos. A escrita dos resultados é a mesma da apresentada.</p>
+</div>
+<div class="section level3" id="execução-no-jasp-4" number="11.6.2">
+<h3><span class="header-section-number">11.6.2</span> Execução no JASP</h3>
+<p>No JASP, é possível acessar a versão robusta clicando em <code>Welch</code>, embaixo do <code>Student</code>, que já é previamente marcado.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_welch.PNG"/></p>
+<p>A interpretação e escrita dos achados é a mesma realizada anteriormente.</p>
+</div>
+</div>
+<div class="section level2" id="mann-whitney" number="11.7">
+<h2><span class="header-section-number">11.7</span> Mann-whitney</h2>
+<p>O teste de Wilcoxon-Mann-Whitney costuma ser chamado de versão não-paramétrica do Teste T. No entanto, <mark>isso não é totalmente verdadeiro</mark>. O Teste T e o Mann-Whitney testam hipóteses diferentes. Enquanto o Teste T compara médias, o Mann-whitney compara os valores ranqueados (postos). Nota-se que ele não é um teste para comparar medianas e que isso só ocorre em condições restritas.</p>
+<p>Com muita frequência, o Mann-Whitney costuma ser eleito como um forte candidato para substituir o teste T quando seus pressupostos são violados. No entanto, conforme comentando, este teste responde a uma hipótese apenas próxima daquela que o Teste T trabalha.</p>
+<div class="section level3" id="execução-no-r-5" number="11.7.1">
+<h3><span class="header-section-number">11.7.1</span> Execução No R</h3>
+<p>Para executar o Mann-Whitney, é possível utilizar a função <code>wilcox.test</code>. As conclusões estatística são virtualmente identicas às obtidas previamente, em que foi possível rejeitar a hipótese nula.</p>
+<div class="sourceCode" id="cb51"><pre><code class="language-r">mann_whiyney_18m &lt;- wilcox.test(total_18 ~ sex, data = asq_18months)
+mann_whiyney_18m %&gt;% pander::pander()</code></pre></div>
+<div class="table-wrap"><table style="width:83%;">
+<caption>Wilcoxon rank sum test with continuity correction: <code>total_18</code> by <code>sex</code></caption>
+<colgroup>
+<col width="23%"/>
+<col width="25%"/>
+<col width="34%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Test statistic</th>
+<th align="center">P value</th>
+<th align="center">Alternative hypothesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">4368187</td>
+<td align="center">9.902e-06 * * *</td>
+<td align="center">two.sided</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section level3" id="tamanho-do-efeito-2" number="11.7.2">
+<h3><span class="header-section-number">11.7.2</span> Tamanho do efeito</h3>
+<p>O tamanho do efeito também pode ser calculado por <span class="math inline">\(Z/\sqrt{(n)}\)</span>. O output padrão do R não oferece a informação de <code>Z</code>, mas o pacote <code>coin</code> dispõe dessa métrica.</p>
+<div class="sourceCode" id="cb52"><pre><code class="language-r">coin::statistic(coin::wilcox_test(total_18 ~ sex, 
+                                  data = asq_18months))</code></pre></div>
+<pre><code class="nohighlight">## [1] 4.41932</code></pre>
+<p>Plugando este valor na fórmula, o tamanho do efeito é aproximadamente <code>0.06</code>.</p>
+</div>
+<div class="section level3" id="execução-no-jasp-5" number="11.7.3">
+<h3><span class="header-section-number">11.7.3</span> Execução no JASP</h3>
+<p>No JASP, é necessário marcar a opção <code>Mann-Whitney</code> no lugar da opção <code>Student</code>, que é a definida por padrão. O JASP utiliza a correlação rank-bisserial como método padrão para relatar o tamanho do efeito para o teste de Mann-Whitney.</p>
+<p><img loading="lazy" src="assets/img/cap_testet_mw.PNG"/></p>
+</div>
+<div class="section level3" id="escrita-dos-resultados-3" number="11.7.4">
+<h3><span class="header-section-number">11.7.4</span> Escrita dos resultados</h3>
+<p>A literatura não é muito concordante em como escrever os resultados do Mann-Whitney e abaixo há uma sugestão.</p>
+<div class="writing">
+<p><strong>Como escrever os resultados</strong></p>
+<p>Os dados foram analisados pelo teste Wilcoxon-Mann-Whitney para investigar as diferenças nos resultados do desenvolvimento entre meninos (Mdn = 25, IQR = 30, M = 27.53, DP = 21.61) e meninas (Mdn = 20, IQR = 25, M = 24.95, DP = 20.34) com 18 meses de idade. Os resultados indicaram que os resultados foram significativos (W = 4368187, p &lt; 0.01), mas com efeito negligenciável (0.12).</p>
+</div>
+</div>
+</div>
+<div class="section level2" id="teste-t-e-regressão" number="11.8">
+<h2><span class="header-section-number">11.8</span> Teste T e regressão</h2>
+<p>Conforme alertado ao início do capítulo, o Teste T é um caso particular de um modelo de regressão, em que há uma única variável independente com dois níveis e uma variável dependente contínua. No capítulo sobre modelos de regressão, alguns conceitos tendem a ficar mais claros.</p>
+<p>Neste modelo, <span class="math inline">\(b_0\)</span> (intercepto) é o grupo <u>referência</u> que recebeu o valor 0. Já <span class="math inline">\(b_1\)</span> (inclinação) é a diferença entre os valores do grupo definido para o intercepto e o outro grupo, que recebeu o valor de 1 e é chamado de <u>comparação</u>. Caso isso não tenha sido explicitamente definido, ao se usar o R, será necessário codificar a variável como <u>fator</u>.</p>
+<p>O exemplo abaixo ilustra os resultados utilizando a base <code>asq_18months</code>.</p>
+<div class="sourceCode" id="cb54"><pre><code class="language-r">lm(total_18 ~ sex, data = asq_18months) %&gt;%
+  olsrr::ols_regress()</code></pre></div>
+<pre><code class="nohighlight">##                          Model Summary                          
+## ---------------------------------------------------------------
+## R                       0.061       RMSE                21.117 
+## R-Squared               0.004       Coef. Var           80.324 
+## Adj. R-Squared          0.004       MSE                445.920 
+## Pred R-Squared          0.003       MAE                 16.152 
+## ---------------------------------------------------------------
+##  RMSE: Root Mean Square Error 
+##  MSE: Mean Square Error 
+##  MAE: Mean Absolute Error 
+## 
+##                                   ANOVA                                   
+## -------------------------------------------------------------------------
+##                    Sum of                                                
+##                   Squares          DF    Mean Square      F         Sig. 
+## -------------------------------------------------------------------------
+## Regression       9511.801           1       9511.801    21.331    0.0000 
+## Residual      2552890.199        5725        445.920                     
+## Total         2562401.999        5726                                    
+## -------------------------------------------------------------------------
+## 
+##                                   Parameter Estimates                                    
+## ----------------------------------------------------------------------------------------
+##       model      Beta    Std. Error    Std. Beta      t        Sig      lower     upper 
+## ----------------------------------------------------------------------------------------
+## (Intercept)    27.527         0.387                 71.160    0.000    26.769    28.285 
+##        sexF    -2.580         0.559       -0.061    -4.619    0.000    -3.675    -1.485 
+## ----------------------------------------------------------------------------------------</code></pre>
+<p>Em função da ordem alfabética, o R atribuiu os meninos (<code>male</code>) como intercepto e, consequentemente, como grupo referência. Assim, o valor de <span class="math inline">\(b_0\)</span> é o valor médio obtido pelos dos meninos (<code>27.53</code>). A inclinação <span class="math inline">\(b_1\)</span> é a diferença entre os valores dos meninos e das meninas (<code>24.95-27.53</code>). Nesse caso, o valor é <code>-2.58</code>. A estatística F é equivalente a <span class="math inline">\(t^2\)</span> do Teste T em sua versão tradicional, que assume variâncias iguais entre grupos.</p>
+<p>Assim, torna-se mais intuitivo mostrar que a <u>normalidade no Teste T se refere à normalidade dos resíduos deste modelo de regressão</u>. Isso pode ser visualmente pela análise de um QQ plot, tal como a seguir.</p>
+<div class="sourceCode" id="cb56"><pre><code class="language-r">olsrr::ols_plot_resid_qq(lm(total_18 ~ sex, data = asq_18months))</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-71-1.png" width="672"/></p>
+<p>Ou por testes estatísticos formais, como o Shapiro-wilk, Anderson-Darling e Jarque Bera. Em todos eles, a hipótese nula é de que os resíduos são normalmente distribuídos e idealmente não se deve rejeitá-la. Uma vez que o Shapiro-wilk não lida bem mais de 500 valores residuais, abaixo segue a execução do Anderson-Darling.</p>
+<div class="sourceCode" id="cb57"><pre><code class="language-r">nortest::ad.test(lm(total_18 ~ sex, data = asq_18months)$residuals)</code></pre></div>
+<pre><code class="nohighlight">## 
+##  Anderson-Darling normality test
+## 
+## data:  lm(total_18 ~ sex, data = asq_18months)$residuals
+## A = 116.57, p-value &lt; 2.2e-16</code></pre>
+<p>Os resultados foram convergentes ao alcançados durante o capítulo, indicando pela violação da normalidade.</p>
+<p>A homocedasticidade pode ser investigada também por um gráfico dos resíduos contra os valores ajustados, tal como abaixo.</p>
+<div class="sourceCode" id="cb59"><pre><code class="language-r">olsrr::ols_plot_resid_fit(lm(total_18 ~ sex, data = asq_18months))</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-73-1.png" width="672"/></p>
+<p>O teste de Levene, de Bartlett ou de Breusch-Pagan também oferecem recursos para tal análise.</p>
+<div class="sourceCode" id="cb60"><pre><code class="language-r">olsrr::ols_test_breusch_pagan(lm(total_18 ~ sex, data = asq_18months))</code></pre></div>
+<pre><code class="nohighlight">## 
+##  Breusch Pagan Test for Heteroskedasticity
+##  -----------------------------------------
+##  Ho: the variance is constant            
+##  Ha: the variance is not constant        
+## 
+##                 Data                 
+##  ------------------------------------
+##  Response : total_18 
+##  Variables: fitted values of total_18 
+## 
+##          Test Summary           
+##  -------------------------------
+##  DF            =    1 
+##  Chi2          =    13.89602 
+##  Prob &gt; Chi2   =    0.0001932067</code></pre>
+<p>Os achados também concluem pela rejeição da homocedasticidade, tal como foi previamente apresentado. Mais detalhes sobre modelos de regressão são apresentados em capítulos específicos.</p>
+</div>
+<div class="section level2" id="resumo-8" number="11.9">
+<h2><span class="header-section-number">11.9</span> Resumo</h2>
+<div class="explore">
+<ol style="list-style-type: decimal">
+<li>O Teste T é um teste paramétrico que visa comparar até duas médias<br/>
+</li>
+<li>Gráfico de barras ou boxplots são extremamente úteis para verificar os resultados<br/>
+</li>
+<li>O Teste T é um caso particular de um modelo de regressão<br/>
+</li>
+<li>Os pressupostos do Teste T devem ser checados para verificar a validade da interpretação dos resultados<br/>
+</li>
+<li>Quando os pressupostos são violados, o pesquisador deverá tomar decisões sobre a manutenção, modificação ou substituição deste teste por outro<br/>
+</li>
+<li>A mudança da modelagem estatística, necessariamente, modifica a hipótese testada e isso deve ser levado em consideração<br/>
+</li>
+<li>O tamanho do efeito é uma métrica importante e realizada pelo d de Cohen<br/>
+</li>
+</ol>
+</div>
+</div>
+<div class="section level2" id="pesquisas-adicionais-3" number="11.10">
+<h2><span class="header-section-number">11.10</span> Pesquisas adicionais</h2>
+<ol style="list-style-type: decimal">
+<li><p>Are Women Really More Talkative Than Men? (DOI: 10.1126/science.1139940)<br/>
+Nesta pesquisa, 96 participantes (210 mulheres and 186 homens) foram investigados entre 1998 e 2004. Os pesquisadores deram para todos um tipo de gravador de voz que eles deveriam utilizar diariamente. Ao fim, a média de palavras produzidas por homens e mulheres foram comparadas.</p></li>
+<li><p>O diferencial de desempenho escolar entre escolas públicas e privadas no Brasil (DOI: 10.1590/0103-6351/1564)
+Este trabalho apresenta uma análise dos resultados de provas de matemática e língua portuguesa do Sistema de Avaliação da Educação Básica. As provas são feitas por alunos do ensino fundamental de escolas públicas ou privadas. Diferentes análises foram feitas, indicando que, em média, alunos de escolas privadas tem resultados superiores.</p></li>
+<li><p>Gender Differences in Multiple-Choice Tests: The Role of Differential Guessing Tendencies (DOI: 10.1111/j.1745-3984.1991.tb00341.x)<br/>
+Nesta pesquisa, objetivou-se verificar a diferença no perfil cognitivo e padrão de respostas ao acaso de homens e mulheres. Para isso, 302 mulheres e 302 homens foram selecionados aleatoriamente de uma universidade em Jerusalem e, em seguida, fizeram um conjunto de testes cognitivos.</p></li>
+</ol>
+</div>
+<div class="section level2" id="questões-5" number="11.11">
+<h2><span class="header-section-number">11.11</span> Questões</h2>
+<div class="question">
+<ol style="list-style-type: decimal">
+<li><p>(Retirado de Residência Médica, UNIFESP, CONSESP, 2015)De 20 mulheres com tensão pré-menstrual que receberam extrato de soja, seis melhoraram em seis meses. De outras 20 mulheres com tensão pré-menstrual que receberam placebo, duas melhoraram em seis meses. Os dois parâmetros resultantes foram, então, comparados.<br/>a) Teste t para duas médias provenientes de amostras independentes.<br/>b) Teste exato de Fisher para duas proporções provenientes de amostras independentes.<br/>c) Teste t para duas médias provenientes de amostras relacionadas (teste t pareado).<br/>d) Teste de McNemar para duas proporções provenientes de amostras independentes<br/>e) Teste exato de Fisher para duas proporções provenientes de amostras relacionadas.</p></li>
+<li><p>(Retirado de Oficial Técnico de Inteligência Área de Criptoanálise Estatística, ABIN, CESPE, 2010) O teste de Wilcoxon é o equivalente não paramétrico do teste t-Student para comparação de duas médias, e o teste de Kruskal-Wallis é o equivalente não paramétrico da análise de variâncias para um fator.<br/>a) Certo.<br/>b) Errado.</p></li>
+<li><p>(Retirado de Laboratório de Estatística e Geoinformação-UFPR) Suponha que você tenha sido contratado para conduzir um estudo cujo objetivo seja descobrir qual dentre duas marcas de refrigerantes as pessoas acham que tem o melhor sabor. Em seu estudo, os participantes são submetidos a uma degustação às cegas. Eles pontuam uma marca e então pontuam a outra, em ordem aleatória. As notas são atribuídas numa escala de 1 (horrível) a 5 (delicioso). Qual tipo de teste seria o melhor para comparar estas notas? Justifique sua escolha.<br/>a) Teste t para dois grupos pareados.<br/>b) Teste t para dois grupos independentes<br/>c) Teste qui-quadrado.<br/>d) Teste de Mann-Whitney.<br/>e) Teste de Wilcoxon.</p></li>
+</ol>
+</div>
+<p>Gabarito: 1-b; 2-a; 3-e</p>
+</div>
+</div>
+    </article>
+
+    <nav class="chapter-nav" aria-label="Navegação entre capítulos">
+      <a class="pnav pnav-prev" href="fatores-de-risco.html" rel="prev"><span class="pnav-dir">← Anterior</span><span class="pnav-title">Fatores de Risco</span></a>
+      <a class="pnav pnav-next" href="anova.html" rel="next"><span class="pnav-dir">Próximo →</span><span class="pnav-title">ANOVA</span></a>
+    </nav>
+
+    <footer class="site-footer">
+      <p>Conceitos e análises estatísticas com R e JASP — camada de anotações por Luis Anunciação (PUC-Rio).</p>
+      <p class="muted">Site estático gerado a partir do livro original em bookdown.</p>
+    </footer>
+  </main>
+</div>
+
+<!-- Scroll-aware floating action bar -->
+<div class="fab" id="fab" aria-hidden="false">
+  <button class="fab-btn" id="toTop" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button class="fab-btn js-font-dec" id="fontDec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+  <button class="fab-btn js-font-inc" id="fontInc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+  <button class="fab-btn js-theme" id="themeFab" aria-label="Alternar tema" title="Tema claro/escuro">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+  <button class="fab-btn js-share" id="shareBtn" aria-label="Compartilhar" title="Compartilhar" aria-haspopup="true" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 8a3 3 0 1 0-2.8-4M6 15a3 3 0 1 0 0-.1M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+  </button>
+</div>
+
+<!-- Desktop share fallback menu -->
+<div class="share-menu" id="shareMenu" role="menu" hidden>
+  <div class="share-menu-head">Compartilhar</div>
+  <div class="share-scope" role="group" aria-label="Nível de compartilhamento">
+    <button class="scope-btn is-active" data-scope="chapter">Este capítulo</button>
+    <button class="scope-btn" data-scope="book">O livro</button>
+  </div>
+  <button class="share-item" data-net="copy" role="menuitem"><span class="share-ico">🔗</span> Copiar link</button>
+  <a class="share-item" data-net="whatsapp" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">🟢</span> WhatsApp</a>
+  <a class="share-item" data-net="twitter" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">✖</span> X / Twitter</a>
+  <a class="share-item" data-net="linkedin" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">in</span> LinkedIn</a>
+  <a class="share-item" data-net="email" role="menuitem"><span class="share-ico">✉</span> E-mail</a>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>window.MQT_SITE_BASE = 'https://luisfca.github.io/mqt-ebook';</script>
+<!-- highlight.js -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/r.min.js"></script>
+<!-- KaTeX auto-render -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

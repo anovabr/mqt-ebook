@@ -1,0 +1,28 @@
+{
+  "_readme": {
+    "how_to_use": "Camada de anotações do autor (Luis Anunciação, PUC-Rio). Edite este arquivo para adicionar comentários SEM tocar no texto importado do livro. As chaves de primeiro nível são o 'slug' do capítulo (o nome do arquivo .html sem a extensão, ex.: 'teste-t', 'correlação'). Dentro de cada capítulo, use o 'id' de uma seção (a âncora que aparece na URL depois do #) para anexar notas àquela seção. Os valores aceitam HTML.",
+    "campos": {
+      "note": "Cria um destaque 'Nota do autor' logo após o título da seção.",
+      "aside": "Cria um comentário lateral (aside) inline logo após o título da seção.",
+      "_chapter": "Espaço do autor no fim do capítulo para exemplos trabalhados e relatórios de análise (código + saída + interpretação). Campos: title, subtitle, body (HTML, aceita <pre><code class=\"language-r\"> e matemática KaTeX)."
+    }
+  },
+
+  "teste-t": {
+    "_chapter": {
+      "title": "Exemplo trabalhado — Teste T em dados reais",
+      "subtitle": "Código, saída e interpretação · anotação do autor",
+      "body": "<p>Abaixo, um exemplo aplicado comparando as médias de dois grupos. Substitua pelos seus próprios dados e reexecute.</p><pre><code class=\"language-r\">library(effectsize)\n\n# comparação de médias entre dois grupos independentes\nmodelo &lt;- t.test(escore ~ grupo, data = dados, var.equal = FALSE)\nmodelo\n\n# tamanho do efeito (d de Cohen)\ncohens_d(escore ~ grupo, data = dados)</code></pre><p><strong>Interpretação.</strong> Reporte t, gl, p e o intervalo de confiança da diferença de médias, acompanhados do <em>d</em> de Cohen. Um <em>d</em> ≈ 0,5 indica um efeito de magnitude média (<span>\\(d = \\frac{\\bar{x}_1 - \\bar{x}_2}{s_p}\\)</span>).</p>"
+    },
+    "tamanho-do-efeito-1": {
+      "note": "Sempre acompanhe o valor-p de uma medida de tamanho de efeito. O valor-p depende do tamanho amostral; o tamanho do efeito comunica a magnitude prática da diferença.",
+      "aside": "Dica de sala de aula: peça aos alunos que calculem o <em>d</em> de Cohen à mão em um exemplo pequeno antes de usar a função pronta."
+    }
+  },
+
+  "correlação": {
+    "escrita-dos-resultados-12": {
+      "note": "Ao relatar uma correlação, informe r, os graus de liberdade, o valor-p e o intervalo de confiança. Lembre os leitores de que correlação não implica causalidade."
+    }
+  }
+}

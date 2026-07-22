@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ANOVA de medidas repetidas · Conceitos e análises estatísticas com R e JASP</title>
+<meta name="description" content="Objetivos do capítulo 1. Apresentar a ANOVA de Medidas Repetidas 2. Realizar passo-a-passo a modelagem analítica 3. Verificar os pressupostos e implementar as correções sugeridas 4. Escrever os result">
+<meta name="author" content="Luis Anunciação">
+<link rel="canonical" href="https://luisfca.github.io/mqt-ebook/anova-de-medidas-repetidas.html">
+<meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14110e" media="(prefers-color-scheme: dark)">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Conceitos e análises estatísticas com R e JASP">
+<meta property="og:title" content="ANOVA de medidas repetidas">
+<meta property="og:description" content="Objetivos do capítulo 1. Apresentar a ANOVA de Medidas Repetidas 2. Realizar passo-a-passo a modelagem analítica 3. Verificar os pressupostos e implementar as correções sugeridas 4. Escrever os result">
+<meta property="og:url" content="https://luisfca.github.io/mqt-ebook/anova-de-medidas-repetidas.html">
+<meta property="og:image" content="https://luisfca.github.io/mqt-ebook/assets/img/delineamento_experimental.PNG">
+<meta property="og:locale" content="pt_BR">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ANOVA de medidas repetidas">
+<meta name="twitter:description" content="Objetivos do capítulo 1. Apresentar a ANOVA de Medidas Repetidas 2. Realizar passo-a-passo a modelagem analítica 3. Verificar os pressupostos e implementar as correções sugeridas 4. Escrever os result">
+<meta name="twitter:image" content="https://luisfca.github.io/mqt-ebook/assets/img/delineamento_experimental.PNG">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<!-- highlight.js theme (light/dark handled via CSS below) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>
+  // Set theme before paint to avoid a flash of the wrong theme.
+  (function () {
+    try {
+      var t = localStorage.getItem('mqt-theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      var fs = localStorage.getItem('mqt-fontsize');
+      if (fs) document.documentElement.style.setProperty('--reading-size', fs + 'px');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-chapter="anova-de-medidas-repetidas" data-chapter-num="13">
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<header class="topbar">
+  <button class="hamburger" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topbar-title" href="index.html">Conceitos e análises estatísticas com R e JASP</a>
+  <button class="icon-btn theme-btn js-theme" id="themeTop" aria-label="Alternar tema claro/escuro">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+</header>
+
+<div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar" aria-label="Sumário do livro">
+    <div class="sidebar-head">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Conceitos e análises estatísticas com R e JASP</span>
+        <span class="brand-author">Luis Anunciação · PUC-Rio</span>
+      </a>
+      <div class="side-controls" role="group" aria-label="Preferências de leitura">
+        <button class="side-ctl js-theme" aria-label="Alternar tema claro/escuro" title="Tema">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="side-ctl js-font-dec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+        <button class="side-ctl js-font-inc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+        <button class="side-ctl js-share" aria-label="Compartilhar" title="Compartilhar" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 8a3 3 0 1 0-2.8-4M6 15a3 3 0 1 0 0-.1M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="toc" aria-label="Sumário">
+      <ul class="toc-root">
+<li class="toc-chapter" data-file="index.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="index.html"><span class="toc-num">1</span><span class="toc-txt">Prefácio</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#atenção" data-anchor="atenção">Atenção</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#a-proposta" data-anchor="a-proposta">A proposta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#objetivo" data-anchor="objetivo">Objetivo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#público-alvo" data-anchor="público-alvo">Público-alvo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#formato-do-livro" data-anchor="formato-do-livro">Formato do livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#como-usar-este-livro" data-anchor="como-usar-este-livro">Como usar este livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#pesquisas-e-dados" data-anchor="pesquisas-e-dados">Pesquisas e dados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#o-r-e-os-pacotes" data-anchor="o-r-e-os-pacotes">O R e os pacotes</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#jasp" data-anchor="jasp">JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#outros-recursos" data-anchor="outros-recursos">Outros recursos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#capa" data-anchor="capa">Capa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#versão-do-livro" data-anchor="versão-do-livro">Versão do livro</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#autor" data-anchor="autor">Autor</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#revisão-técnica" data-anchor="revisão-técnica">Revisão técnica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="index.html#agradecimentos" data-anchor="agradecimentos">Agradecimentos</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="programas-estatísticos.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="programas-estatísticos.html"><span class="toc-num">2</span><span class="toc-txt">Programas estatísticos</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#o-r" data-anchor="o-r">O R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#tidyverse" data-anchor="tidyverse">Tidyverse</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#dificuldades-esperadas" data-anchor="dificuldades-esperadas">Dificuldades esperadas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#verbos-do-dplyr" data-anchor="verbos-do-dplyr">Verbos do dplyr</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#o-jasp" data-anchor="o-jasp">O JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="programas-estatísticos.html#resumo" data-anchor="resumo">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="aspectos-gerais.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="aspectos-gerais.html"><span class="toc-num">3</span><span class="toc-txt">Aspectos gerais</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#os-objetivos-de-uma-pesquisa" data-anchor="os-objetivos-de-uma-pesquisa">Os objetivos de uma pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#a-dimensão-temporal-de-uma-pesquisa" data-anchor="a-dimensão-temporal-de-uma-pesquisa">A dimensão temporal de uma pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#conceitos-fundamentais" data-anchor="conceitos-fundamentais">conceitos fundamentais</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#modelos-científicos" data-anchor="modelos-científicos">Modelos científicos</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#variáveis" data-anchor="variáveis">Variáveis</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-de-pesquisa" data-anchor="delineamentos-de-pesquisa">Delineamentos de pesquisa</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-observacionais-e-correlacionais" data-anchor="delineamentos-observacionais-e-correlacionais">Delineamentos observacionais (e correlacionais)</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#delineamentos-experimentais" data-anchor="delineamentos-experimentais">Delineamentos experimentais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia" data-anchor="considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia">Considerações sobre escalas de medida e o processo de mensuração em Psicologia</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-nominal" data-anchor="escala-nominal">Escala nominal</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-ordinal" data-anchor="escala-ordinal">Escala ordinal</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-intervalar" data-anchor="escala-intervalar">Escala intervalar</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#escala-de-razão" data-anchor="escala-de-razão">Escala de razão</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#síntese-das-características-de-cada-escala" data-anchor="síntese-das-características-de-cada-escala">Síntese das características de cada escala</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#as-escalas-de-stevens-e-uma-tentativa-de-agrupamento" data-anchor="as-escalas-de-stevens-e-uma-tentativa-de-agrupamento">As escalas de Stevens e uma tentativa de agrupamento</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#variáveis-discretas-ou-contínuas" data-anchor="variáveis-discretas-ou-contínuas">Variáveis discretas ou contínuas</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia" data-anchor="hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia">Hierarquia da classificação e a importância desses conceitos hoje em dia</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="aspectos-gerais.html#em-qual-escala-devemos-classificar-os-testes-psicológicos" data-anchor="em-qual-escala-devemos-classificar-os-testes-psicológicos">Em qual escala devemos classificar os testes psicológicos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#principais-áreas-da-estatística" data-anchor="principais-áreas-da-estatística">Principais áreas da estatística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#resumo-1" data-anchor="resumo-1">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="aspectos-gerais.html#questões" data-anchor="questões">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="estatística-descritiva.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="estatística-descritiva.html"><span class="toc-num">4</span><span class="toc-txt">Estatística Descritiva</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#tabelas" data-anchor="tabelas">Tabelas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos" data-anchor="gráficos">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#medidas-de-posição-e-dispersão" data-anchor="medidas-de-posição-e-dispersão">Medidas de posição e dispersão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#média" data-anchor="média">Média</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#mediana" data-anchor="mediana">Mediana</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#moda" data-anchor="moda">Moda</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#amplitude" data-anchor="amplitude">Amplitude</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#amplitude-interquartil" data-anchor="amplitude-interquartil">Amplitude interquartil</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variância-e-desvio-padrão" data-anchor="variância-e-desvio-padrão">Variância e Desvio-padrão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#momentos-estatísticos" data-anchor="momentos-estatísticos">Momentos estatísticos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#pesquisa" data-anchor="pesquisa">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#execução-no-r" data-anchor="execução-no-r">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos-1" data-anchor="gráficos-1">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-discreta" data-anchor="variável-discreta">1 variável discreta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-contínua" data-anchor="variável-contínua">1 variável contínua</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-discreta-e-vd-contínua" data-anchor="variáveis-com-vi-discreta-e-vd-contínua">2 variáveis com VI discreta (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-contínua-e-vd-contínua" data-anchor="variáveis-com-vi-contínua-e-vd-contínua">2 variáveis com VI contínua (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#outros-gráficos-e-configurações" data-anchor="outros-gráficos-e-configurações">Outros gráficos e configurações</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#execução-no-jasp" data-anchor="execução-no-jasp">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#tabelas-1" data-anchor="tabelas-1">Tabelas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#gráficos-2" data-anchor="gráficos-2">Gráficos</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-discreta-1" data-anchor="variável-discreta-1">1 variável discreta</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variável-contínua-1" data-anchor="variável-contínua-1">1 variável contínua</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-discreta-e-vd-contínua-1" data-anchor="variáveis-com-vi-discreta-e-vd-contínua-1">2 variáveis com VI discreta (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#variáveis-com-vi-contínua-e-vd-contínua-1" data-anchor="variáveis-com-vi-contínua-e-vd-contínua-1">2 variáveis com VI contínua (e VD contínua)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#outros-gráficos-e-configurações-1" data-anchor="outros-gráficos-e-configurações-1">Outros gráficos e configurações</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#resumo-2" data-anchor="resumo-2">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-descritiva.html#questões-1" data-anchor="questões-1">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="família-de-distribuições.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="família-de-distribuições.html"><span class="toc-num">5</span><span class="toc-txt">Família de distribuições</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#distribuição-simétrica" data-anchor="distribuição-simétrica">Distribuição simétrica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#assimetria-à-direita" data-anchor="assimetria-à-direita">Assimetria à direita</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#assimetria-à-esquerda-ou-negativa" data-anchor="assimetria-à-esquerda-ou-negativa">Assimetria à esquerda (ou negativa)</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#a-distribuição-normal" data-anchor="a-distribuição-normal">A distribuição normal</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#a-regra-empírica" data-anchor="a-regra-empírica">A regra empírica</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#um-resumo-visual" data-anchor="um-resumo-visual">Um resumo visual</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#importância-inferencial" data-anchor="importância-inferencial">Importância inferencial</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="família-de-distribuições.html#resumo-3" data-anchor="resumo-3">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="tipos-de-amostragem.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="tipos-de-amostragem.html"><span class="toc-num">6</span><span class="toc-txt">Tipos de amostragem</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-aleatória-simples" data-anchor="amostragem-aleatória-simples">Amostragem aleatória simples</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-aleatória-sistemática" data-anchor="amostragem-aleatória-sistemática">Amostragem aleatória sistemática</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-estratificada" data-anchor="amostragem-estratificada">Amostragem estratificada</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-conglomerados" data-anchor="amostragem-por-conglomerados">Amostragem por conglomerados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-conveniência" data-anchor="amostragem-por-conveniência">Amostragem por conveniência</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-auto-seleção" data-anchor="amostragem-por-auto-seleção">Amostragem por auto-seleção</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-intencional" data-anchor="amostragem-intencional">Amostragem intencional</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-bola-de-neve" data-anchor="amostragem-por-bola-de-neve">Amostragem por bola de neve</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-por-quotas" data-anchor="amostragem-por-quotas">Amostragem por quotas</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#o-cálculo-do-tamanho-amostral" data-anchor="o-cálculo-do-tamanho-amostral">O cálculo do tamanho amostral</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-e-sua-relação-com-os-resultados" data-anchor="amostragem-e-sua-relação-com-os-resultados">Amostragem e sua relação com os resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#amostragem-delineamento-e-generalização" data-anchor="amostragem-delineamento-e-generalização">Amostragem, delineamento e generalização</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="tipos-de-amostragem.html#resumo-4" data-anchor="resumo-4">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="estatística-inferencial.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="estatística-inferencial.html"><span class="toc-num">7</span><span class="toc-txt">Estatística Inferencial</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#nhst-teste-de-significância-de-hipótese-nula" data-anchor="nhst-teste-de-significância-de-hipótese-nula">NHST (Teste de Significância de Hipótese Nula)</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="estatística-inferencial.html#a-primeira-etapa-a-hipótese" data-anchor="a-primeira-etapa-a-hipótese">A primeira etapa: a hipótese</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#nível-de-significância" data-anchor="nível-de-significância">Nível de significância</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-teste-estatístico" data-anchor="o-teste-estatístico">O teste estatístico</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-valor-de-p" data-anchor="o-valor-de-p">O valor de P</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-tamanho-do-efeito" data-anchor="o-tamanho-do-efeito">O tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#um-exemplo-intuitivo" data-anchor="um-exemplo-intuitivo">Um exemplo intuitivo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#o-que-não-te-contaram-sobre-inferência-estatística" data-anchor="o-que-não-te-contaram-sobre-inferência-estatística">O que não te contaram sobre inferência estatística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#pesquisas-adicionais" data-anchor="pesquisas-adicionais">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="estatística-inferencial.html#questões-2" data-anchor="questões-2">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="um-exemplo-real-de-pesquisa.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="um-exemplo-real-de-pesquisa.html"><span class="toc-num">8</span><span class="toc-txt">Um exemplo real de pesquisa</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#o-que-será-pesquisado" data-anchor="o-que-será-pesquisado">O que será pesquisado</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#como-os-dados-serão-coletados" data-anchor="como-os-dados-serão-coletados">Como os dados serão coletados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#de-onde-os-dados-vêm" data-anchor="de-onde-os-dados-vêm">De onde os dados vêm</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#as-análises" data-anchor="as-análises">As análises</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#os-achados" data-anchor="os-achados">Os achados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#divulgação-do-estudo" data-anchor="divulgação-do-estudo">Divulgação do estudo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#fluxograma" data-anchor="fluxograma">Fluxograma</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="um-exemplo-real-de-pesquisa.html#resumo-5" data-anchor="resumo-5">Resumo</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="qui-quadrado.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="qui-quadrado.html"><span class="toc-num">9</span><span class="toc-txt">Qui quadrado</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#pesquisa-1" data-anchor="pesquisa-1">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#execução-no-r-1" data-anchor="execução-no-r-1">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#tamanho-do-efeito" data-anchor="tamanho-do-efeito">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#execução-no-jasp-1" data-anchor="execução-no-jasp-1">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#escrita-dos-resultados" data-anchor="escrita-dos-resultados">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#resumo-6" data-anchor="resumo-6">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#pesquisas-adicionais-1" data-anchor="pesquisas-adicionais-1">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="qui-quadrado.html#questões-3" data-anchor="questões-3">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="fatores-de-risco.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="fatores-de-risco.html"><span class="toc-num">10</span><span class="toc-txt">Fatores de Risco</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#pesquisa-2" data-anchor="pesquisa-2">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#execução-no-r-2" data-anchor="execução-no-r-2">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#execução-no-jasp-2" data-anchor="execução-no-jasp-2">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#escrita-dos-resultados-1" data-anchor="escrita-dos-resultados-1">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#odds-ratio-e-regressão-logística" data-anchor="odds-ratio-e-regressão-logística">Odds Ratio e Regressão logística</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#resumo-7" data-anchor="resumo-7">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#pesquisas-adicionais-2" data-anchor="pesquisas-adicionais-2">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="fatores-de-risco.html#questões-4" data-anchor="questões-4">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="teste-t.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="teste-t.html"><span class="toc-num">11</span><span class="toc-txt">Teste T</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#pesquisa-3" data-anchor="pesquisa-3">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#execução-no-r-3" data-anchor="execução-no-r-3">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#tamanho-do-efeito-1" data-anchor="tamanho-do-efeito-1">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#execução-no-jasp-3" data-anchor="execução-no-jasp-3">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#escrita-dos-resultados-2" data-anchor="escrita-dos-resultados-2">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#versão-robusta-do-teste-t" data-anchor="versão-robusta-do-teste-t">Versão robusta do Teste T</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-r-4" data-anchor="execução-no-r-4">Execução no R</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-jasp-4" data-anchor="execução-no-jasp-4">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#mann-whitney" data-anchor="mann-whitney">Mann-whitney</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-r-5" data-anchor="execução-no-r-5">Execução No R</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#tamanho-do-efeito-2" data-anchor="tamanho-do-efeito-2">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#execução-no-jasp-5" data-anchor="execução-no-jasp-5">Execução no JASP</a></li>
+<li class="toc-sub toc-l3"><a class="toc-link" href="teste-t.html#escrita-dos-resultados-3" data-anchor="escrita-dos-resultados-3">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#teste-t-e-regressão" data-anchor="teste-t-e-regressão">Teste T e regressão</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#resumo-8" data-anchor="resumo-8">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#pesquisas-adicionais-3" data-anchor="pesquisas-adicionais-3">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="teste-t.html#questões-5" data-anchor="questões-5">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="anova.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="anova.html"><span class="toc-num">12</span><span class="toc-txt">ANOVA</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisa-4" data-anchor="pesquisa-4">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-de-1-via" data-anchor="anova-de-1-via">ANOVA de 1 via</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-6" data-anchor="execução-no-r-6">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#tamanho-do-efeito-3" data-anchor="tamanho-do-efeito-3">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-6" data-anchor="execução-no-jasp-6">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-4" data-anchor="escrita-dos-resultados-4">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc" data-anchor="post-hoc">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-7" data-anchor="execução-no-r-7">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-7" data-anchor="execução-no-jasp-7">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-5" data-anchor="escrita-dos-resultados-5">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-9" data-anchor="resumo-9">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisas-adicionais-4" data-anchor="pesquisas-adicionais-4">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#pesquisa-5" data-anchor="pesquisa-5">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-de-2-vias" data-anchor="anova-de-2-vias">ANOVA de 2 vias</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-8" data-anchor="execução-no-r-8">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-8" data-anchor="execução-no-jasp-8">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-6" data-anchor="escrita-dos-resultados-6">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc-1" data-anchor="post-hoc-1">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-9" data-anchor="execução-no-r-9">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-9" data-anchor="execução-no-jasp-9">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-7" data-anchor="escrita-dos-resultados-7">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-10" data-anchor="resumo-10">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#anova-fatorial" data-anchor="anova-fatorial">ANOVA Fatorial</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-r-10" data-anchor="execução-no-r-10">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-10" data-anchor="execução-no-jasp-10">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-8" data-anchor="escrita-dos-resultados-8">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#resumo-11" data-anchor="resumo-11">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#post-hoc-2" data-anchor="post-hoc-2">Post hoc</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#execução-no-jasp-11" data-anchor="execução-no-jasp-11">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#escrita-dos-resultados-9" data-anchor="escrita-dos-resultados-9">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova.html#questões-6" data-anchor="questões-6">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter is-current open" data-file="anova-de-medidas-repetidas.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="true"></button><a class="toc-link toc-l1" href="anova-de-medidas-repetidas.html"><span class="toc-num">13</span><span class="toc-txt">ANOVA de medidas repetidas</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#pesquisa-6" data-anchor="pesquisa-6">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#execução-no-r-11" data-anchor="execução-no-r-11">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#tamanho-do-efeito-4" data-anchor="tamanho-do-efeito-4">Tamanho do efeito</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#execução-no-jasp-12" data-anchor="execução-no-jasp-12">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#escrita-dos-resultados-10" data-anchor="escrita-dos-resultados-10">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#resumo-12" data-anchor="resumo-12">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="anova-de-medidas-repetidas.html#pesquisas-adicionais-5" data-anchor="pesquisas-adicionais-5">Pesquisas adicionais</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="modelo-linear-misto.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="modelo-linear-misto.html"><span class="toc-num">14</span><span class="toc-txt">Modelo linear misto</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#pesquisa-7" data-anchor="pesquisa-7">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#execução-no-r-12" data-anchor="execução-no-r-12">execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#execução-no-jasp-13" data-anchor="execução-no-jasp-13">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#escrita-dos-resultados-11" data-anchor="escrita-dos-resultados-11">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#resumo-13" data-anchor="resumo-13">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="modelo-linear-misto.html#pesquisas-adicionais-6" data-anchor="pesquisas-adicionais-6">Pesquisas adicionais</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="correlação.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="correlação.html"><span class="toc-num">15</span><span class="toc-txt">Correlação</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#pesquisa-8" data-anchor="pesquisa-8">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#execução-no-r-13" data-anchor="execução-no-r-13">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#execução-no-jasp-14" data-anchor="execução-no-jasp-14">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#escrita-dos-resultados-12" data-anchor="escrita-dos-resultados-12">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#resumo-14" data-anchor="resumo-14">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#pesquisas-adicionais-7" data-anchor="pesquisas-adicionais-7">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="correlação.html#questões-7" data-anchor="questões-7">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-linear-simples.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-linear-simples.html"><span class="toc-num">16</span><span class="toc-txt">Regressão linear simples</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#breve-explicação-conceitual" data-anchor="breve-explicação-conceitual">Breve explicação conceitual</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#pesquisa-9" data-anchor="pesquisa-9">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#execução-no-r-14" data-anchor="execução-no-r-14">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#execução-no-jasp-15" data-anchor="execução-no-jasp-15">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#escrita-dos-resultados-13" data-anchor="escrita-dos-resultados-13">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#resumo-15" data-anchor="resumo-15">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#pesquisas-adicionais-8" data-anchor="pesquisas-adicionais-8">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-simples.html#questões-8" data-anchor="questões-8">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-linear-múltipla.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-linear-múltipla.html"><span class="toc-num">17</span><span class="toc-txt">Regressão linear múltipla</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#pesquisa-10" data-anchor="pesquisa-10">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#execução-no-r-15" data-anchor="execução-no-r-15">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#execução-no-jasp-16" data-anchor="execução-no-jasp-16">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#escrita-dos-resultados-14" data-anchor="escrita-dos-resultados-14">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#técnicas-automáticas-de-seleção-de-variáveis" data-anchor="técnicas-automáticas-de-seleção-de-variáveis">Técnicas automáticas de seleção de variáveis</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#resumo-16" data-anchor="resumo-16">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#pesquisas-adicionais-9" data-anchor="pesquisas-adicionais-9">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-linear-múltipla.html#questões-9" data-anchor="questões-9">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="regressão-logística-binária.html">
+<button class="toc-toggle" aria-label="Expandir seção" aria-expanded="false"></button><a class="toc-link toc-l1" href="regressão-logística-binária.html"><span class="toc-num">18</span><span class="toc-txt">Regressão logística binária</span></a>
+<ul class="toc-subs">
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#pesquisa-11" data-anchor="pesquisa-11">Pesquisa</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#execução-no-r-16" data-anchor="execução-no-r-16">Execução no R</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#execução-no-jasp-17" data-anchor="execução-no-jasp-17">Execução no JASP</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#escrita-dos-resultados-15" data-anchor="escrita-dos-resultados-15">Escrita dos resultados</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#regressão-logística-or-e-qui-quadrado" data-anchor="regressão-logística-or-e-qui-quadrado">Regressão logística, OR e Qui-quadrado</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#resumo-17" data-anchor="resumo-17">Resumo</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#pesquisas-adicionais-10" data-anchor="pesquisas-adicionais-10">Pesquisas adicionais</a></li>
+<li class="toc-sub toc-l2"><a class="toc-link" href="regressão-logística-binária.html#questões-10" data-anchor="questões-10">Questões</a></li>
+</ul>
+</li>
+<li class="toc-chapter" data-file="quarta-capa.html">
+<a class="toc-link toc-l1" href="quarta-capa.html"><span class="toc-num">19</span><span class="toc-txt">Quarta capa</span></a>
+</li>
+<li class="toc-chapter" data-file="referencias.html">
+<a class="toc-link toc-l1" href="referencias.html"><span class="toc-num">20</span><span class="toc-txt">Referencias</span></a>
+</li>
+</ul>
+    </nav>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main class="reading" id="main">
+    <article class="chapter" id="chapter">
+      <div class="section level1" id="anova-de-medidas-repetidas" number="13">
+<h1><span class="header-section-number">Cap. 13</span> ANOVA de medidas repetidas</h1>
+<div class="objectives">
+<p><strong>Objetivos do capítulo</strong><br/>
+1. Apresentar a ANOVA de Medidas Repetidas<br/>
+2. Realizar passo-a-passo a modelagem analítica<br/>
+3. Verificar os pressupostos e implementar as correções sugeridas<br/>
+4. Escrever os resultados</p>
+</div>
+<p>A ANOVA de medidas repetidas é um teste estatístico para a análise de dados longitudinais pareados. Isto significa que o mesmo conjunto de participantes foi acompanhado e avaliado no decorrer do tempo. Esta técnica pode ser entendida como uma expansão da ANOVA ou um caso especial do Modelo Linear de Efeitos Mistos (LMM). Os pressupostos deste teste são próximos aos discutidos em outros testes inferenciais:</p>
+<p><em>(i)</em> Os dados são aleatórios e representativos da população<br/>
+<em>(ii)</em> A variável dependente é contínua<br/>
+<em>(iii)</em> Os resíduos do modelo são normalmente distribuídos<br/>
+<em>(iv)</em> Há esfericidade dos grupos</p>
+<div class="section level2" id="pesquisa-6" number="13.1">
+<h2><span class="header-section-number">13.1</span> Pesquisa</h2>
+<div class="base">
+<p>A base desta pesquisa está disponível em formato <strong>R (Rdata)</strong> e em <strong>CSV</strong>, que é lido pelo JASP. Clique na opção desejada.</p>
+<p><strong>Base R: </strong> <a href="https://github.com/anovabr/mqt/raw/master/bases/R%20-%20Base%20Lidia%20Carprofeno.RData">R - Base Lidia Carprofeno</a></p>
+<p><strong>Base JASP: </strong> <a href="https://github.com/anovabr/mqt/raw/master/bases/bases_csv_jasp.zip">Base CSV - Lidia Carprofeno largo</a></p>
+</div>
+<p>A esse momento, vamos ter como referência de análise a pesquisa intitulada <a href="https://www.scielo.br/scielo.php?script=sci_arttext&amp;pid=S0102-09352019000100109">“Avaliação psicométrica em português do indicador de dor crônica de Helsinki em cães com sinais crônicos de osteoartrite”</a>, que tem como primeira autora Lídia Matsubara e eu sou coautor. Essa pesquisa foi publicada no “Arquivo Brasileiro de Medicina Veterinária e Zootecnia” em 2019 e objetivou tanto verificar o efeito do medicamento Carprofeno em sintomas relacionados à dor crônica, como apresentar estudos psicométricos de uma nova medida clínica.</p>
+<p>Nessa pesquisa, utilizamos um <mark>delineamento experimental</mark>. No início, todos os participantes foram avaliados em relação a características clínicas da dor crônica e, em seguida, alocados em dois grupos independentes e de maneira aleatória. Os grupos foram chamados de “grupo experimental” e “grupo controle.” Os participantes do grupo experimental receberam o medicamento específico, enquanto os participantes do grupo controle receberam um placebo, que é uma substância que não possui o princípio ativo do medicamento. Nem os participantes, nem os profissionais sabiam quem estava em cada grupo.</p>
+<p>A cada duas semanas, durante o tempo de 6 semanas, todos os participantes foram acompanhados e diferentes medições ocorriam para verificar o efeito do medicamento na dor. Para verificar o impacto da retirada do medicamentos, na quarta semana, tanto o medicamento como o placebo foram retirados dos participantes, que foram novamente medidos ao fim da pesquisa, na sexta semana. A imagem a seguir apresenta este processo:</p>
+<p><img loading="lazy" src="assets/img/delineamento_experimental.PNG"/></p>
+<p>Repare que esse tipo de delineamento contou com três elementos importantes em pesquisas experimentais, que são grupos <u>aleatórios</u>, com a presença de uma condição <u>placebo</u> e <u>duplo-cego</u>.</p>
+</div>
+<div class="section level2" id="execução-no-r-11" number="13.2">
+<h2><span class="header-section-number">13.2</span> Execução no R</h2>
+<p>A primeira etapa nesta análise será a consolidação da base de dados. No vetor <code>dados</code>, há todas as variáveis utilizadas na pesquisa em formato largo (<em>wide</em>). Apesar de ser possível trabalhar dessa maneira no R, o formato longo é o mais tipicamente encontrado para análises longitudinais e, por isso, será implementado a seguir. Um novo vetor será chamado de <code>tratamento</code> e irá armazenar os mesmos dados originais, só que agrupados neste novo formato.</p>
+<div class="sourceCode" id="cb113"><pre><code class="language-r">tratamento &lt;- dados %&gt;% 
+  mutate(id = row_number()) %&gt;% 
+  select(id, grupo_dummy,starts_with("total_")) %&gt;% 
+  pivot_longer(-c(id,grupo_dummy),
+                names_to = "tempo",
+               values_to= "resultado") %&gt;% 
+  rename(grupo = grupo_dummy) %&gt;% 
+  filter(grupo &lt; 3) %&gt;% 
+  mutate(grupo = factor(
+    if_else(grupo == 1, "Experimental", "Placebo"))) %&gt;% 
+  mutate(tempo = factor(case_when(
+    tempo == "total_w4" ~ "antes",
+    tempo == "total_w0" ~ "no_dia",
+    tempo == "total_s2" ~ "semana_2",
+    tempo == "total_s4" ~ "semana_4",
+    tempo == "total_s6" ~ "semana_6",
+  )))</code></pre></div>
+<p>As variáveis neste conjunto de dados são:</p>
+<div class="sourceCode" id="cb114"><pre><code class="language-r">tratamento %&gt;% names() %&gt;% pander()</code></pre></div>
+<p><em>id</em>, <em>grupo</em>, <em>tempo</em> and <em>resultado</em></p>
+<p><code>id</code> refere-se a uma identificação única de cada participante.<br/>
+<code>grupo</code> refere-se ao grupo em que o participante foi alocado, tal como previamente apresentado (controle ou experimental).<br/>
+<code>tempo</code> diz respeito aos 5 pontos de medida e<br/>
+<code>resultado</code> é uma variável aleatória contínua do valor obtido na escala utilizada.</p>
+<p>É importante saber se os grupos foram balanceados e se houve perda experimental no decorrer do tempo. A tabela a seguir apresenta tais informações.</p>
+<div class="sourceCode" id="cb115"><pre><code class="language-r">tratamento %&gt;% 
+  group_by(grupo, tempo) %&gt;% 
+  count() %&gt;% 
+  pander()</code></pre></div>
+<div class="table-wrap"><table style="width:43%;">
+<colgroup>
+<col width="20%"/>
+<col width="15%"/>
+<col width="6%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">grupo</th>
+<th align="center">tempo</th>
+<th align="center">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Experimental</td>
+<td align="center">antes</td>
+<td align="center">21</td>
+</tr>
+<tr class="even">
+<td align="center">Experimental</td>
+<td align="center">no_dia</td>
+<td align="center">21</td>
+</tr>
+<tr class="odd">
+<td align="center">Experimental</td>
+<td align="center">semana_2</td>
+<td align="center">21</td>
+</tr>
+<tr class="even">
+<td align="center">Experimental</td>
+<td align="center">semana_4</td>
+<td align="center">21</td>
+</tr>
+<tr class="odd">
+<td align="center">Experimental</td>
+<td align="center">semana_6</td>
+<td align="center">21</td>
+</tr>
+<tr class="even">
+<td align="center">Placebo</td>
+<td align="center">antes</td>
+<td align="center">19</td>
+</tr>
+<tr class="odd">
+<td align="center">Placebo</td>
+<td align="center">no_dia</td>
+<td align="center">19</td>
+</tr>
+<tr class="even">
+<td align="center">Placebo</td>
+<td align="center">semana_2</td>
+<td align="center">19</td>
+</tr>
+<tr class="odd">
+<td align="center">Placebo</td>
+<td align="center">semana_4</td>
+<td align="center">19</td>
+</tr>
+<tr class="even">
+<td align="center">Placebo</td>
+<td align="center">semana_6</td>
+<td align="center">19</td>
+</tr>
+</tbody>
+</table></div>
+<p>Nota-se que apesar de não ter havido perda amostral, os grupos não tiveram a mesma quantidade de participantes. Quando isso ocorre, chama-se de desbalanceamento amostral.</p>
+<p>A modelagem estatística envolve definir claramente que o <code>resultado</code> é uma função do <code>tempo</code>, do <code>grupo</code> e da interação <code>tempo x grupo</code>. Conforme exposto no decorrer do livro, a primeira etapa analítica consiste na apresentação de tabelas e gráficos. Essas técnicas descritivas são muito informativas e permitem uma rápida compreensão dos resultados.</p>
+<p>Dessa maneira, a tabela abaixo apresenta os valores da média e do desvio-padrão para todas as condições:</p>
+<div class="sourceCode" id="cb116"><pre><code class="language-r">arsenal::tableby(tempo ~ resultado + grupo, test = FALSE, total = FALSE,tratamento) %&gt;% summary() </code></pre></div>
+<div class="table-wrap"><table>
+<colgroup>
+<col width="27%"/>
+<col width="14%"/>
+<col width="14%"/>
+<col width="14%"/>
+<col width="14%"/>
+<col width="14%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">antes (N=40)</th>
+<th align="center">no_dia (N=40)</th>
+<th align="center">semana_2 (N=40)</th>
+<th align="center">semana_4 (N=40)</th>
+<th align="center">semana_6 (N=40)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>resultado</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">16.475 (6.437)</td>
+<td align="center">16.700 (6.669)</td>
+<td align="center">15.675 (6.719)</td>
+<td align="center">14.250 (6.740)</td>
+<td align="center">15.425 (8.430)</td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">0.000 - 29.000</td>
+<td align="center">0.000 - 28.000</td>
+<td align="center">0.000 - 28.000</td>
+<td align="center">0.000 - 27.000</td>
+<td align="center">0.000 - 34.000</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>grupo</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Experimental</td>
+<td align="center">21 (52.5%)</td>
+<td align="center">21 (52.5%)</td>
+<td align="center">21 (52.5%)</td>
+<td align="center">21 (52.5%)</td>
+<td align="center">21 (52.5%)</td>
+</tr>
+<tr class="even">
+<td align="left">   Placebo</td>
+<td align="center">19 (47.5%)</td>
+<td align="center">19 (47.5%)</td>
+<td align="center">19 (47.5%)</td>
+<td align="center">19 (47.5%)</td>
+<td align="center">19 (47.5%)</td>
+</tr>
+</tbody>
+</table></div>
+<p>O gráfico abaixo também apresenta as mesmas informações, mas insere uma barra com o erro padrão da média. Isso é útil para interpretação inferencial.</p>
+<div class="sourceCode" id="cb117"><pre><code class="language-r">ggplot(tratamento, aes(x=tempo, y=resultado, 
+                       group=grupo, color=grupo)) + #variaveis
+  stat_summary(fun = mean, geom = "line", 
+               size=1.0, aes(linetype = grupo)) + #linha
+  stat_summary(fun="mean", geom="point", 
+               size=2, aes(shape = grupo)) + #pontos
+  stat_summary(fun.data = mean_se, 
+               geom = "errorbar",size=1) #barra de erro</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-126-1.png" width="672"/></p>
+<p>É possível notar que as barras de erro estão superpostas, isto é, uma está contida na outra. Isso ocorre quando não há diferença significativa entre as condições. No entanto, o teste formal estatístico deve ser realizado.</p>
+<p>Para realizar a ANOVA de Medidas Repetidas, o pacote <code>ez</code> pode ser utilizado:</p>
+<div class="sourceCode" id="cb118"><pre><code class="language-r">library(ez)</code></pre></div>
+<p>Sua sintaxe envolve as seguintes características:</p>
+<p><code>data</code> refere-se à base de dados (no formato longo)<br/>
+<code>dv</code> refere-se à variável dependente (contínua)<br/>
+<code>wid</code> refere-se à variável com a identificação única de cada participante<br/>
+<code>within</code> refere-se à variável independente com efeito <u>dentro</u> do tratamento, ou seja, a variável que se repete. Nesse caso, cada uma das semanas<br/>
+<code>between</code> refere-se à variável independente com efeito <u>entre</u> os tratamentos, ou seja, cada um dos grupos<br/>
+<code>type</code> refere-se à forma pela qual a soma dos quadrado será calculada. O tipo 3 emula os resultados dos programas típicos e quase sempre é a melhor opção para finalidade de comparação entre resultados<br/>
+<code>detailed</code> refere-se à apresentação detalhada dos resultados<br/>
+<code>return_aov</code> refere-se à criação de um objeto no formato <code>aov</code> que tem utilidade para análises comparadas posteriores</p>
+<p>Para deixar o ambiente de programação mais organizado o objeto <code>ez_outcome</code> será criado e irá para armazenar os resultados.</p>
+<div class="sourceCode" id="cb119"><pre><code class="language-r">ez_outcome &lt;- ezANOVA(
+  data = tratamento,
+  dv = resultado,
+  wid = id,
+  within = tempo,
+  between = grupo,
+  type = 3,
+  detailed = TRUE,
+  return_aov = TRUE)</code></pre></div>
+<p>A mensagem de aviso informa que os grupos estão desbalenceados em relação à quantidade de participantes, o que foi previamente descrito.</p>
+<p>Abaixo está o <code>ez_outcome</code>, que é dividido em 4 blocos diferentes: <code>ANOVA</code>, <code>Mauchly's Test for Sphericity</code>, <code>Sphericity Corrections</code> e <code>aov</code>. O tamanho do efeito é calculado pelo eta quadrado generalizado (<span class="math inline">\(\eta^2_G\)</span>) e está na última coluna da primeira tabela.</p>
+<div class="sourceCode" id="cb120"><pre><code class="language-r">ez_outcome %&gt;% pander::pander()</code></pre></div>
+<ul>
+<li><p><strong>ANOVA</strong>:</p>
+<div class="table-wrap"><table>
+<colgroup>
+<col width="17%"/>
+<col width="7%"/>
+<col width="7%"/>
+<col width="9%"/>
+<col width="8%"/>
+<col width="11%"/>
+<col width="14%"/>
+<col width="9%"/>
+<col width="13%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Effect</th>
+<th align="center">DFn</th>
+<th align="center">DFd</th>
+<th align="center">SSn</th>
+<th align="center">SSd</th>
+<th align="center">F</th>
+<th align="center">p</th>
+<th align="center">p&lt;.05</th>
+<th align="center">ges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(Intercept)</td>
+<td align="center">1</td>
+<td align="center">38</td>
+<td align="center">48940</td>
+<td align="center">7789</td>
+<td align="center">238.8</td>
+<td align="center">5.697e-18</td>
+<td align="center">*</td>
+<td align="center">0.8377</td>
+</tr>
+<tr class="even">
+<td align="center">grupo</td>
+<td align="center">1</td>
+<td align="center">38</td>
+<td align="center">144.8</td>
+<td align="center">7789</td>
+<td align="center">0.7063</td>
+<td align="center">0.4059</td>
+<td align="center"></td>
+<td align="center">0.01504</td>
+</tr>
+<tr class="odd">
+<td align="center">tempo</td>
+<td align="center">4</td>
+<td align="center">152</td>
+<td align="center">146.9</td>
+<td align="center">1689</td>
+<td align="center">3.304</td>
+<td align="center">0.01254</td>
+<td align="center">*</td>
+<td align="center">0.01526</td>
+</tr>
+<tr class="even">
+<td align="center">grupo:tempo</td>
+<td align="center">4</td>
+<td align="center">152</td>
+<td align="center">30.95</td>
+<td align="center">1689</td>
+<td align="center">0.6962</td>
+<td align="center">0.5957</td>
+<td align="center"></td>
+<td align="center">0.003255</td>
+</tr>
+</tbody>
+</table></div></li>
+<li><p><strong>Mauchly’s Test for Sphericity</strong>:</p>
+<div class="table-wrap"><table style="width:72%;">
+<colgroup>
+<col width="12%"/>
+<col width="19%"/>
+<col width="12%"/>
+<col width="16%"/>
+<col width="11%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Effect</th>
+<th align="center">W</th>
+<th align="center">p</th>
+<th align="center">p&lt;.05</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>3</strong></td>
+<td align="center">tempo</td>
+<td align="center">0.2561</td>
+<td align="center">1.322e-07</td>
+<td align="center">*</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>4</strong></td>
+<td align="center">grupo:tempo</td>
+<td align="center">0.2561</td>
+<td align="center">1.322e-07</td>
+<td align="center">*</td>
+</tr>
+</tbody>
+</table></div></li>
+<li><p><strong>Sphericity Corrections</strong>:</p>
+<div class="table-wrap"><table>
+<colgroup>
+<col width="10%"/>
+<col width="16%"/>
+<col width="10%"/>
+<col width="10%"/>
+<col width="14%"/>
+<col width="10%"/>
+<col width="11%"/>
+<col width="14%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Effect</th>
+<th align="center">GGe</th>
+<th align="center">p[GG]</th>
+<th align="center">p[GG]&lt;.05</th>
+<th align="center">HFe</th>
+<th align="center">p[HF]</th>
+<th align="center">p[HF]&lt;.05</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>3</strong></td>
+<td align="center">tempo</td>
+<td align="center">0.5739</td>
+<td align="center">0.0351</td>
+<td align="center">*</td>
+<td align="center">0.6129</td>
+<td align="center">0.03191</td>
+<td align="center">*</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>4</strong></td>
+<td align="center">grupo:tempo</td>
+<td align="center">0.5739</td>
+<td align="center">0.5201</td>
+<td align="center"></td>
+<td align="center">0.6129</td>
+<td align="center">0.529</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table></div></li>
+<li><p><strong>aov</strong>:</p>
+<div class="table-wrap"><table style="width:88%;">
+<colgroup>
+<col width="25%"/>
+<col width="8%"/>
+<col width="12%"/>
+<col width="13%"/>
+<col width="13%"/>
+<col width="13%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Df</th>
+<th align="center">Sum Sq</th>
+<th align="center">Mean Sq</th>
+<th align="center">F value</th>
+<th align="center">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>grupo</strong></td>
+<td align="center">1</td>
+<td align="center">144.8</td>
+<td align="center">144.8</td>
+<td align="center">0.7063</td>
+<td align="center">0.4059</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Residuals</strong></td>
+<td align="center">38</td>
+<td align="center">7789</td>
+<td align="center">205</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>tempo</strong></td>
+<td align="center">4</td>
+<td align="center">151.2</td>
+<td align="center">37.79</td>
+<td align="center">3.4</td>
+<td align="center">0.01075</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>grupo:tempo</strong></td>
+<td align="center">4</td>
+<td align="center">30.95</td>
+<td align="center">7.738</td>
+<td align="center">0.6962</td>
+<td align="center">0.5957</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Residuals</strong></td>
+<td align="center">152</td>
+<td align="center">1689</td>
+<td align="center">11.11</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+</tbody>
+</table></div></li>
+</ul>
+<!-- end of list -->
+<p>A tabela gerada é bastante extensa e para interpretá-la adequadamente, será necessário testar os pressupostos do modelo a partir de testes estatísticos específicos. Estes testes irão tanto indicar <u>quais são os resultados que deverão ser verificados</u>, como se há segurança na interpretação dos achados. Na ANOVA de Medidas Repetidas, é necessário verificar a <mark>normalidade</mark> e a <mark>esfericidade</mark>.</p>
+<p><mark>Normalidade</mark>: A ANOVA de tem como um dos pressupostos a normalidade da distribuição dos resíduos. Isso pode ser feito de diferentes maneiras e abaixo há um QQ plot. Caso ambas as linhas estejam sobrepostas, isso gera evidências que o pressuposto foi atendido. Neste caso, isso não ocorre.</p>
+<div class="sourceCode" id="cb121"><pre><code class="language-r">tratamento %&gt;% 
+  mutate(residuos = proj(ez_outcome$aov)[[3]][, "Residuals"]) %&gt;% 
+  ggplot(aes(sample=residuos)) + 
+  stat_qq() + 
+  stat_qq_line()</code></pre></div>
+<p><img loading="lazy" src="assets/figure-html/unnamed-chunk-130-1.png" width="672"/></p>
+<p>Apesar do gráfico ter sido bastante claro, testes como o Shapiro-wilk, Anderson-Darling e Jarque Bera também podem ser utilizados neste caso. A hipótese nula desses testes assume que os resíduos são normalmente distribuídos.</p>
+<div class="sourceCode" id="cb122"><pre><code class="language-r">shapiro.test(proj(ez_outcome$aov)[[3]][, "Residuals"])</code></pre></div>
+<pre><code class="nohighlight">## 
+##  Shapiro-Wilk normality test
+## 
+## data:  proj(ez_outcome$aov)[[3]][, "Residuals"]
+## W = 0.95677, p-value = 8.986e-06</code></pre>
+<p>Este último resultado foi convergente ao já visualizado na apresentação gráfica. Como o valor de p foi inferior ao alfa tipicamente estabelecido (0.05), não seria possível manter o pressuposto da normalidade. Quando isso acontece, é possível implementar ajustes nos dados, substituir o modelo analítico ou seguir a análise após justificar explicitamente essa violação.</p>
+<p><mark>Esfericidade</mark>: A esfericidade na ANOVA de Medidas Repetidas tem um conceito próximo à Homocedasticidade nas ANOVAs vistas anteriormente. Neste delineamento pareado, a esfericidade significa que a variância de todas as diferenças entre cada nível de fator é constante. Esse pressuposto é bastante difícil de ser assumido e existem ajustes possíveis em casos em que isso ocorre.</p>
+<p>Na tabela da ANOVA, o <code>Mauchly's Test for Sphericity</code> é o local que deve ser visualizado para verificar se a esfericidade foi violada ou não. A hipótese nula é definida como presença da esfericidade e idealmente não deve ser rejeitada. Abaixo, a reprodução desta parte da tabela.</p>
+<div class="sourceCode" id="cb124"><pre><code class="language-r">ez_outcome$`Mauchly's Test for Sphericity` %&gt;% 
+  pander()</code></pre></div>
+<div class="table-wrap"><table style="width:72%;">
+<colgroup>
+<col width="12%"/>
+<col width="19%"/>
+<col width="12%"/>
+<col width="16%"/>
+<col width="11%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Effect</th>
+<th align="center">W</th>
+<th align="center">p</th>
+<th align="center">p&lt;.05</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>3</strong></td>
+<td align="center">tempo</td>
+<td align="center">0.2561</td>
+<td align="center">1.322e-07</td>
+<td align="center">*</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>4</strong></td>
+<td align="center">grupo:tempo</td>
+<td align="center">0.2561</td>
+<td align="center">1.322e-07</td>
+<td align="center">*</td>
+</tr>
+</tbody>
+</table></div>
+<p>É possível concluir que a esfericidade foi violada mas há algumas saídas para isso. As correções Greenhouse-Geisser (p[GG]) e de Huynh-Feldt tentam corrigir essa violação a partir de ajustes nos graus de liberdade da ANOVA. Os resultados das duas correções costumam ser próximos e, frequentemenet, a correção de Greenhouse-Geisser é utilizada para interpretar os resultados.</p>
+<p>Com ambas as verificações feitas, é possível interpretar os resultados, que começam <u>sempre</u> pela interação. A interação <code>grupo x tempo</code> não foi significativa: F(4, 152) = 0.696, p = 0.59, p ajustado = 0.52). O efeito do <code>grupo</code> em que o participante foi alocado também não significativo: F(1, 38) = 0.706, p = 0.406). Por sua vez, o passar do <code>tempo</code> foi significativo: F(4, 152) = 3.304, p = 0.012, p ajustado = 0.035).</p>
+<p>Frequentemente, os resultados corrigidos e os não-corrigidos concluem na mesma direção. Isso é verdadeiro nesse caso. Repare que os resultados não corrigidos alcançariam as mesmas conclusões:</p>
+<div class="sourceCode" id="cb125"><pre><code class="language-r">summary(ez_outcome$aov) %&gt;% 
+  pander::pander()</code></pre></div>
+<div class="table-wrap"><table style="width:88%;">
+<colgroup>
+<col width="25%"/>
+<col width="8%"/>
+<col width="12%"/>
+<col width="13%"/>
+<col width="13%"/>
+<col width="13%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Df</th>
+<th align="center">Sum Sq</th>
+<th align="center">Mean Sq</th>
+<th align="center">F value</th>
+<th align="center">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>grupo</strong></td>
+<td align="center">1</td>
+<td align="center">144.8</td>
+<td align="center">144.8</td>
+<td align="center">0.7063</td>
+<td align="center">0.4059</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Residuals</strong></td>
+<td align="center">38</td>
+<td align="center">7789</td>
+<td align="center">205</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>tempo</strong></td>
+<td align="center">4</td>
+<td align="center">151.2</td>
+<td align="center">37.79</td>
+<td align="center">3.4</td>
+<td align="center">0.01075</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>grupo:tempo</strong></td>
+<td align="center">4</td>
+<td align="center">30.95</td>
+<td align="center">7.738</td>
+<td align="center">0.6962</td>
+<td align="center">0.5957</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Residuals</strong></td>
+<td align="center">152</td>
+<td align="center">1689</td>
+<td align="center">11.11</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+</tbody>
+</table></div>
+<p>O valor de P do efeito do <code>tempo</code> saiu de 0.01 (sem correção) para 0.03 (com correção). Já a interação <code>grupo x semana</code> saiu de 0.598 (sem correção) para 0.529 (com correção).</p>
+<p>Nota: Essa pesquisa não teve resultados significativos e, em função disso, testes post hoc não foram realizados. Entretanto, frequentemente os resultados são significativos e a mecânica das comparações pareadas é próxima ao que foi demonstrado no capítulo de ANOVA Fatorial.</p>
+</div>
+<div class="section level2" id="tamanho-do-efeito-4" number="13.3">
+<h2><span class="header-section-number">13.3</span> Tamanho do efeito</h2>
+<p>Resultados significativos não são informativos em relação ao tamanho do efeito. Esta última métrica tem mais contato com as perguntas originalmente realizadas em uma pesquisa e é entendida como uma medida objetiva e padronizada da magnitude de um efeito observado independente da significância estatística. Dessa maneira, o tamanho do efeito pode ser considerado um indicador da relevância clínica dos grupos, cujo uso é sempre importante em pesquisas em Psicologia e áreas da saúde.</p>
+<p>Na ANOVA de medidas repetidas o <u>eta quadrado parcial</u> (<span class="math inline">\(\eta_p^2\)</span>) e o <u>eta quadrado generalizado</u> (<span class="math inline">\(\eta^2_G\)</span>) podem ser calculados. A interpretação do <span class="math inline">\(\eta_p^2\)</span> é a mesma já apresentada no capítulo sobre ANOVA, enquanto o <span class="math inline">\(\eta^2_G\)</span> pode ser interpretado segundo a tabela disposta a seguir <span class="citation">(<a href="#ref-draper_2020" role="doc-biblioref">Draper, 2020</a>)</span>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th align="left">eta quadrado generalizado</th>
+<th align="left">Interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta^2_G\)</span> &lt; 0.02</td>
+<td align="left">Irrelevante</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\eta^2_G\)</span> <span class="math inline">\(\geq\)</span> 0.02</td>
+<td align="left">Pequeno</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\eta^2_G\)</span> <span class="math inline">\(\geq\)</span> 0.13</td>
+<td align="left">Moderado</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\eta^2_G\)</span> <span class="math inline">\(\geq\)</span> 0.26</td>
+<td align="left">Grande</td>
+</tr>
+</tbody>
+</table></div>
+<p>O tamanho do efeito foi calculado e apresentado na tabela da ANOVA de Medidas Repetidas.</p>
+</div>
+<div class="section level2" id="execução-no-jasp-12" number="13.4">
+<h2><span class="header-section-number">13.4</span> Execução no JASP</h2>
+<p>A base utilizada será a intitulada “csv Lidia Carprofeno largo.” Essa base reúne todas os dados da pesquisa, incluindo os grupos e as medidas de dor. Após carregar a base no JASP, será necessário apresentar tabelas e gráficos descritivos. Para fazer isso, é necessário clicar em <code>Descriptives</code>.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_descriptives.PNG"/></p>
+<p>Ao clicar nesta opção, será possível eleger as variáveis que irão ser analisadas e as variáveis que irão funcionar como agrupadores. Na prática, a lista <code>Variables</code> irá reunir as variáveis dependentes, enquanto a variável independente será colocada na seção <code>Split</code>. É importante atentar à opção <code>Frequency tables (nominal and ordinal)</code>, que deve ser marcada quando o nível de medida da variável de interesse for nominal ou ordinal.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_descriptives2.PNG"/></p>
+<p>Será necessário arrastar a variável <u>grupo</u> para a VI e as variáveis relacionadas à dor para a VD. Estas últimas são <u>total_w4</u>, <u>total_w0</u>, <u>total_s2</u>, <u>total_s4</u> e <u>total_s6</u>. Ao fazer isso, o JASP automaticamente irá preencher a tabela previamente exposta com os valores estatísticos obtidos. A média e o desvio-padrão indicam a posição típica dos dados e o afastamento esperado desta localização.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_descriptives3.PNG"/></p>
+<p>Em seguida, ao clicar na opção <code>Plots</code>, será possível selecionar o <code>Boxplot</code> e <code>Boxplot element</code>. O gráfico aparecerá abaixo da tabela e irá apresentar diferentes informações estatísticas da distribuição dos resultados das variáveis da <u>dor</u> em função dos níveis do <u>grupo</u>.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_plots1.PNG"/></p>
+<p>Por padrão, o JASP não permite integrar os gráficos nesta seção. Isso será realizado posteriormente. Para executar a ANOVA, será necessário clicar na opção <code>ANOVA</code>, <code>Classical</code> e <code>Repeated Measures ANOVA</code>.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_interface0.PNG"/>
+Ao realizar isso, a tela a ser exibida será próxima à imagem a seguir.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_interface.PNG"/></p>
+<p>O espaço <code>Repeated Measures Factors</code> é o local onde os <mark>nomes</mark> devem ser inseridos para representar quantas repetições foram feitas. É possível mudar o nome do argumento para ficar mais fácil. Por exemplo, substituir <code>RM Factor 1</code> para <code>Tempo</code>. Nesta pesquisa, 5 medições foram feitas e, por isso, sugiro preencher os espaços que começam por <code>level</code> com <code>antes</code>, <code>no dia</code>, <code>semana 2</code>, <code>semana 4</code> e <code>semana 6</code>. Repare que ao fazer isso, o <code>Repeated Measures Cells</code> também apresentará os nomes escolhidos..</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_interface2.PNG"/></p>
+<p>Agora, será necessário levar as variáveis relacionadas à dor para cada lugar disponível em <code>Repeated Measures Cells</code>. Para isso, será necessário selecionar as variáveis e, em seguida, clicar na seta superior à direita, tal como abaixo:</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_within.PNG"/>
+Ao fazer isso, o JASP está sendo informado da variação <u>dentro</u>, ou seja, do efeito do tempo em todos os participantes, independentemente dos grupos em que eles foram alocados.</p>
+<p>No entanto, nesta pesquisa há também um efeito <u>entre os grupos</u> e isso precisa ser estipulado no programa. Para fazer isso, basta arrastar a variável <u>grupo</u> para <code>Between Subjects Factor</code>. A tela será próxima à apresentada abaixo:</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_resultados.PNG"/></p>
+<p>Depois que isso tiver sido feito, o JASP automaticamente irá realizar as contas e apresentar os resultados do modelo linear misto a partir de alguns critérios padronizados do programa.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_resultados2.PNG"/></p>
+<p>No entanto, por padrão, o JASP assume que tanto o intercepto como a inclinação são efeitos aleatórios, o que é diferente da hipótese da pesquisa. Para ajustar o modelo de acordo com o previamente definido, deve-se clicar em <code>Model</code></p>
+<p><img loading="lazy" src="assets/img/cap_lmm_model.PNG"/>
+Nesta tela, será necessário deixar todas as opções desmarcadas.</p>
+<p><img loading="lazy" src="assets/img/cap_lmm_model2.PNG"/></p>
+<p>Ao fazer isso, o JASP irá modificar as notas embaixo da tabela inicial de resultados, que agora podem ser interpretados.</p>
+<p>A interpretação dos resultados deve começar pela interação. Caso este termo seja significativo, os outros resultados não devem ser interpretados diretamente.</p>
+<p><img loading="lazy" src="assets/img/cap_lmm_resultados.PNG"/></p>
+<p>É possível ficar nesta tela e interpretar os resultados, começando <u>sempre</u> pela interação. A interação <code>Tempo x grupo</code> não foi significativa (F(4, 152) = 0.696, p = 0.596) e o <code>Grupo</code> também não (F(1, 38) = 0.706, p = 0.406). De maneira diferente, o efeito do <code>Tempo</code> foi significativo (F(4, 152) = 3.304, p = 0.013).</p>
+<p>Entretanto, para qu e a validade dessa interpretação seja assegurada, é necessário testar se os pressupostos do modelo foram respeitados ou rejeitados. Além disso, o cálculo do tamanho do efeito deve ser realizado para otimizar a interpretação dos achados.</p>
+<p>Os dois principais pressupostos da ANOVA de Medidas Repetidas são a <mark>normalidade</mark> e a <mark>esfericidade</mark>. Para verificá-los, é necessário clicar em <code>Assumtpions checks</code>.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_pressupostos.png"/></p>
+<p>A opção <code>Sphericity tests</code> deverá ser assinalada. Repare que o JASP não realiza a verificação da normalidade dos resíduos aqui, bem como deixa a opção de homogeneidade, que não precisa ser acessada agora, já que a esfericidade tende a indicar algo similar.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_esfericidade.PNG"/></p>
+<p>Os resultados do Teste de Mauchly indicaram que o pressuposto da esfericidade foi violado. Dessa maneira, será necessário implementar alguma correção antes de interpretar os resultados. O JASP oferece a correção de <code>Greenhouse-Geisser</code> e a <code>Huynh-Feldt</code>. Ambos os resultados são próximos e, pragmaticamente, vamos optar pela correção de <code>Greenhouse-Geisser</code>, clicando nela.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_esfericidade2.PNG"/></p>
+<p>Repare que ao fazer isso, o JASP irá refazer as contas e apresentar os resultados originais e os resultados corrigidos. Antes de fazer a interpretação, será necessário inserir o tamanho do efeito. Para isso, basta clicar em <code>Estimates of effect size</code>, na parte superior do programa. Há quatro opções disponíveis, que são o <code>eta quadrado</code>(<span class="math inline">\(\eta^2\)</span>), o <code>eta quadrado parcial</code> (<span class="math inline">\(\eta^2_p\)</span>), o <code>eta quadrado generalizado</code> (<span class="math inline">\(\eta^2_G\)</span>) e o <code>omega quadrado</code> (<span class="math inline">\(\omega^2\)</span>). Para garantir os mesmos resultados obtidos anteriormente com o R, será necessário selecionar o <span class="math inline">\(\eta^2_G\)</span>.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_tamanho_do_efeito.PNG"/></p>
+<p>Agora, a interpretação agora pode ser feita integralmente. O valor de P <u>corrigido</u> irá indicar se a hipótese nula foi rejeitada ou não e o tamanho do efeito irá indicar a relevância da possível diferença, com interpretação disposta na tabela precedente neste capítulo.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_interpretacao.PNG"/></p>
+<p>Gráficos específicos são recursos úteis para descrição destes resultados. Eles podem ser feitos clicando em <code>Descriptives Plots</code>, arrastando o <u>tempo</u> para <code>Horizontal axis</code> e a <u>grupo</u> para <code>Separated lines</code>. Para colocar o erro padrão, é necessário clicar em <code>Display error bars</code> e <code>Standard error</code>. Esse gráfico é muito informativo, mas a impressão visual que ele traz é de que há diferença entre os grupos, o que não foi encontrado no teste de hipóteses modelado anteriormente.</p>
+<p><img loading="lazy" src="assets/img/cap_anovarm_grafico.PNG"/>
+Notas: Infelizmente, o JASP não realiza um gráfico completo dessa maneira na seção <code>Descriptives</code>, tal como apresentado. Por vezes, será necessário primeiro rodar integralmente a ANOVA para depois gerar esta apresentação. Quase sempre, o eixo X recebe a variável com maior quantidade de níveis. Essa pesquisa não teve resultados significativos e, em função disso, testes post hoc não foram realizados. Entretanto, frequentemente os resultados são significativos e a mecânica das comparações pareadas é próxima ao que foi demonstrado no capítulo de ANOVA Fatorial.</p>
+</div>
+<div class="section level2" id="escrita-dos-resultados-10" number="13.5">
+<h2><span class="header-section-number">13.5</span> Escrita dos resultados</h2>
+<div class="writing">
+<p><strong>Como escrever os resultados</strong></p>
+<p>Os dados foram analisados a partir de uma ANOVA de medidas repetidas investigando o efeito fixo do grupo e do tempo, bem como a interação entre ambos. O teste de Mauchly indicou a violação da esfericidade (w = 0.26, p &lt; 0.01) e, portanto, os resultados foram ajustados pelo método de Greenhouse-geisser. Não houve interação significativa entre o grupo e o tempo (F(4, 152) = 0.69, p ajustado = 0.520), nem efeito do grupo (F(1, 38) = 0.061, p = 0.406). O passar de tempo foi significativo no resultado, apesar de apresentar um efeito pequeno (F(4, 152) = 3.30, p ajustado = 0.0351, ng2 = 0.01).</p>
+</div>
+</div>
+<div class="section level2" id="resumo-12" number="13.6">
+<h2><span class="header-section-number">13.6</span> Resumo</h2>
+<div class="explore">
+<ol style="list-style-type: decimal">
+<li>A ANOVA de medidas repetidas é um teste bastante utilizado quando participantes de mesmos grupos são avaliados longitudinalmente<br/>
+</li>
+<li>Este modelo pode ser entendido como uma expansão de uma ANOVA ou um caso particular de uma regressão linear de efeitos mistos<br/>
+</li>
+<li>A execução deste teste no R solicita que a base seja transformada para o formato longo<br/>
+</li>
+<li>A interpretação dos resultados é, inicialmente, complicada e precisa ser feita de maneira cautelosa<br/>
+</li>
+<li>Os pacotes estatísticos oferecem correções automáticas para violação de alguns pressupostos<br/>
+</li>
+<li>Gráficos são muito informativos para uma análise inicial dos dados<br/>
+</li>
+</ol>
+</div>
+</div>
+<div class="section level2" id="pesquisas-adicionais-5" number="13.7">
+<h2><span class="header-section-number">13.7</span> Pesquisas adicionais</h2>
+<ol style="list-style-type: decimal">
+<li>Physiotherapy Versus Physiotherapy Plus Cognitive Training on Cognition and Quality of Life in Parkinson Disease: Randomized Clinical Trial (DOI: 10.1097/PHM.0000000000001128)<br/>
+Essa é uma pesquisa na área de fisioterapia. Os pesquisadores tiveram interesse de verificar a efetividade de dois tipos de tratamento (fisioterapia apenas vs. fisioterapia e reforço cognitivo) em 58 pacientes com Doeça de Parkinson. Os grupos foram compostos de maneira aleatória e acompanhados durante 3 meses. Não foram encontradas diferenças significativas entre as intervenções e ambos os grupos apresentaram melhoras clínicas.</li>
+</ol>
+</div>
+</div>
+    </article>
+
+    <nav class="chapter-nav" aria-label="Navegação entre capítulos">
+      <a class="pnav pnav-prev" href="anova.html" rel="prev"><span class="pnav-dir">← Anterior</span><span class="pnav-title">ANOVA</span></a>
+      <a class="pnav pnav-next" href="modelo-linear-misto.html" rel="next"><span class="pnav-dir">Próximo →</span><span class="pnav-title">Modelo linear misto</span></a>
+    </nav>
+
+    <footer class="site-footer">
+      <p>Conceitos e análises estatísticas com R e JASP — camada de anotações por Luis Anunciação (PUC-Rio).</p>
+      <p class="muted">Site estático gerado a partir do livro original em bookdown.</p>
+    </footer>
+  </main>
+</div>
+
+<!-- Scroll-aware floating action bar -->
+<div class="fab" id="fab" aria-hidden="false">
+  <button class="fab-btn" id="toTop" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button class="fab-btn js-font-dec" id="fontDec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+  <button class="fab-btn js-font-inc" id="fontInc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+  <button class="fab-btn js-theme" id="themeFab" aria-label="Alternar tema" title="Tema claro/escuro">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></g></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+  <button class="fab-btn js-share" id="shareBtn" aria-label="Compartilhar" title="Compartilhar" aria-haspopup="true" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 8a3 3 0 1 0-2.8-4M6 15a3 3 0 1 0 0-.1M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+  </button>
+</div>
+
+<!-- Desktop share fallback menu -->
+<div class="share-menu" id="shareMenu" role="menu" hidden>
+  <div class="share-menu-head">Compartilhar</div>
+  <div class="share-scope" role="group" aria-label="Nível de compartilhamento">
+    <button class="scope-btn is-active" data-scope="chapter">Este capítulo</button>
+    <button class="scope-btn" data-scope="book">O livro</button>
+  </div>
+  <button class="share-item" data-net="copy" role="menuitem"><span class="share-ico">🔗</span> Copiar link</button>
+  <a class="share-item" data-net="whatsapp" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">🟢</span> WhatsApp</a>
+  <a class="share-item" data-net="twitter" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">✖</span> X / Twitter</a>
+  <a class="share-item" data-net="linkedin" role="menuitem" target="_blank" rel="noopener"><span class="share-ico">in</span> LinkedIn</a>
+  <a class="share-item" data-net="email" role="menuitem"><span class="share-ico">✉</span> E-mail</a>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>window.MQT_SITE_BASE = 'https://luisfca.github.io/mqt-ebook';</script>
+<!-- highlight.js -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/r.min.js"></script>
+<!-- KaTeX auto-render -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

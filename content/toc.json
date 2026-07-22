@@ -1,0 +1,1502 @@
+[
+  {
+    "num": 1,
+    "file": "index.html",
+    "slug": "index",
+    "title": "Prefácio",
+    "desc": "Atenção: Este repositório é o backend do livro Conceitos e Análises Estatísticas com R e JASP A proposta deste ambiente é fazer correções e atualizações para as próximas versões do livro. Como o site ",
+    "og_img": "assets/img/capa_jolie.png",
+    "sections": [
+      {
+        "id": "atenção",
+        "level": 2,
+        "number": "1.1",
+        "title": "Atenção"
+      },
+      {
+        "id": "a-proposta",
+        "level": 2,
+        "number": "1.2",
+        "title": "A proposta"
+      },
+      {
+        "id": "objetivo",
+        "level": 2,
+        "number": "1.3",
+        "title": "Objetivo"
+      },
+      {
+        "id": "público-alvo",
+        "level": 2,
+        "number": "1.4",
+        "title": "Público-alvo"
+      },
+      {
+        "id": "formato-do-livro",
+        "level": 2,
+        "number": "1.5",
+        "title": "Formato do livro"
+      },
+      {
+        "id": "como-usar-este-livro",
+        "level": 2,
+        "number": "1.6",
+        "title": "Como usar este livro"
+      },
+      {
+        "id": "pesquisas-e-dados",
+        "level": 2,
+        "number": "1.7",
+        "title": "Pesquisas e dados"
+      },
+      {
+        "id": "o-r-e-os-pacotes",
+        "level": 2,
+        "number": "1.8",
+        "title": "O R e os pacotes"
+      },
+      {
+        "id": "jasp",
+        "level": 2,
+        "number": "1.9",
+        "title": "JASP"
+      },
+      {
+        "id": "outros-recursos",
+        "level": 2,
+        "number": "1.10",
+        "title": "Outros recursos"
+      },
+      {
+        "id": "capa",
+        "level": 2,
+        "number": "1.11",
+        "title": "Capa"
+      },
+      {
+        "id": "versão-do-livro",
+        "level": 2,
+        "number": "1.12",
+        "title": "Versão do livro"
+      },
+      {
+        "id": "autor",
+        "level": 2,
+        "number": "1.13",
+        "title": "Autor"
+      },
+      {
+        "id": "revisão-técnica",
+        "level": 2,
+        "number": "1.14",
+        "title": "Revisão técnica"
+      },
+      {
+        "id": "agradecimentos",
+        "level": 2,
+        "number": "1.15",
+        "title": "Agradecimentos"
+      }
+    ]
+  },
+  {
+    "num": 2,
+    "file": "programas-estatísticos.html",
+    "slug": "programas-estatísticos",
+    "title": "Programas estatísticos",
+    "desc": "Objetivos do capítulo 1. Apresentar os programas estatísticos utilizados durante o livro 2. Discutir características do R, tidyverse e seus pacotes 3. Discutir características do JASP",
+    "og_img": "assets/img/tidyverse_website.png",
+    "sections": [
+      {
+        "id": "o-r",
+        "level": 2,
+        "number": "2.1",
+        "title": "O R"
+      },
+      {
+        "id": "tidyverse",
+        "level": 2,
+        "number": "2.2",
+        "title": "Tidyverse"
+      },
+      {
+        "id": "dificuldades-esperadas",
+        "level": 2,
+        "number": "2.3",
+        "title": "Dificuldades esperadas"
+      },
+      {
+        "id": "verbos-do-dplyr",
+        "level": 2,
+        "number": "2.4",
+        "title": "Verbos do dplyr"
+      },
+      {
+        "id": "o-jasp",
+        "level": 2,
+        "number": "2.5",
+        "title": "O JASP"
+      },
+      {
+        "id": "resumo",
+        "level": 2,
+        "number": "2.6",
+        "title": "Resumo"
+      }
+    ]
+  },
+  {
+    "num": 3,
+    "file": "aspectos-gerais.html",
+    "slug": "aspectos-gerais",
+    "title": "Aspectos gerais",
+    "desc": "Objetivos do capítulo 1. Apresentar conceitos transversais encontrados em pesquisa e estatística 2. Descrever as variáveis em função de seu relacionamento, escala de medida e capacidade numérica 3. In",
+    "og_img": "assets/img/cap_transversal_longitudinal.PNG",
+    "sections": [
+      {
+        "id": "os-objetivos-de-uma-pesquisa",
+        "level": 2,
+        "number": "3.1",
+        "title": "Os objetivos de uma pesquisa"
+      },
+      {
+        "id": "a-dimensão-temporal-de-uma-pesquisa",
+        "level": 2,
+        "number": "3.2",
+        "title": "A dimensão temporal de uma pesquisa"
+      },
+      {
+        "id": "conceitos-fundamentais",
+        "level": 2,
+        "number": "3.3",
+        "title": "conceitos fundamentais"
+      },
+      {
+        "id": "modelos-científicos",
+        "level": 3,
+        "number": "3.3.1",
+        "title": "Modelos científicos"
+      },
+      {
+        "id": "variáveis",
+        "level": 3,
+        "number": "3.3.2",
+        "title": "Variáveis"
+      },
+      {
+        "id": "delineamentos-de-pesquisa",
+        "level": 3,
+        "number": "3.3.3",
+        "title": "Delineamentos de pesquisa"
+      },
+      {
+        "id": "delineamentos-observacionais-e-correlacionais",
+        "level": 3,
+        "number": "3.3.4",
+        "title": "Delineamentos observacionais (e correlacionais)"
+      },
+      {
+        "id": "delineamentos-experimentais",
+        "level": 3,
+        "number": "3.3.5",
+        "title": "Delineamentos experimentais"
+      },
+      {
+        "id": "considerações-sobre-escalas-de-medida-e-o-processo-de-mensuração-em-psicologia",
+        "level": 2,
+        "number": "3.4",
+        "title": "Considerações sobre escalas de medida e o processo de mensuração em Psicologia"
+      },
+      {
+        "id": "escala-nominal",
+        "level": 3,
+        "number": "3.4.1",
+        "title": "Escala nominal"
+      },
+      {
+        "id": "escala-ordinal",
+        "level": 3,
+        "number": "3.4.2",
+        "title": "Escala ordinal"
+      },
+      {
+        "id": "escala-intervalar",
+        "level": 3,
+        "number": "3.4.3",
+        "title": "Escala intervalar"
+      },
+      {
+        "id": "escala-de-razão",
+        "level": 3,
+        "number": "3.4.4",
+        "title": "Escala de razão"
+      },
+      {
+        "id": "síntese-das-características-de-cada-escala",
+        "level": 3,
+        "number": "3.4.5",
+        "title": "Síntese das características de cada escala"
+      },
+      {
+        "id": "as-escalas-de-stevens-e-uma-tentativa-de-agrupamento",
+        "level": 3,
+        "number": "3.4.6",
+        "title": "As escalas de Stevens e uma tentativa de agrupamento"
+      },
+      {
+        "id": "variáveis-discretas-ou-contínuas",
+        "level": 3,
+        "number": "3.4.7",
+        "title": "Variáveis discretas ou contínuas"
+      },
+      {
+        "id": "hierarquia-da-classificação-e-a-importância-desses-conceitos-hoje-em-dia",
+        "level": 3,
+        "number": "3.4.8",
+        "title": "Hierarquia da classificação e a importância desses conceitos hoje em dia"
+      },
+      {
+        "id": "em-qual-escala-devemos-classificar-os-testes-psicológicos",
+        "level": 3,
+        "number": "3.4.9",
+        "title": "Em qual escala devemos classificar os testes psicológicos"
+      },
+      {
+        "id": "principais-áreas-da-estatística",
+        "level": 2,
+        "number": "3.5",
+        "title": "Principais áreas da estatística"
+      },
+      {
+        "id": "resumo-1",
+        "level": 2,
+        "number": "3.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "questões",
+        "level": 2,
+        "number": "3.7",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 4,
+    "file": "estatística-descritiva.html",
+    "slug": "estatística-descritiva",
+    "title": "Estatística Descritiva",
+    "desc": "Objetivos do capítulo 1. Introduzir conceitos importantes em estatística descritiva 2. Apresentar tabelas e gráficos 3. Apresentar funções do dplyr e ggplot 4. Apresentar um módulo específico do JASP ",
+    "og_img": "assets/img/cap_desc_tabela.PNG",
+    "sections": [
+      {
+        "id": "tabelas",
+        "level": 2,
+        "number": "4.1",
+        "title": "Tabelas"
+      },
+      {
+        "id": "gráficos",
+        "level": 2,
+        "number": "4.2",
+        "title": "Gráficos"
+      },
+      {
+        "id": "medidas-de-posição-e-dispersão",
+        "level": 2,
+        "number": "4.3",
+        "title": "Medidas de posição e dispersão"
+      },
+      {
+        "id": "média",
+        "level": 2,
+        "number": "4.4",
+        "title": "Média"
+      },
+      {
+        "id": "mediana",
+        "level": 2,
+        "number": "4.5",
+        "title": "Mediana"
+      },
+      {
+        "id": "moda",
+        "level": 2,
+        "number": "4.6",
+        "title": "Moda"
+      },
+      {
+        "id": "amplitude",
+        "level": 2,
+        "number": "4.7",
+        "title": "Amplitude"
+      },
+      {
+        "id": "amplitude-interquartil",
+        "level": 2,
+        "number": "4.8",
+        "title": "Amplitude interquartil"
+      },
+      {
+        "id": "variância-e-desvio-padrão",
+        "level": 2,
+        "number": "4.9",
+        "title": "Variância e Desvio-padrão"
+      },
+      {
+        "id": "momentos-estatísticos",
+        "level": 2,
+        "number": "4.10",
+        "title": "Momentos estatísticos"
+      },
+      {
+        "id": "pesquisa",
+        "level": 2,
+        "number": "4.11",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r",
+        "level": 2,
+        "number": "4.12",
+        "title": "Execução no R"
+      },
+      {
+        "id": "gráficos-1",
+        "level": 2,
+        "number": "4.13",
+        "title": "Gráficos"
+      },
+      {
+        "id": "variável-discreta",
+        "level": 2,
+        "number": "4.14",
+        "title": "1 variável discreta"
+      },
+      {
+        "id": "variável-contínua",
+        "level": 2,
+        "number": "4.15",
+        "title": "1 variável contínua"
+      },
+      {
+        "id": "variáveis-com-vi-discreta-e-vd-contínua",
+        "level": 2,
+        "number": "4.16",
+        "title": "2 variáveis com VI discreta (e VD contínua)"
+      },
+      {
+        "id": "variáveis-com-vi-contínua-e-vd-contínua",
+        "level": 2,
+        "number": "4.17",
+        "title": "2 variáveis com VI contínua (e VD contínua)"
+      },
+      {
+        "id": "outros-gráficos-e-configurações",
+        "level": 2,
+        "number": "4.18",
+        "title": "Outros gráficos e configurações"
+      },
+      {
+        "id": "execução-no-jasp",
+        "level": 2,
+        "number": "4.19",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "tabelas-1",
+        "level": 2,
+        "number": "4.20",
+        "title": "Tabelas"
+      },
+      {
+        "id": "gráficos-2",
+        "level": 2,
+        "number": "4.21",
+        "title": "Gráficos"
+      },
+      {
+        "id": "variável-discreta-1",
+        "level": 2,
+        "number": "4.22",
+        "title": "1 variável discreta"
+      },
+      {
+        "id": "variável-contínua-1",
+        "level": 2,
+        "number": "4.23",
+        "title": "1 variável contínua"
+      },
+      {
+        "id": "variáveis-com-vi-discreta-e-vd-contínua-1",
+        "level": 2,
+        "number": "4.24",
+        "title": "2 variáveis com VI discreta (e VD contínua)"
+      },
+      {
+        "id": "variáveis-com-vi-contínua-e-vd-contínua-1",
+        "level": 2,
+        "number": "4.25",
+        "title": "2 variáveis com VI contínua (e VD contínua)"
+      },
+      {
+        "id": "outros-gráficos-e-configurações-1",
+        "level": 2,
+        "number": "4.26",
+        "title": "Outros gráficos e configurações"
+      },
+      {
+        "id": "resumo-2",
+        "level": 2,
+        "number": "4.27",
+        "title": "Resumo"
+      },
+      {
+        "id": "questões-1",
+        "level": 2,
+        "number": "4.28",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 5,
+    "file": "família-de-distribuições.html",
+    "slug": "família-de-distribuições",
+    "title": "Família de distribuições",
+    "desc": "Objetivos do capítulo 1. Introduzir aspectos voltados ao formato das distribuições 2. Apresentar a distribuição formal e suas características 3. Apresentar dados simulados para ilustrar a Lei dos Gran",
+    "og_img": "assets/figure-html/unnamed-chunk-31-1.png",
+    "sections": [
+      {
+        "id": "distribuição-simétrica",
+        "level": 2,
+        "number": "5.1",
+        "title": "Distribuição simétrica"
+      },
+      {
+        "id": "assimetria-à-direita",
+        "level": 2,
+        "number": "5.2",
+        "title": "Assimetria à direita"
+      },
+      {
+        "id": "assimetria-à-esquerda-ou-negativa",
+        "level": 2,
+        "number": "5.3",
+        "title": "Assimetria à esquerda (ou negativa)"
+      },
+      {
+        "id": "a-distribuição-normal",
+        "level": 2,
+        "number": "5.4",
+        "title": "A distribuição normal"
+      },
+      {
+        "id": "a-regra-empírica",
+        "level": 2,
+        "number": "5.5",
+        "title": "A regra empírica"
+      },
+      {
+        "id": "um-resumo-visual",
+        "level": 2,
+        "number": "5.6",
+        "title": "Um resumo visual"
+      },
+      {
+        "id": "importância-inferencial",
+        "level": 2,
+        "number": "5.7",
+        "title": "Importância inferencial"
+      },
+      {
+        "id": "resumo-3",
+        "level": 2,
+        "number": "5.8",
+        "title": "Resumo"
+      }
+    ]
+  },
+  {
+    "num": 6,
+    "file": "tipos-de-amostragem.html",
+    "slug": "tipos-de-amostragem",
+    "title": "Tipos de amostragem",
+    "desc": "Objetivos do capítulo 1. Apresentar aspectos relacionados à população e amostra 2. Introduzir as principais questões sobre processos de composição amostral 3. Introduzir procedimentos probabilísticos ",
+    "og_img": "assets/img/cap_amostra_desenhos.PNG",
+    "sections": [
+      {
+        "id": "amostragem-aleatória-simples",
+        "level": 2,
+        "number": "6.1",
+        "title": "Amostragem aleatória simples"
+      },
+      {
+        "id": "amostragem-aleatória-sistemática",
+        "level": 2,
+        "number": "6.2",
+        "title": "Amostragem aleatória sistemática"
+      },
+      {
+        "id": "amostragem-estratificada",
+        "level": 2,
+        "number": "6.3",
+        "title": "Amostragem estratificada"
+      },
+      {
+        "id": "amostragem-por-conglomerados",
+        "level": 2,
+        "number": "6.4",
+        "title": "Amostragem por conglomerados"
+      },
+      {
+        "id": "amostragem-por-conveniência",
+        "level": 2,
+        "number": "6.5",
+        "title": "Amostragem por conveniência"
+      },
+      {
+        "id": "amostragem-por-auto-seleção",
+        "level": 2,
+        "number": "6.6",
+        "title": "Amostragem por auto-seleção"
+      },
+      {
+        "id": "amostragem-intencional",
+        "level": 2,
+        "number": "6.7",
+        "title": "Amostragem intencional"
+      },
+      {
+        "id": "amostragem-por-bola-de-neve",
+        "level": 2,
+        "number": "6.8",
+        "title": "Amostragem por bola de neve"
+      },
+      {
+        "id": "amostragem-por-quotas",
+        "level": 2,
+        "number": "6.9",
+        "title": "Amostragem por quotas"
+      },
+      {
+        "id": "o-cálculo-do-tamanho-amostral",
+        "level": 2,
+        "number": "6.10",
+        "title": "O cálculo do tamanho amostral"
+      },
+      {
+        "id": "amostragem-e-sua-relação-com-os-resultados",
+        "level": 2,
+        "number": "6.11",
+        "title": "Amostragem e sua relação com os resultados"
+      },
+      {
+        "id": "amostragem-delineamento-e-generalização",
+        "level": 2,
+        "number": "6.12",
+        "title": "Amostragem, delineamento e generalização"
+      },
+      {
+        "id": "resumo-4",
+        "level": 2,
+        "number": "6.13",
+        "title": "Resumo"
+      }
+    ]
+  },
+  {
+    "num": 7,
+    "file": "estatística-inferencial.html",
+    "slug": "estatística-inferencial",
+    "title": "Estatística Inferencial",
+    "desc": "Objetivos do capítulo 1. Introduzir diferentes conceitos de estatística inferencial 2. Apresentar os procedimentos feitos durante o Teste de Significância de Hipótese Nula (NHST) 3. Discutir condições",
+    "og_img": "assets/img/cap_inferencia_amostra_populacao.PNG",
+    "sections": [
+      {
+        "id": "nhst-teste-de-significância-de-hipótese-nula",
+        "level": 2,
+        "number": "7.1",
+        "title": "NHST (Teste de Significância de Hipótese Nula)"
+      },
+      {
+        "id": "a-primeira-etapa-a-hipótese",
+        "level": 3,
+        "number": "7.1.1",
+        "title": "A primeira etapa: a hipótese"
+      },
+      {
+        "id": "nível-de-significância",
+        "level": 2,
+        "number": "7.2",
+        "title": "Nível de significância"
+      },
+      {
+        "id": "o-teste-estatístico",
+        "level": 2,
+        "number": "7.3",
+        "title": "O teste estatístico"
+      },
+      {
+        "id": "o-valor-de-p",
+        "level": 2,
+        "number": "7.4",
+        "title": "O valor de P"
+      },
+      {
+        "id": "o-tamanho-do-efeito",
+        "level": 2,
+        "number": "7.5",
+        "title": "O tamanho do efeito"
+      },
+      {
+        "id": "um-exemplo-intuitivo",
+        "level": 2,
+        "number": "7.6",
+        "title": "Um exemplo intuitivo"
+      },
+      {
+        "id": "o-que-não-te-contaram-sobre-inferência-estatística",
+        "level": 2,
+        "number": "7.7",
+        "title": "O que não te contaram sobre inferência estatística"
+      },
+      {
+        "id": "pesquisas-adicionais",
+        "level": 2,
+        "number": "7.8",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-2",
+        "level": 2,
+        "number": "7.9",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 8,
+    "file": "um-exemplo-real-de-pesquisa.html",
+    "slug": "um-exemplo-real-de-pesquisa",
+    "title": "Um exemplo real de pesquisa",
+    "desc": "Objetivos do capítulo 1. Apresentar uma pesquisa previamente publicada 2. Discutir as principais características processuais de uma pesquisa 3. Apresentar a relação entre objetivo, delineamento e cole",
+    "og_img": "assets/img/cap_pesquisa_aplicada_oque.PNG",
+    "sections": [
+      {
+        "id": "o-que-será-pesquisado",
+        "level": 2,
+        "number": "8.1",
+        "title": "O que será pesquisado"
+      },
+      {
+        "id": "como-os-dados-serão-coletados",
+        "level": 2,
+        "number": "8.2",
+        "title": "Como os dados serão coletados"
+      },
+      {
+        "id": "de-onde-os-dados-vêm",
+        "level": 2,
+        "number": "8.3",
+        "title": "De onde os dados vêm"
+      },
+      {
+        "id": "as-análises",
+        "level": 2,
+        "number": "8.4",
+        "title": "As análises"
+      },
+      {
+        "id": "os-achados",
+        "level": 2,
+        "number": "8.5",
+        "title": "Os achados"
+      },
+      {
+        "id": "divulgação-do-estudo",
+        "level": 2,
+        "number": "8.6",
+        "title": "Divulgação do estudo"
+      },
+      {
+        "id": "fluxograma",
+        "level": 2,
+        "number": "8.7",
+        "title": "Fluxograma"
+      },
+      {
+        "id": "resumo-5",
+        "level": 2,
+        "number": "8.8",
+        "title": "Resumo"
+      }
+    ]
+  },
+  {
+    "num": 9,
+    "file": "qui-quadrado.html",
+    "slug": "qui-quadrado",
+    "title": "Qui quadrado",
+    "desc": "Objetivos do capítulo 1. Apresentar o teste Qui-quadrado 2. Diferenciar o Qui-quadrado de aderência, homogeneidade e independência 3. Realizar gráficos relacionados à distribuição de porcentagens 4. A",
+    "og_img": "assets/figure-html/unnamed-chunk-2-1.png",
+    "sections": [
+      {
+        "id": "pesquisa-1",
+        "level": 2,
+        "number": "9.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-1",
+        "level": 2,
+        "number": "9.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "tamanho-do-efeito",
+        "level": 2,
+        "number": "9.3",
+        "title": "Tamanho do efeito"
+      },
+      {
+        "id": "execução-no-jasp-1",
+        "level": 2,
+        "number": "9.4",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados",
+        "level": 2,
+        "number": "9.5",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-6",
+        "level": 2,
+        "number": "9.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-1",
+        "level": 2,
+        "number": "9.7",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-3",
+        "level": 2,
+        "number": "9.8",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 10,
+    "file": "fatores-de-risco.html",
+    "slug": "fatores-de-risco",
+    "title": "Fatores de Risco",
+    "desc": "Objetivos do capítulo 1. Apresentar o conceito de fatores de risco 2. Introduzir o Risco Atribuível, Risco Relativo e Odds Ratio",
+    "og_img": "assets/img/cap_risco_tabela_decisao.PNG",
+    "sections": [
+      {
+        "id": "pesquisa-2",
+        "level": 2,
+        "number": "10.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-2",
+        "level": 2,
+        "number": "10.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-2",
+        "level": 2,
+        "number": "10.3",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-1",
+        "level": 2,
+        "number": "10.4",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "odds-ratio-e-regressão-logística",
+        "level": 2,
+        "number": "10.5",
+        "title": "Odds Ratio e Regressão logística"
+      },
+      {
+        "id": "resumo-7",
+        "level": 2,
+        "number": "10.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-2",
+        "level": 2,
+        "number": "10.7",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-4",
+        "level": 2,
+        "number": "10.8",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 11,
+    "file": "teste-t.html",
+    "slug": "teste-t",
+    "title": "Teste T",
+    "desc": "Objetivos do capítulo 1. Apresentar o Teste T 2. Discutir os pressupostos de execução do Teste T 3. Realizar gráficos relacionados à comparação de médias 4. Apresentar e interpretar métricas de tamanh",
+    "og_img": "assets/figure-html/unnamed-chunk-57-1.png",
+    "sections": [
+      {
+        "id": "pesquisa-3",
+        "level": 2,
+        "number": "11.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-3",
+        "level": 2,
+        "number": "11.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "tamanho-do-efeito-1",
+        "level": 2,
+        "number": "11.3",
+        "title": "Tamanho do efeito"
+      },
+      {
+        "id": "execução-no-jasp-3",
+        "level": 2,
+        "number": "11.4",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-2",
+        "level": 2,
+        "number": "11.5",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "versão-robusta-do-teste-t",
+        "level": 2,
+        "number": "11.6",
+        "title": "Versão robusta do Teste T"
+      },
+      {
+        "id": "execução-no-r-4",
+        "level": 3,
+        "number": "11.6.1",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-4",
+        "level": 3,
+        "number": "11.6.2",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "mann-whitney",
+        "level": 2,
+        "number": "11.7",
+        "title": "Mann-whitney"
+      },
+      {
+        "id": "execução-no-r-5",
+        "level": 3,
+        "number": "11.7.1",
+        "title": "Execução No R"
+      },
+      {
+        "id": "tamanho-do-efeito-2",
+        "level": 3,
+        "number": "11.7.2",
+        "title": "Tamanho do efeito"
+      },
+      {
+        "id": "execução-no-jasp-5",
+        "level": 3,
+        "number": "11.7.3",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-3",
+        "level": 3,
+        "number": "11.7.4",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "teste-t-e-regressão",
+        "level": 2,
+        "number": "11.8",
+        "title": "Teste T e regressão"
+      },
+      {
+        "id": "resumo-8",
+        "level": 2,
+        "number": "11.9",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-3",
+        "level": 2,
+        "number": "11.10",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-5",
+        "level": 2,
+        "number": "11.11",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 12,
+    "file": "anova.html",
+    "slug": "anova",
+    "title": "ANOVA",
+    "desc": "Objetivos do capítulo 1. Apresentar a ANOVA 2. Discutir seus diferentes tipos, incluindo ANOVA de 1 via, 2 vias e Fatorial 3. Apresentar gráficos e tabelas com comparações de grupos 4. Apresentar e di",
+    "og_img": "assets/figure-html/unnamed-chunk-78-1.png",
+    "sections": [
+      {
+        "id": "pesquisa-4",
+        "level": 2,
+        "number": "12.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "anova-de-1-via",
+        "level": 2,
+        "number": "12.2",
+        "title": "ANOVA de 1 via"
+      },
+      {
+        "id": "execução-no-r-6",
+        "level": 2,
+        "number": "12.3",
+        "title": "Execução no R"
+      },
+      {
+        "id": "tamanho-do-efeito-3",
+        "level": 2,
+        "number": "12.4",
+        "title": "Tamanho do efeito"
+      },
+      {
+        "id": "execução-no-jasp-6",
+        "level": 2,
+        "number": "12.5",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-4",
+        "level": 2,
+        "number": "12.6",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "post-hoc",
+        "level": 2,
+        "number": "12.7",
+        "title": "Post hoc"
+      },
+      {
+        "id": "execução-no-r-7",
+        "level": 2,
+        "number": "12.8",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-7",
+        "level": 2,
+        "number": "12.9",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-5",
+        "level": 2,
+        "number": "12.10",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-9",
+        "level": 2,
+        "number": "12.11",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-4",
+        "level": 2,
+        "number": "12.12",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "pesquisa-5",
+        "level": 2,
+        "number": "12.13",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "anova-de-2-vias",
+        "level": 2,
+        "number": "12.14",
+        "title": "ANOVA de 2 vias"
+      },
+      {
+        "id": "execução-no-r-8",
+        "level": 2,
+        "number": "12.15",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-8",
+        "level": 2,
+        "number": "12.16",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-6",
+        "level": 2,
+        "number": "12.17",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "post-hoc-1",
+        "level": 2,
+        "number": "12.18",
+        "title": "Post hoc"
+      },
+      {
+        "id": "execução-no-r-9",
+        "level": 2,
+        "number": "12.19",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-9",
+        "level": 2,
+        "number": "12.20",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-7",
+        "level": 2,
+        "number": "12.21",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-10",
+        "level": 2,
+        "number": "12.22",
+        "title": "Resumo"
+      },
+      {
+        "id": "anova-fatorial",
+        "level": 2,
+        "number": "12.23",
+        "title": "ANOVA Fatorial"
+      },
+      {
+        "id": "execução-no-r-10",
+        "level": 2,
+        "number": "12.24",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-10",
+        "level": 2,
+        "number": "12.25",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-8",
+        "level": 2,
+        "number": "12.26",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-11",
+        "level": 2,
+        "number": "12.27",
+        "title": "Resumo"
+      },
+      {
+        "id": "post-hoc-2",
+        "level": 2,
+        "number": "12.28",
+        "title": "Post hoc"
+      },
+      {
+        "id": "execução-no-jasp-11",
+        "level": 2,
+        "number": "12.29",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-9",
+        "level": 2,
+        "number": "12.30",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "questões-6",
+        "level": 2,
+        "number": "12.31",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 13,
+    "file": "anova-de-medidas-repetidas.html",
+    "slug": "anova-de-medidas-repetidas",
+    "title": "ANOVA de medidas repetidas",
+    "desc": "Objetivos do capítulo 1. Apresentar a ANOVA de Medidas Repetidas 2. Realizar passo-a-passo a modelagem analítica 3. Verificar os pressupostos e implementar as correções sugeridas 4. Escrever os result",
+    "og_img": "assets/img/delineamento_experimental.PNG",
+    "sections": [
+      {
+        "id": "pesquisa-6",
+        "level": 2,
+        "number": "13.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-11",
+        "level": 2,
+        "number": "13.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "tamanho-do-efeito-4",
+        "level": 2,
+        "number": "13.3",
+        "title": "Tamanho do efeito"
+      },
+      {
+        "id": "execução-no-jasp-12",
+        "level": 2,
+        "number": "13.4",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-10",
+        "level": 2,
+        "number": "13.5",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-12",
+        "level": 2,
+        "number": "13.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-5",
+        "level": 2,
+        "number": "13.7",
+        "title": "Pesquisas adicionais"
+      }
+    ]
+  },
+  {
+    "num": 14,
+    "file": "modelo-linear-misto.html",
+    "slug": "modelo-linear-misto",
+    "title": "Modelo linear misto",
+    "desc": "Objetivos do capítulo 1. Apresentar a ANOVA de Medidas Repetidas. 2. Realizar passo-a-passo a modelagem analítica. 3. Verificar os pressupostos e implementar as correções sugeridas. 4. Escrever os res",
+    "og_img": "assets/figure-html/unnamed-chunk-138-1.png",
+    "sections": [
+      {
+        "id": "pesquisa-7",
+        "level": 2,
+        "number": "14.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-12",
+        "level": 2,
+        "number": "14.2",
+        "title": "execução no R"
+      },
+      {
+        "id": "execução-no-jasp-13",
+        "level": 2,
+        "number": "14.3",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-11",
+        "level": 2,
+        "number": "14.4",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-13",
+        "level": 2,
+        "number": "14.5",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-6",
+        "level": 2,
+        "number": "14.6",
+        "title": "Pesquisas adicionais"
+      }
+    ]
+  },
+  {
+    "num": 15,
+    "file": "correlação.html",
+    "slug": "correlação",
+    "title": "Correlação",
+    "desc": "Objetivos do capítulo 1. Apresentar apectos do relacionamento entre variáveis 2. Demonstrar a correlação de Pearson 3. Oferecer um guia de como interpretar as correlações",
+    "og_img": "assets/figure-html/unnamed-chunk-144-1.png",
+    "sections": [
+      {
+        "id": "pesquisa-8",
+        "level": 2,
+        "number": "15.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-13",
+        "level": 2,
+        "number": "15.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-14",
+        "level": 2,
+        "number": "15.3",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-12",
+        "level": 2,
+        "number": "15.4",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-14",
+        "level": 2,
+        "number": "15.5",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-7",
+        "level": 2,
+        "number": "15.6",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-7",
+        "level": 2,
+        "number": "15.7",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 16,
+    "file": "regressão-linear-simples.html",
+    "slug": "regressão-linear-simples",
+    "title": "Regressão linear simples",
+    "desc": "Objetivos do capítulo 1. Apresentar o modelo de regressão linear, especialmente a regressão linear simples 2. introduzir conceitos analíticos subjacentes à esta modelagem 3. Apresentar a utilidade des",
+    "og_img": "assets/img/cap_reg_xy.PNG",
+    "sections": [
+      {
+        "id": "breve-explicação-conceitual",
+        "level": 2,
+        "number": "16.1",
+        "title": "Breve explicação conceitual"
+      },
+      {
+        "id": "pesquisa-9",
+        "level": 2,
+        "number": "16.2",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-14",
+        "level": 2,
+        "number": "16.3",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-15",
+        "level": 2,
+        "number": "16.4",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-13",
+        "level": 2,
+        "number": "16.5",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "resumo-15",
+        "level": 2,
+        "number": "16.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-8",
+        "level": 2,
+        "number": "16.7",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-8",
+        "level": 2,
+        "number": "16.8",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 17,
+    "file": "regressão-linear-múltipla.html",
+    "slug": "regressão-linear-múltipla",
+    "title": "Regressão linear múltipla",
+    "desc": "Objetivos do capítulo 1. Apresentar o modelo de regressão linear múltipla 2. Mostrar o relacionamento entre este modelo e os modelos da família da ANOVA previamente exposta 3. Introduzir testes diagnó",
+    "og_img": "assets/figure-html/unnamed-chunk-173-1.png",
+    "sections": [
+      {
+        "id": "pesquisa-10",
+        "level": 2,
+        "number": "17.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-15",
+        "level": 2,
+        "number": "17.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-16",
+        "level": 2,
+        "number": "17.3",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-14",
+        "level": 2,
+        "number": "17.4",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "técnicas-automáticas-de-seleção-de-variáveis",
+        "level": 2,
+        "number": "17.5",
+        "title": "Técnicas automáticas de seleção de variáveis"
+      },
+      {
+        "id": "resumo-16",
+        "level": 2,
+        "number": "17.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-9",
+        "level": 2,
+        "number": "17.7",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-9",
+        "level": 2,
+        "number": "17.8",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 18,
+    "file": "regressão-logística-binária.html",
+    "slug": "regressão-logística-binária",
+    "title": "Regressão logística binária",
+    "desc": "Objetivos do capítulo 1. Apresentar características da regressão logística 2. Diferenciar o conceito de probabilidade e chance 3. Integrar o teste Qui-quadrado, Odds Ratio e regressão logística",
+    "og_img": "assets/img/cap_reg_log_odds.PNG",
+    "sections": [
+      {
+        "id": "pesquisa-11",
+        "level": 2,
+        "number": "18.1",
+        "title": "Pesquisa"
+      },
+      {
+        "id": "execução-no-r-16",
+        "level": 2,
+        "number": "18.2",
+        "title": "Execução no R"
+      },
+      {
+        "id": "execução-no-jasp-17",
+        "level": 2,
+        "number": "18.3",
+        "title": "Execução no JASP"
+      },
+      {
+        "id": "escrita-dos-resultados-15",
+        "level": 2,
+        "number": "18.4",
+        "title": "Escrita dos resultados"
+      },
+      {
+        "id": "regressão-logística-or-e-qui-quadrado",
+        "level": 2,
+        "number": "18.5",
+        "title": "Regressão logística, OR e Qui-quadrado"
+      },
+      {
+        "id": "resumo-17",
+        "level": 2,
+        "number": "18.6",
+        "title": "Resumo"
+      },
+      {
+        "id": "pesquisas-adicionais-10",
+        "level": 2,
+        "number": "18.7",
+        "title": "Pesquisas adicionais"
+      },
+      {
+        "id": "questões-10",
+        "level": 2,
+        "number": "18.8",
+        "title": "Questões"
+      }
+    ]
+  },
+  {
+    "num": 19,
+    "file": "quarta-capa.html",
+    "slug": "quarta-capa",
+    "title": "Quarta capa",
+    "desc": "Estatística é uma disciplina que, quase sempre, desperta uma preocupação em estudantes de ciências humanas, certamente não apenas aqueles matriculados em Psicologia. No entanto, em sentido oposto à an",
+    "og_img": "",
+    "sections": []
+  },
+  {
+    "num": 20,
+    "file": "referencias.html",
+    "slug": "referencias",
+    "title": "Referencias",
+    "desc": "Livro-texto de conceitos e análises estatísticas com R e JASP, com camada de anotações do autor.",
+    "og_img": "",
+    "sections": []
+  }
+]
