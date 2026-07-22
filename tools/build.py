@@ -184,6 +184,8 @@ def clean_chapter(fname):
     # --- meta: first real paragraph as description, first image as OG -------
     first_p = ""
     for p in chapter.find_all("p"):
+        if "cover-note" in (p.get("class") or []):
+            continue  # skip the maintenance caption under the cover
         t = p.get_text(" ", strip=True)
         if len(t) > 40:
             first_p = t
