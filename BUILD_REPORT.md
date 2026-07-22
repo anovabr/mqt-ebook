@@ -181,28 +181,23 @@ python3 -m http.server 8971
 Abra <http://localhost:8971/index.html>. (Sirva por HTTP; abrir via `file://`
 impede o carregamento de `content/annotations.json`.)
 
-## 6. Publicar (comando único, quando estiver no seu computador)
+## 6. Publicação
 
-O repositório já está inicializado e com um commit inicial. **Nada foi enviado
-ao GitHub** neste build. Quando estiver na sua máquina, com o `gh` autenticado,
-rode:
+O site foi publicado no repositório existente
+[`anovabr/mqt-ebook`](https://github.com/anovabr/mqt-ebook): o conteúdo está no
+branch `main` (raiz) e o **GitHub Pages** foi habilitado servindo dessa raiz.
 
-```bash
-bash publish.sh
-```
-
-O script: (1) roda `gh auth status` e **para com mensagem clara** se você não
-estiver autenticado; (2) ajusta as URLs canônicas/OG para o seu usuário do
-GitHub; (3) cria um repositório **PÚBLICO** `mqt-ebook`
-(`gh repo create mqt-ebook --public --source=. --remote=origin --push`); e
-(4) habilita o **GitHub Pages** de forma não-interativa servindo da **raiz** do
-repositório.
-
-**URL do Pages que será produzida:**
+**URL do site:**
 
 ```
-https://<seu-usuário>.github.io/mqt-ebook/
+https://anovabr.github.io/mqt-ebook/
 ```
 
-(por exemplo, `https://luisfca.github.io/mqt-ebook/` — o `publish.sh` detecta e
-usa automaticamente o seu login real do GitHub).
+A primeira publicação do Pages pode levar 1–2 minutos após habilitado.
+
+### Publicar em outra conta (opcional)
+
+Para publicar em outra conta/repositório, `publish.sh` faz tudo em um passo:
+roda `gh auth status` (para com mensagem clara se não autenticado), ajusta as
+URLs canônicas/OG para o usuário detectado, cria um repositório **PÚBLICO**
+`mqt-ebook` e habilita o GitHub Pages a partir da raiz.

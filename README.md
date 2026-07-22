@@ -81,10 +81,17 @@ python3 tools/build.py     # regenera as páginas a partir de tools/src/
 python3 tools/verify.py    # verificação estrutural (servidor local ativo)
 ```
 
-## Publicar
+## Site publicado
 
-Veja `publish.sh` — cria um repositório público no GitHub e habilita o GitHub
-Pages em um único passo:
+Este site é publicado em:
+
+**<https://anovabr.github.io/mqt-ebook/>**
+
+servido pelo GitHub Pages a partir da raiz do branch `main` de
+[`anovabr/mqt-ebook`](https://github.com/anovabr/mqt-ebook).
+
+Para publicar em outra conta/repositório, `publish.sh` cria um repositório
+público e habilita o GitHub Pages em um único passo:
 
 ```bash
 bash publish.sh

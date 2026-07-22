@@ -33,7 +33,7 @@ BOOK_DESC = ("Livro-texto de conceitos e análises estatísticas com R e JASP, "
              "com camada de anotações do autor.")
 # Base URL used for canonical/OG tags. Relative paths keep the site portable to
 # any GitHub Pages subpath; this is only used to build absolute share URLs.
-SITE_BASE = "https://luisfca.github.io/mqt-ebook"
+SITE_BASE = "https://anovabr.github.io/mqt-ebook"
 
 # Chapter order and canonical filenames, taken from the source sidebar TOC.
 CHAPTERS = [
